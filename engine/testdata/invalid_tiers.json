@@ -1,0 +1,21 @@
+{
+  "id": "invalid-tiers",
+  "version": "v1",
+  "schema_version": "v1",
+  "dimensions": ["country"],
+  "rules": [{
+    "id": "BAD_TIERS",
+    "layer": "split",
+    "outcome": {
+      "kind": "tiered",
+      "tiered": {
+        "metric": "amount_minor",
+        "tiers": [
+          { "up_to_exclusive": 300000, "rate": "0.7" },
+          { "up_to_exclusive": 100000, "rate": "0.8" },
+          { "up_to_exclusive": null, "rate": "0.9" }
+        ]
+      }
+    }
+  }]
+}

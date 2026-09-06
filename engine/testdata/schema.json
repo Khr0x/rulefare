@@ -1,0 +1,17 @@
+{
+  "version": "v1",
+  "variables": {
+    "market": "string",
+    "country": "string",
+    "channel": "string",
+    "agency": "string",
+    "branch": "string",
+    "agent": "string",
+    "supplier": "string",
+    "product": "string",
+    "contract": "string",
+    "amount_minor": "int",
+    "travel_date": "timestamp",
+    "active": "bool"
+  }
+}

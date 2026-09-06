@@ -1,0 +1,12 @@
+{
+  "id": "invalid-non-bool",
+  "version": "v1",
+  "schema_version": "v1",
+  "dimensions": ["country"],
+  "rules": [{
+    "id": "NON_BOOL",
+    "layer": "operation",
+    "condition": "amount_minor + 1",
+    "outcome": { "kind": "percentage", "percentage": { "rate": "0.1" } }
+  }]
+}

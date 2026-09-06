@@ -1,0 +1,14 @@
+{
+  "id": "invalid-outcome",
+  "version": "v1",
+  "schema_version": "v1",
+  "dimensions": ["country"],
+  "rules": [{
+    "id": "BAD_OUTCOME",
+    "layer": "operation",
+    "outcome": {
+      "kind": "percentage",
+      "fixed": { "amount": "25", "currency": "MXN" }
+    }
+  }]
+}

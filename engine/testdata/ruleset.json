@@ -1,0 +1,76 @@
+{
+  "id": "travel-commissions",
+  "version": "2026-09-14",
+  "schema_version": "v1",
+  "dimensions": [
+    "market",
+    "country",
+    "channel",
+    "agency",
+    "branch",
+    "agent",
+    "supplier",
+    "product",
+    "contract"
+  ],
+  "rules": [
+    {
+      "id": "BASE_GLOBAL",
+      "layer": "operation",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": { "rate": "0.12" }
+      }
+    },
+    {
+      "id": "MEXICO",
+      "layer": "operation",
+      "scope": { "country": "MX" },
+      "condition": "amount_minor > 100000",
+      "composition": "FIRST_MATCH",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": { "rate": "0.15" }
+      }
+    },
+    {
+      "id": "HOTELBEDS_FIXED",
+      "layer": "operation",
+      "scope": { "supplier": "hotelbeds" },
+      "condition": "active",
+      "outcome": {
+        "kind": "fixed",
+        "fixed": { "amount": "25", "currency": "MXN" }
+      }
+    },
+    {
+      "id": "HOTELBEDS_MX",
+      "layer": "operation",
+      "scope": { "supplier": "hotelbeds", "country": "MX" },
+      "valid_from": "2026-06-01T00:00:00Z",
+      "valid_to": "2026-09-01T00:00:00Z",
+      "priority": 10,
+      "outcome": {
+        "kind": "percentage",
+        "percentage": { "rate": "0.17" }
+      }
+    },
+    {
+      "id": "CONTRACT_TIERS",
+      "layer": "split",
+      "scope": { "contract": "ctr_hb_2026" },
+      "condition": "travel_date >= timestamp('2026-01-01T00:00:00Z')",
+      "outcome": {
+        "kind": "tiered",
+        "tiered": {
+          "metric": "amount_minor",
+          "tiers": [
+            { "up_to_exclusive": 100000, "rate": "0.7" },
+            { "up_to_exclusive": 300000, "rate": "0.8" },
+            { "up_to_exclusive": null, "rate": "0.9" }
+          ]
+        }
+      }
+    }
+  ]
+}

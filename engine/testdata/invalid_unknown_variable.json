@@ -1,0 +1,12 @@
+{
+  "id": "invalid-variable",
+  "version": "v1",
+  "schema_version": "v1",
+  "dimensions": ["country"],
+  "rules": [{
+    "id": "UNKNOWN_VARIABLE",
+    "layer": "operation",
+    "condition": "destination == 'CUN'",
+    "outcome": { "kind": "percentage", "percentage": { "rate": "0.1" } }
+  }]
+}

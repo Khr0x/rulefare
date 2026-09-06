@@ -1,0 +1,12 @@
+{
+  "id": "invalid-dimension",
+  "version": "v1",
+  "schema_version": "v1",
+  "dimensions": ["country"],
+  "rules": [{
+    "id": "UNKNOWN_SCOPE",
+    "layer": "operation",
+    "scope": { "destination": "CUN" },
+    "outcome": { "kind": "percentage", "percentage": { "rate": "0.1" } }
+  }]
+}

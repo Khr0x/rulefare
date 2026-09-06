@@ -1,0 +1,4 @@
+.DS_Store
+*.coverprofile
+*.prof
+/bin/

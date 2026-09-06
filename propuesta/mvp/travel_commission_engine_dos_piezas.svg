@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 700" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="1060" height="700" fill="#f7f8fa"/>
+
+  <!-- Title -->
+  <text x="40" y="52" font-size="30" font-weight="700" fill="#0f172a">Las dos piezas del motor</text>
+  <text x="40" y="82" font-size="16" fill="#64748b">Motor de reglas  →  Motor de cálculo  →  Explicación · el mismo motor, determinista</text>
+
+  <!-- ============ PIECE 1: RULES ============ -->
+  <g>
+    <rect x="40" y="120" width="300" height="230" rx="14" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+    <rect x="40" y="120" width="300" height="46" rx="14" fill="#6366f1"/>
+    <rect x="40" y="150" width="300" height="16" fill="#6366f1"/>
+    <text x="62" y="150" font-size="18" font-weight="700" fill="#ffffff">1 · MOTOR DE REGLAS</text>
+    <text x="62" y="196" font-size="14" fill="#334155" font-weight="600">Crear una vez, reutilizar en N productos</text>
+    <text x="62" y="224" font-size="13.5" fill="#475569">• Condiciones SI/ENTONCES (CEL)</text>
+    <text x="62" y="248" font-size="13.5" fill="#475569">• Jerarquía + precedencia</text>
+    <text x="62" y="272" font-size="13.5" fill="#475569">• Versionado + vigencia</text>
+    <text x="62" y="304" font-size="13" fill="#6366f1" font-weight="700">Dos capas:</text>
+    <text x="62" y="326" font-size="13" fill="#475569">operación (proveedor/consorcio) + split (agente)</text>
+  </g>
+
+  <!-- arrow 1 -->
+  <g stroke="#94a3b8" stroke-width="2.5" fill="none">
+    <line x1="345" y1="235" x2="388" y2="235"/>
+    <polygon points="388,229 400,235 388,241" fill="#94a3b8" stroke="none"/>
+  </g>
+  <text x="352" y="222" font-size="11" fill="#64748b">reglas</text>
+
+  <!-- ============ PIECE 2: CALCULATION ============ -->
+  <g>
+    <rect x="405" y="120" width="330" height="230" rx="14" fill="#ffffff" stroke="#0d9488" stroke-width="2"/>
+    <rect x="405" y="120" width="330" height="46" rx="14" fill="#0d9488"/>
+    <rect x="405" y="150" width="330" height="16" fill="#0d9488"/>
+    <text x="427" y="150" font-size="18" font-weight="700" fill="#ffffff">2 · MOTOR DE CÁLCULO</text>
+    <text x="427" y="192" font-size="13" fill="#334155" font-weight="600">Determinista · mismo antes y después de vender</text>
+    <!-- chain -->
+    <g font-size="13" fill="#0f172a">
+      <rect x="427" y="204" width="286" height="24" rx="6" fill="#ecfdf5" stroke="#99f6e4"/>
+      <text x="437" y="221">Commissionable Basis</text>
+      <rect x="427" y="232" width="286" height="24" rx="6" fill="#ecfdf5" stroke="#99f6e4"/>
+      <text x="437" y="249">Supplier Contract  →  Override</text>
+      <rect x="427" y="260" width="286" height="24" rx="6" fill="#ecfdf5" stroke="#99f6e4"/>
+      <text x="437" y="277">Agency Gross  →  Split host/advisor</text>
+      <rect x="427" y="288" width="286" height="24" rx="6" fill="#d1fae5" stroke="#5eead4"/>
+      <text x="437" y="305" font-weight="700">Net Agent Commission</text>
+    </g>
+    <text x="427" y="333" font-size="12" fill="#0d9488" font-weight="600">un nodo por paso de la cadena</text>
+  </g>
+
+  <!-- arrow 2 -->
+  <g stroke="#94a3b8" stroke-width="2.5" fill="none">
+    <line x1="740" y1="235" x2="783" y2="235"/>
+    <polygon points="783,229 795,235 783,241" fill="#94a3b8" stroke="none"/>
+  </g>
+  <text x="742" y="222" font-size="11" fill="#64748b">nodos</text>
+
+  <!-- ============ PIECE 3: EXPLANATION ============ -->
+  <g>
+    <rect x="800" y="120" width="220" height="230" rx="14" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+    <rect x="800" y="120" width="220" height="46" rx="14" fill="#d97706"/>
+    <rect x="800" y="150" width="220" height="16" fill="#d97706"/>
+    <text x="822" y="150" font-size="18" font-weight="700" fill="#ffffff">3 · EXPLICACIÓN</text>
+    <text x="822" y="192" font-size="13" fill="#334155" font-weight="600">EvaluationTrace por nodo</text>
+    <text x="822" y="220" font-size="20" fill="#0f172a" font-weight="700">€81</text>
+    <text x="822" y="244" font-size="12.5" fill="#475569">← porque la regla X,</text>
+    <text x="822" y="264" font-size="12.5" fill="#475569">   versión Y, contrato Z,</text>
+    <text x="822" y="284" font-size="12.5" fill="#475569">   sobre base €2.250</text>
+    <text x="822" y="316" font-size="12" fill="#d97706" font-weight="700">cadena entera, auditable</text>
+  </g>
+
+  <!-- ============ RULES: BASIC vs ADVANCED ============ -->
+  <text x="40" y="418" font-size="20" font-weight="700" fill="#0f172a">El motor de reglas: básicas (v1) vs avanzadas (v2+)</text>
+
+  <!-- basic -->
+  <g>
+    <rect x="40" y="440" width="480" height="210" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+    <rect x="40" y="440" width="480" height="42" rx="14" fill="#dcfce7"/>
+    <rect x="40" y="468" width="480" height="14" fill="#dcfce7"/>
+    <text x="62" y="468" font-size="16" font-weight="700" fill="#166534">BÁSICAS – INTERMEDIAS · v1  (incluidas en alcance)</text>
+    <text x="62" y="512" font-size="14" fill="#334155">• Resultado: percentage · fixed · <tspan font-weight="700">tiered</tspan> (por tramos)</text>
+    <text x="82" y="536" font-size="12.5" fill="#64748b">0–100k = 70% · 100k–300k = 80% · &gt;300k = 90%</text>
+    <text x="62" y="562" font-size="14" fill="#334155">• 2 capas: operación + split host/advisor (70/30, 80/20)</text>
+    <text x="62" y="588" font-size="14" fill="#334155">• Condiciones CEL · jerarquía de dimensiones</text>
+    <text x="62" y="614" font-size="14" fill="#334155">• Versionado + vigencia · trace por nodo</text>
+    <text x="62" y="640" font-size="12.5" fill="#16a34a" font-weight="600">Alcance potente: condicionales, jerárquicas y por tramos.</text>
+  </g>
+
+  <!-- advanced -->
+  <g>
+    <rect x="540" y="440" width="480" height="210" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/>
+    <rect x="540" y="440" width="480" height="42" rx="14" fill="#f1f5f9"/>
+    <rect x="540" y="468" width="480" height="14" fill="#f1f5f9"/>
+    <text x="562" y="468" font-size="16" font-weight="700" fill="#475569">AVANZADAS · v2+  (agendadas, no incluidas)</text>
+    <text x="562" y="512" font-size="14" fill="#475569">• STACK: apilar varias reglas sobre una venta</text>
+    <text x="562" y="538" font-size="14" fill="#475569">• Split a N participantes (advisor + sucursal + referidor)</text>
+    <text x="562" y="564" font-size="14" fill="#475569">• Motor de agregación persistente + snapshots</text>
+    <text x="562" y="590" font-size="14" fill="#475569">• Period rules · rappels retroactivos</text>
+    <text x="562" y="616" font-size="14" fill="#475569">• Consorcio de 3 niveles con cortes retenidos</text>
+    <text x="562" y="642" font-size="12.5" fill="#94a3b8" font-weight="600">Lo verdaderamente complejo: acumulados, apilado, N partes.</text>
+  </g>
+</svg>

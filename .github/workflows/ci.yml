@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - name: Check formatting
+        run: |
+          unformatted="$(find . -name '*.go' -type f -exec gofmt -l {} +)"
+          test -z "$unformatted" || { echo "$unformatted"; exit 1; }
+      - name: Check module files
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+      - name: Check engine dependency boundary
+        run: |
+          project_imports="$(go list -f '{{range .Imports}}{{println .}}{{end}}' ./engine | grep '^github.com/Khr0x/rulefare/' || true)"
+          test -z "$project_imports" || { echo "$project_imports"; exit 1; }
+      - run: go vet ./...
+      - run: go test ./...
