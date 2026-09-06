@@ -102,8 +102,9 @@ type Evaluation struct {
 type ResultStatus string
 
 const (
-	ResultMatch   ResultStatus = "MATCH"
-	ResultNoMatch ResultStatus = "NO_MATCH"
+	ResultMatch     ResultStatus = "MATCH"
+	ResultNoMatch   ResultStatus = "NO_MATCH"
+	ResultAmbiguous ResultStatus = "AMBIGUOUS_MATCH"
 )
 
 // TraceStatus explains how a candidate participated in resolution.

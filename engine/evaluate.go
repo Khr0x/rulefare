@@ -2,6 +2,7 @@ package engine
 
 import (
 	"fmt"
+	"sort"
 	"time"
 
 	"github.com/google/cel-go/cel"
@@ -11,9 +12,14 @@ import (
 //
 // It applies the deterministic filters in order: validity (valid_from inclusive,
 // valid_to exclusive), exact scope match, and the precompiled CEL condition. It
-// never touches the network, disk or a database, and never recompiles CEL. The
-// winner is still chosen provisionally by compiled ID order; specificity ranking
-// (T2.3) and tie-breaking (T2.4) replace that choice, so the contract is provisional.
+// never touches the network, disk or a database, and never recompiles CEL.
+//
+// Surviving rules are ranked by specificity (the lexicographic scope profile
+// over Dimensions, most specific dimension first) and, within an identical
+// profile, by Priority. A rule that ties another on both is undecidable and
+// yields an AmbiguousMatchError; resolution never falls back to load order, map
+// order or id. The winning outcome is deep-copied so mutating the Result cannot
+// affect the Program or a later evaluation.
 func (p *Program) Evaluate(input Evaluation) (Result, error) {
 	result := Result{
 		RuleSetID:      p.ruleSetID,
@@ -24,7 +30,7 @@ func (p *Program) Evaluate(input Evaluation) (Result, error) {
 	}
 
 	rules := p.layers[input.Layer]
-	survivors := make([]compiledRule, 0, len(rules))
+	survivors := make([]rankedRule, 0, len(rules))
 	for _, candidate := range rules {
 		if !effective(candidate.rule, input.EffectiveAt) {
 			result.Trace.Candidates = append(result.Trace.Candidates, TraceEntry{
@@ -57,26 +63,86 @@ func (p *Program) Evaluate(input Evaluation) (Result, error) {
 			})
 			continue
 		}
-		survivors = append(survivors, candidate)
+		survivors = append(survivors, rankedRule{
+			rule:        candidate.rule,
+			specificity: dimensionSpecificity(candidate.rule.Scope, p.dimensions),
+		})
 	}
 
 	if len(survivors) == 0 {
 		return result, nil
 	}
 
-	// Provisional selection: first survivor in compiled ID order. Replaced by
-	// specificity ranking and tie-breaking in T2.3–T2.4.
-	winner := survivors[0]
+	// Order by specificity (descending), then Priority (descending). Id only
+	// stabilises the presentation of otherwise-equal candidates; it never
+	// decides the winner.
+	sort.SliceStable(survivors, func(i, j int) bool {
+		if c := compareSpecificity(survivors[i].specificity, survivors[j].specificity); c != 0 {
+			return c > 0
+		}
+		if survivors[i].rule.Priority != survivors[j].rule.Priority {
+			return survivors[i].rule.Priority > survivors[j].rule.Priority
+		}
+		return survivors[i].rule.ID < survivors[j].rule.ID
+	})
+
+	top := survivors[0]
+
+	// Rules sharing the top specificity are contiguous at the front; their tie
+	// was arbitrated by priority, so record them as the tie-break set.
+	specTied := 1
+	for _, other := range survivors[1:] {
+		if compareSpecificity(top.specificity, other.specificity) != 0 {
+			break
+		}
+		specTied++
+	}
+	if specTied > 1 {
+		result.Trace.TieBreakers = ruleIDs(survivors[:specTied])
+	}
+
+	// Among those, rules also sharing the top priority are undecidable.
+	priorityTied := 1
+	for _, other := range survivors[1:specTied] {
+		if other.rule.Priority != top.rule.Priority {
+			break
+		}
+		priorityTied++
+	}
+	if priorityTied > 1 {
+		for _, ambiguous := range survivors[:priorityTied] {
+			result.Trace.Candidates = append(result.Trace.Candidates, TraceEntry{
+				RuleID:      ambiguous.rule.ID,
+				Status:      TraceAmbiguous,
+				Specificity: ambiguous.specificity,
+			})
+		}
+		for _, shadowed := range survivors[priorityTied:] {
+			result.Trace.Candidates = append(result.Trace.Candidates, TraceEntry{
+				RuleID:      shadowed.rule.ID,
+				Status:      TraceShadowed,
+				Specificity: shadowed.specificity,
+			})
+		}
+		result.Status = ResultAmbiguous
+		return result, &AmbiguousMatchError{Layer: input.Layer, RuleIDs: ruleIDs(survivors[:priorityTied])}
+	}
+
 	result.Status = ResultMatch
-	result.Winner = &ResolvedRule{RuleID: winner.rule.ID, Outcome: winner.rule.Outcome}
+	result.Winner = &ResolvedRule{
+		RuleID:  top.rule.ID,
+		Outcome: cloneOutcome(top.rule.Outcome),
+	}
 	result.Trace.Candidates = append(result.Trace.Candidates, TraceEntry{
-		RuleID: winner.rule.ID,
-		Status: TraceWinner,
+		RuleID:      top.rule.ID,
+		Status:      TraceWinner,
+		Specificity: top.specificity,
 	})
 	for _, shadowed := range survivors[1:] {
 		result.Trace.Candidates = append(result.Trace.Candidates, TraceEntry{
-			RuleID: shadowed.rule.ID,
-			Status: TraceShadowed,
+			RuleID:      shadowed.rule.ID,
+			Status:      TraceShadowed,
+			Specificity: shadowed.specificity,
 		})
 	}
 	return result, nil

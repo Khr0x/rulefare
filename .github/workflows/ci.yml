@@ -11,11 +11,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-go@v7
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
+          check-latest: true # usar el parche vigente de la línea de go.mod
       - name: Check formatting
         run: |
           unformatted="$(find . -name '*.go' -type f -exec gofmt -l {} +)"
@@ -30,3 +31,8 @@ jobs:
           test -z "$project_imports" || { echo "$project_imports"; exit 1; }
       - run: go vet ./...
       - run: go test ./...
+      - run: go test -race ./...
+      - name: Vulnerability scan
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@v1.7.0
+          govulncheck ./...

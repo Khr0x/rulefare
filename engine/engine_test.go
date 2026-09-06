@@ -622,8 +622,9 @@ func TestEvaluateFiltersByCEL(t *testing.T) {
 	at := time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC)
 
 	// MEXICO condition (amount_minor > 100000) is FALSE here; HOTELBEDS_FIXED
-	// references "active", which is absent -> CONDITION_ERROR. BASE_GLOBAL has
-	// an empty condition compiled to "true" and survives.
+	// references "active", which is absent -> CONDITION_ERROR. HOTELBEDS_MX
+	// (scope supplier+country, no condition) is effective and the most specific
+	// survivor, so it wins over the global BASE_GLOBAL.
 	result, err := program.Evaluate(Evaluation{
 		Layer:       "operation",
 		EffectiveAt: at,
@@ -642,15 +643,18 @@ func TestEvaluateFiltersByCEL(t *testing.T) {
 	if byID["HOTELBEDS_FIXED"] != TraceConditionError {
 		t.Fatalf("HOTELBEDS_FIXED should be CONDITION_ERROR (active absent), got %q", byID["HOTELBEDS_FIXED"])
 	}
-	if byID["BASE_GLOBAL"] != TraceWinner {
-		t.Fatalf("BASE_GLOBAL should win (empty condition), got %q", byID["BASE_GLOBAL"])
+	if byID["HOTELBEDS_MX"] != TraceWinner {
+		t.Fatalf("HOTELBEDS_MX (supplier+country) should win on specificity, got %q", byID["HOTELBEDS_MX"])
 	}
-	if result.Status != ResultMatch || result.Winner == nil || result.Winner.RuleID != "BASE_GLOBAL" {
-		t.Fatalf("expected BASE_GLOBAL winner, got %+v", result)
+	if byID["BASE_GLOBAL"] != TraceShadowed {
+		t.Fatalf("BASE_GLOBAL should be SHADOWED by a more specific rule, got %q", byID["BASE_GLOBAL"])
+	}
+	if result.Status != ResultMatch || result.Winner == nil || result.Winner.RuleID != "HOTELBEDS_MX" {
+		t.Fatalf("expected HOTELBEDS_MX winner, got %+v", result)
 	}
 
-	// With amount_minor high enough MEXICO now passes CEL and, by provisional ID
-	// order, BASE_GLOBAL still wins while MEXICO is a surviving SHADOWED entry.
+	// With supplier absent both HOTELBEDS rules mismatch scope. MEXICO now passes
+	// CEL and, scoping country, outranks the global BASE_GLOBAL on specificity.
 	result, err = program.Evaluate(Evaluation{
 		Layer:       "operation",
 		EffectiveAt: at,
@@ -663,8 +667,14 @@ func TestEvaluateFiltersByCEL(t *testing.T) {
 	for _, entry := range result.Trace.Candidates {
 		byID[entry.RuleID] = entry.Status
 	}
-	if byID["MEXICO"] != TraceShadowed {
-		t.Fatalf("MEXICO should survive CEL and be SHADOWED, got %q", byID["MEXICO"])
+	if byID["MEXICO"] != TraceWinner {
+		t.Fatalf("MEXICO should survive CEL and win on specificity, got %q", byID["MEXICO"])
+	}
+	if byID["BASE_GLOBAL"] != TraceShadowed {
+		t.Fatalf("BASE_GLOBAL should be SHADOWED, got %q", byID["BASE_GLOBAL"])
+	}
+	if result.Winner == nil || result.Winner.RuleID != "MEXICO" {
+		t.Fatalf("expected MEXICO winner, got %+v", result)
 	}
 }
 
@@ -684,5 +694,190 @@ func TestEvaluateNoCELSurvivorIsNoMatch(t *testing.T) {
 	}
 	if result.Status != ResultNoMatch || result.Winner != nil {
 		t.Fatalf("expected NO_MATCH, got %+v", result)
+	}
+}
+
+// rankingProgram compiles rules over the dimensions country < supplier <
+// contract (least → most specific), reusing the fixture schema.
+func rankingProgram(t *testing.T, rules ...Rule) *Program {
+	t.Helper()
+	schema := loadFixture[Schema](t, "schema.json")
+	set := RuleSet{
+		ID:            "ranking",
+		Version:       "v1",
+		SchemaVersion: "v1",
+		Dimensions:    []string{"country", "supplier", "contract"},
+		Rules:         rules,
+	}
+	program, report := Compile(schema, set)
+	if program == nil || !report.Valid() {
+		t.Fatalf("ranking fixture did not compile: %+v", report.Issues)
+	}
+	return program
+}
+
+// pctRule builds an unconditional operation rule with a fixed percentage
+// outcome so tests can vary only scope and priority.
+func pctRule(id string, priority int32, scope map[string]string) Rule {
+	return Rule{
+		ID:       id,
+		Layer:    "operation",
+		Scope:    scope,
+		Priority: priority,
+		Outcome:  Outcome{Kind: OutcomePercentage, Percentage: &PercentageOutcome{Rate: "0.1"}},
+	}
+}
+
+func TestRankingSelectsMostSpecific(t *testing.T) {
+	ctx := map[string]any{"country": "MX", "supplier": "hotelbeds", "contract": "ctr1"}
+	cases := []struct {
+		name  string
+		rules []Rule
+		want  string
+	}{
+		{
+			name:  "country beats global",
+			rules: []Rule{pctRule("GLOBAL", 0, nil), pctRule("COUNTRY", 0, map[string]string{"country": "MX"})},
+			want:  "COUNTRY",
+		},
+		{
+			name:  "supplier beats country",
+			rules: []Rule{pctRule("COUNTRY", 0, map[string]string{"country": "MX"}), pctRule("SUPPLIER", 0, map[string]string{"supplier": "hotelbeds"})},
+			want:  "SUPPLIER",
+		},
+		{
+			name:  "supplier+country beats supplier",
+			rules: []Rule{pctRule("SUPPLIER", 0, map[string]string{"supplier": "hotelbeds"}), pctRule("SUPPLIER_COUNTRY", 0, map[string]string{"supplier": "hotelbeds", "country": "MX"})},
+			want:  "SUPPLIER_COUNTRY",
+		},
+		{
+			name:  "contract outranks everything",
+			rules: []Rule{pctRule("CONTRACT", 0, map[string]string{"contract": "ctr1"}), pctRule("SUPPLIER_COUNTRY", 0, map[string]string{"supplier": "hotelbeds", "country": "MX"})},
+			want:  "CONTRACT",
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			program := rankingProgram(t, tc.rules...)
+			result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: ctx})
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if result.Status != ResultMatch || result.Winner == nil || result.Winner.RuleID != tc.want {
+				t.Fatalf("winner = %+v, want %q", result.Winner, tc.want)
+			}
+		})
+	}
+}
+
+func TestRankingPriorityBreaksSpecificityTie(t *testing.T) {
+	program := rankingProgram(t,
+		pctRule("LOW", 5, map[string]string{"country": "MX"}),
+		pctRule("HIGH", 10, map[string]string{"country": "MX"}),
+	)
+	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: map[string]any{"country": "MX"}})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if result.Winner == nil || result.Winner.RuleID != "HIGH" {
+		t.Fatalf("higher priority should win, got %+v", result.Winner)
+	}
+	byID := map[string]TraceStatus{}
+	for _, entry := range result.Trace.Candidates {
+		byID[entry.RuleID] = entry.Status
+	}
+	if byID["LOW"] != TraceShadowed {
+		t.Fatalf("LOW should be SHADOWED, got %q", byID["LOW"])
+	}
+	// Both share the top specificity, so both are recorded as the tie-break set.
+	if !reflect.DeepEqual(result.Trace.TieBreakers, []string{"HIGH", "LOW"}) {
+		t.Fatalf("tie-breakers should list both rules in id order, got %v", result.Trace.TieBreakers)
+	}
+}
+
+func TestRankingPriorityNeverOverridesSpecificity(t *testing.T) {
+	// COUNTRY carries a far higher priority, but SUPPLIER is more specific and
+	// must win: priority only breaks ties within an identical specificity.
+	program := rankingProgram(t,
+		pctRule("COUNTRY", 100, map[string]string{"country": "MX"}),
+		pctRule("SUPPLIER", 0, map[string]string{"supplier": "hotelbeds"}),
+	)
+	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: map[string]any{"country": "MX", "supplier": "hotelbeds"}})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if result.Winner == nil || result.Winner.RuleID != "SUPPLIER" {
+		t.Fatalf("specificity must beat priority, got %+v", result.Winner)
+	}
+}
+
+func TestEvaluateAmbiguousMatch(t *testing.T) {
+	program := rankingProgram(t,
+		pctRule("ALPHA", 7, map[string]string{"country": "MX"}),
+		pctRule("BETA", 7, map[string]string{"country": "MX"}),
+	)
+	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: map[string]any{"country": "MX"}})
+
+	ambiguous, ok := err.(*AmbiguousMatchError)
+	if !ok {
+		t.Fatalf("expected *AmbiguousMatchError, got %v (%T)", err, err)
+	}
+	if result.Status != ResultAmbiguous || result.Winner != nil {
+		t.Fatalf("ambiguous result must carry no winner, got %+v", result)
+	}
+	if ambiguous.Layer != "operation" || !reflect.DeepEqual(ambiguous.RuleIDs, []string{"ALPHA", "BETA"}) {
+		t.Fatalf("error should name both tied rules in id order, got %+v", ambiguous)
+	}
+	byID := map[string]TraceStatus{}
+	for _, entry := range result.Trace.Candidates {
+		byID[entry.RuleID] = entry.Status
+	}
+	if byID["ALPHA"] != TraceAmbiguous || byID["BETA"] != TraceAmbiguous {
+		t.Fatalf("both rules should be AMBIGUOUS, got %+v", byID)
+	}
+}
+
+func TestEvaluateResultOutcomeIsIndependent(t *testing.T) {
+	schema := loadFixture[Schema](t, "schema.json")
+	limit := int64(100000)
+	set := RuleSet{
+		ID:            "clone",
+		Version:       "v1",
+		SchemaVersion: "v1",
+		Dimensions:    []string{"country"},
+		Rules: []Rule{{
+			ID:    "TIERED",
+			Layer: "operation",
+			Scope: map[string]string{"country": "MX"},
+			Outcome: Outcome{Kind: OutcomeTiered, Tiered: &TieredOutcome{
+				Metric: "amount_minor",
+				Tiers:  []Tier{{UpToExclusive: &limit, Rate: "0.7"}, {UpToExclusive: nil, Rate: "0.9"}},
+			}},
+		}},
+	}
+	program, report := Compile(schema, set)
+	if program == nil || !report.Valid() {
+		t.Fatalf("did not compile: %+v", report.Issues)
+	}
+
+	input := Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: map[string]any{"country": "MX"}}
+	first, err := program.Evaluate(input)
+	if err != nil || first.Winner == nil {
+		t.Fatalf("expected winner, got %+v (err %v)", first, err)
+	}
+
+	// Mutating the returned outcome must not reach the Program or later results.
+	*first.Winner.Outcome.Tiered.Tiers[0].UpToExclusive = 1
+	first.Winner.Outcome.Tiered.Tiers[0].Rate = "0.99"
+
+	second, err := program.Evaluate(input)
+	if err != nil || second.Winner == nil {
+		t.Fatalf("expected winner, got %+v (err %v)", second, err)
+	}
+	if got := *second.Winner.Outcome.Tiered.Tiers[0].UpToExclusive; got != 100000 {
+		t.Fatalf("mutation leaked into Program: tier limit = %d", got)
+	}
+	if got := second.Winner.Outcome.Tiered.Tiers[0].Rate; got != "0.7" {
+		t.Fatalf("mutation leaked into Program: tier rate = %q", got)
 	}
 }
