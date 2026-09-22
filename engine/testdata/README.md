@@ -44,7 +44,7 @@ go test ./engine -run '^TestGoldenEvaluations$' -v
 go test -race ./...
 ```
 
-La prueba lee JSON con `UseNumber` y rechaza campos desconocidos o documentos adicionales. Compara el resultado JSON completo, incluido orden del trace, outcome y errores tipados/reportes cuando corresponda. Cada caso se ejecuta también con el orden de reglas invertido: **64 evaluaciones verificadas**. Las expectativas se escribieron desde los contratos y ejemplos; no hay opción de regenerarlas automáticamente usando el motor como oráculo. `go test ./...` y el workflow existente incluyen esta prueba; la ejecución remota de esta ampliación está pendiente.
+La prueba lee JSON con `UseNumber` y rechaza campos desconocidos o documentos adicionales. Compara el resultado JSON completo, incluido orden del trace, outcome y errores tipados/reportes cuando corresponda. Cada caso se ejecuta también con el orden de reglas invertido: **64 evaluaciones verificadas**. Las expectativas se escribieron desde los contratos y ejemplos; no hay opción de regenerarlas automáticamente usando el motor como oráculo. `go test ./...` y el workflow incluyen esta prueba; el [CI del merge en `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) pasó con la ampliación.
 
 Son casos técnicos de F1 revisados de forma independiente. Las pruebas unitarias adicionales complementan su cobertura; los datos sintéticos no se presentan como tarifas comerciales aprobadas. El corpus tampoco valida cálculo de comisiones, redondeo, paquetes, cancelación, ledger o conciliación: esos comportamientos pertenecen a fases posteriores.
 
@@ -56,6 +56,6 @@ Son casos técnicos de F1 revisados de forma independiente. Las pruebas unitaria
 | Dominio financiero asistido por IA | Completada para los 32 casos | Agente independiente `financial_corpus_review`, 2026-09-22; [informe](FINANCIAL_REVIEW.md) |
 | Tarifas y políticas reales | Fuera de la aceptación técnica de estos fixtures | Requieren datos y decisión del responsable antes de uso comercial |
 | CI de la base `df48c04` | Verde | [Run de main](https://github.com/Khr0x/rulefare/actions/runs/35773582167), corpus anterior de 10 casos |
-| CI de la ampliación a 32 casos | Pendiente | Cambios locales aún sin publicar |
+| CI de la ampliación a 32 casos | Verde en `main` | [Run `35778045359`](https://github.com/Khr0x/rulefare/actions/runs/35778045359), commit `09ff1e2` |
 
 Para adoptar reglas comerciales, el responsable del proyecto debe aportar contratos o ejemplos reales, confirmar tasas, moneda, escala, condiciones y fallback, y registrar su decisión con fecha y commit/hash del corpus revisado. No hace falta crear un equipo de producto: la aceptación puede hacerla el responsable con conocimiento del negocio. Cualquier cambio de reglas, schema o expectativas exige revisar la versión afectada.

@@ -2,7 +2,7 @@
 
 Rules behind every travel transaction.
 
-> **Estado al 2026-09-22:** F1 (motor de reglas) en desarrollo. La resolución por especificidad/prioridad, los empates bloqueantes, la copia segura del outcome, T2.7 y la CLI están implementados. Aún faltan entregables y evidencia de CI para cerrar F1. El motor de cálculo, API, persistencia, multi-tenancy, UI, importaciones, ledger y conciliación aún no existen.
+> **Estado al 2026-09-22:** F1 (motor de reglas) completada técnicamente: corpus de 32 casos revisado y CI de `main` en verde para `09ff1e2`. La aceptación de tarifas reales pertenece a F0 y a los módulos comerciales. El motor de cálculo, API, persistencia, multi-tenancy, UI, importaciones, ledger y conciliación aún no existen.
 
 ## Estado actual
 
@@ -23,9 +23,9 @@ Rules behind every travel transaction.
 | Límites runtime y payload (T3.9) | Implementados y medidos; agotamiento de recursos bloquea toda la evaluación sin fallback |
 | Corpus técnico (T1.6) | [32 casos revisados](./engine/testdata/README.md) por un agente independiente con enfoque financiero; snapshots y orden invertido; aceptación de tarifas reales separada |
 | F2–F10 del MVP | Pendientes |
-| Verificación local con Go 1.27.1 | Build, suite, detector de carreras y vet pasan; CI remota no verificada |
+| Verificación F1 | Build, suite, carrera, fuzzing, benchmark, CPU/I/O y `govulncheck` pasan en [CI de `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359); [artefacto de mediciones](https://github.com/Khr0x/rulefare/actions/runs/35778045359#artifacts) |
 
-El motor, la documentación y el workflow ya están versionados. El corte local del 2026-09-22 sustituye los bloqueos históricos de import y formato del 2026-09-04; no acredita por sí solo el cierre de F1.
+El motor, la documentación y el workflow ya están versionados. El [cierre técnico de F1](./propuesta/mvp/verificacion/2026-09-22/README.md#cierre-técnico-de-f1) se apoya en el CI del commit de merge `09ff1e2`; los cortes anteriores quedan como historial.
 
 ## Verificación local
 
@@ -54,7 +54,7 @@ go test ./engine -run '^$' -fuzz '^FuzzEvaluateContext$' -fuzztime=10s -parallel
 
 `FuzzCompileRuleset` parte de los fixtures válidos e inválidos y verifica compilación determinista, entrada inalterada y resolución independiente del orden de reglas. `FuzzRuleCondition` varía CEL y scopes sin depender de que una mutación conserve JSON válido. `FuzzEvaluateContext` explora entradas inesperadas y verifica estados/errores coherentes, trace sanitizado, determinismo y aislamiento al modificar resultados devueltos.
 
-El harness limita sus entradas a 64 KiB para acotar las campañas; no es un límite de producción; los límites T3.9 se aplican dentro del motor. El CI configura 10 segundos por target con dos workers. Go guarda los fallos reproducibles en `engine/testdata/fuzz/`; esos casos deben conservarse como regresiones. La ejecución remota del workflow aún no se ha verificado.
+El harness limita sus entradas a 64 KiB para acotar las campañas; no es un límite de producción; los límites T3.9 se aplican dentro del motor. El CI configura 10 segundos por target con dos workers. Go guarda los fallos reproducibles en `engine/testdata/fuzz/`; esos casos deben conservarse como regresiones. La [ejecución remota del merge `09ff1e2`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) pasó con los tres targets.
 
 ## Rendimiento
 
@@ -65,11 +65,11 @@ bash scripts/benchmark.sh bin/benchmarks-container --container
 
 El runner mide throughput/asignaciones con 10, 100 y 10.000 candidatas, compilación de 10.000 reglas, p95/p99 de 100 candidatas y memoria en un proceso nuevo. Guarda métricas, entorno, commit, estado del árbol y hashes de fuentes. El modo contenedor usa Docker con 1 CPU y 512 MiB; el modo local solo fija `GOMAXPROCS` y el límite suave de Go.
 
-La [baseline del 2026-09-22](./propuesta/mvp/benchmarks/2026-09-22/README.md) registra p95 **0,497 ms**, p99 **0,643 ms** y **47.598 B/op** para 100 candidatas en Linux arm64. El RSS original tras GC con 10.000 reglas fue **136,7 MiB**. El [perfilado T3.6](./propuesta/mvp/benchmarks/2026-09-22/t3.6/README.md) identificó programas CEL duplicados: reutilizar condiciones idénticas reduce el RSS a **29,5 MiB**, con p95/p99 de 0,409/0,435 ms. La [segunda optimización T3.6](./propuesta/mvp/benchmarks/2026-09-22/t3.6-unique/README.md) elimina funciones CEL no utilizadas de las tablas de evaluación y reduce el control de condiciones únicas a **86,4 MiB** de RSS mediano (tres procesos), desde la lectura histórica de 145,3 MiB. La latencia final p95/p99 es **0,417/0,434 ms**. T3.6 queda completada localmente; F1 sigue abierta hasta validar el corpus aprobado y los demás criterios.
+La [baseline del 2026-09-22](./propuesta/mvp/benchmarks/2026-09-22/README.md) registra p95 **0,497 ms**, p99 **0,643 ms** y **47.598 B/op** para 100 candidatas en Linux arm64. El RSS original tras GC con 10.000 reglas fue **136,7 MiB**. El [perfilado T3.6](./propuesta/mvp/benchmarks/2026-09-22/t3.6/README.md) identificó programas CEL duplicados: reutilizar condiciones idénticas reduce el RSS a **29,5 MiB**, con p95/p99 de 0,409/0,435 ms. La [segunda optimización T3.6](./propuesta/mvp/benchmarks/2026-09-22/t3.6-unique/README.md) elimina funciones CEL no utilizadas de las tablas de evaluación y reduce el control de condiciones únicas a **86,4 MiB** de RSS mediano (tres procesos), desde la lectura histórica de 145,3 MiB. La latencia final p95/p99 es **0,417/0,434 ms**. T3.6 quedó completada y la [medición de CI del merge](https://github.com/Khr0x/rulefare/actions/runs/35778045359) conserva evidencia del corpus técnico de 32 casos. F1 está cerrada técnicamente; la aceptación de tarifas reales es separada.
 
 La [primera medición T3.9](./propuesta/mvp/benchmarks/2026-09-22/t3.9/README.md) elevó la evaluación de 100 candidatas de 127 a 206 µs. La [optimización posterior](./propuesta/mvp/benchmarks/2026-09-22/t3.9-optimization/README.md), con todas las protecciones activas, reduce la baseline con condiciones repetidas a **19,8 µs**, **15.882 B/op** y **143 asignaciones/op**; p95/p99 **0,042/0,057 ms**. El control de 100 condiciones distintas registra **124,1 µs** y el RSS único mediano sigue en **94,6 MiB**. La regresión de la baseline original queda corregida; no se extrapola a cualquier mezcla de reglas.
 
-CI está configurado para ejecutar y conservar los resultados como artefactos por SHA; aún no se verificó una ejecución remota. Los benchmarks no fallan automáticamente por rendimiento ni comparan plataformas distintas; el reporte distingue mediciones y cumplimiento del presupuesto.
+El [CI del merge `09ff1e2`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) ejecutó los benchmarks y conservó los resultados como artefacto por SHA. Los benchmarks no fallan automáticamente por rendimiento ni comparan plataformas distintas; el reporte distingue mediciones y cumplimiento del presupuesto.
 
 ## Estructura
 
@@ -116,7 +116,7 @@ Los comandos `rules` no requieren servicios externos ni inicializan infraestruct
 ## Garantías y límites actuales
 
 - `Compile` clona las entradas, valida la estructura y precompila CEL con límites de tamaño, nodos, anidamiento y recursión.
-- `Evaluate` no realiza I/O. `TestEvaluateConcurrent` comparte un `Program` entre 16 goroutines y verifica resultados/traces idénticos y aislamiento de outcomes, traces y errores retornados. Pasa con `-race` y `GOMAXPROCS` 1 y 4; la ejecución remota de CI sigue pendiente de verificar.
+- `Evaluate` no realiza I/O. `TestEvaluateConcurrent` comparte un `Program` entre 16 goroutines y verifica resultados/traces idénticos y aislamiento de outcomes, traces y errores retornados. Pasa con `-race` y `GOMAXPROCS` 1 y 4; la [suite de CI en `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) también pasó.
 - Los contextos pueden compartirse para lectura, pero el consumidor no debe modificarlos mientras una evaluación los utiliza. Los resultados y errores devueltos son independientes y pueden modificarse.
 - `Evaluate` valida toda la entrada antes de filtrar reglas o ejecutar CEL. Una entrada inválida devuelve `*InvalidEvaluationError` con `Report` ordenado, estado `INVALID_INPUT`, ningún ganador y candidatos vacíos; nunca activa un fallback.
 - El outcome devuelto es una copia profunda: mutarlo no altera el programa ni evaluaciones posteriores.

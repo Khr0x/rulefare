@@ -4,10 +4,10 @@
 
 | Campo | Valor |
 |---|---|
-| Versión del roadmap | 0.21 |
+| Versión del roadmap | 0.22 |
 | Última actualización | 2026-09-22 |
 | Ventana objetivo | 2026-08-30 → 2027-02-26 |
-| Estado general | 🟡 F0 y F1 en curso; corpus técnico revisado por IA, CI de la ampliación pendiente |
+| Estado general | 🟡 F0 en curso; ✅ F1 completada técnicamente con CI de `main` verde |
 | Release objetivo | MVP v1 para pilotos controlados |
 | Equipo asumido | 2 backend, 1 frontend/full-stack y apoyo parcial de producto/diseño |
 
@@ -249,7 +249,7 @@ Una fase solo pasa a `Completa` cuando cumple todos sus criterios de salida. El 
 
 ## Corte verificable al 2026-09-22
 
-Este corte describe el árbol local sobre `6c86f4d` más los cambios de T2.7, sanitización del trace, CLI, pruebas concurrentes, fuzzing, benchmarks y documentación. Motor, documentación y workflow ya están versionados. Las comprobaciones locales no sustituyen una ejecución remota de CI.
+El corte local siguiente conserva su evidencia histórica. El estado actual de F1 se verifica en el [cierre técnico del merge `09ff1e2`](./verificacion/2026-09-22/README.md#cierre-técnico-de-f1), con CI remota y artefacto de mediciones.
 
 | Comprobación | Resultado en el árbol actual |
 |---|---|
@@ -266,19 +266,19 @@ El error de import y formato del 2026-09-04 ya está corregido. El ganador se re
 |---|---|
 | F0 | En curso; sus entrevistas, clientes de diseño y aprobación financiera no tienen evidencia en este repositorio |
 | F1 | Contrato, validación, CEL, filtros, ranking, empates, `NO_MATCH`, copia del outcome, T2.7, trace sanitizado, CLI, pruebas concurrentes, fuzzing y benchmarks implementados con evidencia local |
-| F1 pendiente | Evidencia remota del commit con el corpus ampliado y demás criterios de cierre |
+| F1 cierre técnico | ✅ CI de `main` para `09ff1e2` en verde con corpus de 32 casos y artefacto de benchmarks; tarifas reales fuera de F1 |
 | F2–F10 | Sin implementación en el árbol actual |
 
 T2.7 valida toda la entrada antes de resolver reglas: capa conocida, fecha explícita y contexto completo conforme al schema. Los errores devuelven `INVALID_INPUT` sin candidatos ni fallback. El contrato de tipos y normalización está documentado en el [README](../../README.md#contrato-de-evaluación-t27).
 
-T2.5 ya omite el mensaje interno de CEL: el trace expone únicamente `rule_id` y `CONDITION_ERROR` para esos errores, con pruebas de privacidad y estabilidad del JSON. T3.1 y T3.2 ya implementan `rulefare rules validate/evaluate`, con límite de 8 MiB por archivo JSON, reportes y códigos de salida probados. T3.3 añade pruebas concurrentes dedicadas con `-race`, tanto de lectura como de mutación de valores devueltos, con resultados locales en verde. T3.4 incorpora tres targets de fuzzing para rulesets, CEL/scopes y contextos, con semillas versionadas, campañas locales sin fallos y campañas breves configuradas en CI. T3.5 ya tiene una [baseline reproducible](./benchmarks/2026-09-22/README.md): en Linux arm64 con 1 CPU/512 MiB, p95/p99 de 0,497/0,643 ms para 100 candidatas; RSS tras GC de 136,7 MiB con 10.000 reglas. El [perfilado T3.6](./benchmarks/2026-09-22/t3.6/README.md) identifica programas CEL duplicados: reutilizar condiciones idénticas dentro de cada compilación reduce el RSS a 29,5 MiB y mantiene la latencia en objetivo (p95/p99 0,409/0,435 ms). La [segunda optimización T3.6](./benchmarks/2026-09-22/t3.6-unique/README.md) reduce el control de condiciones únicas a 86,4 MiB de RSS mediano al cargar únicamente las funciones CEL usadas; el caso repetido registra 31,4 MiB y la latencia final p95/p99 es 0,417/0,434 ms. T3.6 queda completada localmente. [T3.9](./benchmarks/2026-09-22/t3.9/README.md) añade cotas de payload, decimales, coste individual/acumulado y regex previas al matcher, con errores bloqueantes y pruebas adversariales. La primera medición aumentó el tiempo y las asignaciones. La [optimización posterior](./benchmarks/2026-09-22/t3.9-optimization/README.md) mantiene los límites y corrige la regresión de la baseline: 100 candidatas repetidas en 19,8 µs, únicas en 124,1 µs; p95/p99 de repetidas 0,042/0,057 ms y RSS único mediano 94,6 MiB. T3.8 completa la [guía de API](../../engine/README.md), contratos, trace, errores y límites, con ejemplos Go/CLI verificados localmente. La [medición de sistema](./benchmarks/2026-09-22/system/README.md) completa la evidencia local de CPU en reposo (mediana 0,002676 %) y ausencia de I/O de archivos/red en 4.100 evaluaciones observadas. El [corpus técnico](../../engine/testdata/README.md) contiene 32 casos con snapshots explícitos y prueba de orden invertido (64 evaluaciones). Un agente independiente con enfoque financiero completó la [revisión de dominio](../../engine/testdata/FINANCIAL_REVIEW.md) solicitada por el responsable ante la ausencia de equipo de producto/finanzas. La CI de la base `df48c04` pasó; falta la ejecución remota de esta ampliación y los demás criterios de aceptación. Las tarifas reales requieren una aceptación comercial separada. F1 sigue abierta hasta cumplir todos los criterios de salida; F2 depende también de F0.
+T2.5 ya omite el mensaje interno de CEL: el trace expone únicamente `rule_id` y `CONDITION_ERROR` para esos errores, con pruebas de privacidad y estabilidad del JSON. T3.1 y T3.2 ya implementan `rulefare rules validate/evaluate`, con límite de 8 MiB por archivo JSON, reportes y códigos de salida probados. T3.3 añade pruebas concurrentes dedicadas con `-race`, tanto de lectura como de mutación de valores devueltos, con resultados locales en verde. T3.4 incorpora tres targets de fuzzing para rulesets, CEL/scopes y contextos, con semillas versionadas, campañas locales sin fallos y campañas breves configuradas en CI. T3.5 ya tiene una [baseline reproducible](./benchmarks/2026-09-22/README.md): en Linux arm64 con 1 CPU/512 MiB, p95/p99 de 0,497/0,643 ms para 100 candidatas; RSS tras GC de 136,7 MiB con 10.000 reglas. El [perfilado T3.6](./benchmarks/2026-09-22/t3.6/README.md) identifica programas CEL duplicados: reutilizar condiciones idénticas dentro de cada compilación reduce el RSS a 29,5 MiB y mantiene la latencia en objetivo (p95/p99 0,409/0,435 ms). La [segunda optimización T3.6](./benchmarks/2026-09-22/t3.6-unique/README.md) reduce el control de condiciones únicas a 86,4 MiB de RSS mediano al cargar únicamente las funciones CEL usadas; el caso repetido registra 31,4 MiB y la latencia final p95/p99 es 0,417/0,434 ms. T3.6 queda completada localmente. [T3.9](./benchmarks/2026-09-22/t3.9/README.md) añade cotas de payload, decimales, coste individual/acumulado y regex previas al matcher, con errores bloqueantes y pruebas adversariales. La primera medición aumentó el tiempo y las asignaciones. La [optimización posterior](./benchmarks/2026-09-22/t3.9-optimization/README.md) mantiene los límites y corrige la regresión de la baseline: 100 candidatas repetidas en 19,8 µs, únicas en 124,1 µs; p95/p99 de repetidas 0,042/0,057 ms y RSS único mediano 94,6 MiB. T3.8 completa la [guía de API](../../engine/README.md), contratos, trace, errores y límites, con ejemplos Go/CLI verificados localmente. La [medición de sistema](./benchmarks/2026-09-22/system/README.md) completa la evidencia local de CPU en reposo (mediana 0,002676 %) y ausencia de I/O de archivos/red en 4.100 evaluaciones observadas. El [corpus técnico](../../engine/testdata/README.md) contiene 32 casos con snapshots explícitos y prueba de orden invertido (64 evaluaciones). Un agente independiente con enfoque financiero completó la [revisión de dominio](../../engine/testdata/FINANCIAL_REVIEW.md) solicitada por el responsable ante la ausencia de equipo de producto/finanzas. La [CI del merge `09ff1e2`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) pasó con esta ampliación y publicó el artefacto de benchmarks. Los criterios de salida técnicos de F1 están cumplidos; las tarifas reales requieren aceptación comercial separada. F2 depende también de F0.
 
 ## Calendario maestro
 
 | ID | Fase | Inicio objetivo | Fin objetivo | Duración | Estado | Inicio real | Fin real | Depende de |
 |---|---|---:|---:|---:|---|---:|---:|---|
 | F0 | Validación y congelamiento del alcance | 2026-08-30 | 2026-09-11 | 2 semanas | 🟡 En curso | 2026-08-30 | — | — |
-| F1 | Motor de reglas nativo e independiente | 2026-09-14 | 2026-10-02 | 3 semanas | 🟡 En curso | 2026-08-30 | — | Ninguna |
+| F1 | Motor de reglas nativo e independiente | 2026-09-14 | 2026-10-02 | 3 semanas | ✅ Completa técnicamente | 2026-08-30 | 2026-09-22 | Ninguna |
 | F2 | Fundación de plataforma y multi-tenant | 2026-10-05 | 2026-10-16 | 2 semanas | ⬜ Pendiente | — | — | F0, F1 |
 | F3 | Modelo travel, catálogo y contratos | 2026-10-19 | 2026-10-30 | 2 semanas | ⬜ Pendiente | — | — | F2 |
 | F4 | Importación de reglas desde Excel | 2026-11-02 | 2026-11-13 | 2 semanas | ⬜ Pendiente | — | — | F1, F3 |
@@ -349,15 +349,15 @@ Un módulo Go importable y un único ejecutable `rulefare`, con entrada en `cmd/
 ### Criterios de salida
 
 - [x] El paquete se prueba con `go test` y se ejecuta con una CLI sin PostgreSQL, Docker, HTTP ni frontend (pruebas locales y binario ejecutado).
-- [ ] Su grafo de dependencias contiene la librería estándar de Go y CEL embebido; no contiene dependencias de infraestructura.
-- [ ] El mismo input y ruleset producen bytes de salida equivalentes, incluido el orden del trace.
+- [x] Los imports directos de `engine` son estándar o CEL; no importa dependencias de infraestructura ([control en CI](https://github.com/Khr0x/rulefare/actions/runs/35778045359)). Las dependencias transitivas de CEL permanecen en go.mod/go.sum.
+- [x] El mismo input y ruleset producen bytes de salida equivalentes, incluido el orden del trace (corpus de 32 casos en orden original/invertido y pruebas concurrentes con `-race` en CI).
 - [x] Varias evaluaciones concurrentes no comparten ni corrompen estado mutable por llamada (T3.3, pruebas locales con `-race`).
 - [x] Mutar un resultado no altera el `Program` ni evaluaciones posteriores (prueba local).
 - [x] Un layer, fecha o contexto inválido devuelve un error explícito y nunca activa una regla fallback (T2.7, prueba local).
 - [x] Un empate exacto falla de forma explícita (prueba local).
 - [x] Un contexto válido sin regla aplicable devuelve `NO_MATCH`, nunca una comisión cero inventada (prueba local).
-- [x] Los escenarios medidos cumplen localmente los presupuestos de latencia, memoria, CPU en reposo e I/O; corpus técnico revisado por IA y CI de la base `df48c04` verde; pendiente CI de la ampliación.
-- [ ] El benchmark queda fijado en CI para detectar regresiones posteriores.
+- [x] Los escenarios medidos cumplen los presupuestos de latencia, memoria, CPU en reposo e I/O; corpus técnico revisado por IA y [CI de `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) verde.
+- [x] El benchmark se ejecuta en CI y publica un artefacto ligado al SHA del run; la comparación automática de regresiones aún no está implementada y queda como mejora posterior.
 - [x] Los límites de payload y coste CEL detienen entradas que exceden el presupuesto (T3.9, evidencia local).
 
 ### Referencias
@@ -689,3 +689,4 @@ Actualizar esta tabla en cada revisión semanal. Las decisiones de alcance deben
 | 2026-09-22 | T1.6 | 🟡 Solo fixtures técnicos | 🟡 Diez casos preparados para revisión | cases.json y snapshots verificables, incluidos seis niveles de jerarquía; no implica aprobación de producto/finanzas | Backend / Producto / Finanzas |
 | 2026-09-22 | Preparación de CI | Medición de sistema manual | ✅ Configurada y validada localmente | CPU/I/O y artefactos incorporados, frontera de dependencias reforzada, govulncheck sin hallazgos; run del commit actual pendiente | Backend |
 | 2026-09-22 | T1.6 | 🟡 Diez casos sin revisión de dominio | ✅ Corpus técnico de 32 casos revisado por IA | Revisor independiente con enfoque financiero solicitado por el responsable; 64 evaluaciones, suite/race/vet locales pasan; CI de ampliación pendiente | Backend / agente de revisión solicitado |
+| 2026-09-22 | F1 | 🟡 Corpus ampliado sin CI remota | ✅ Completa técnicamente | [Run `35778045359`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) de `main` para `09ff1e2` pasa; artefacto con benchmarks, CPU/I/O y corpus de 32 casos; aceptación comercial separada | Backend / Tech Lead |

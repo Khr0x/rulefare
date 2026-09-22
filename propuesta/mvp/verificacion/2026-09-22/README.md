@@ -1,6 +1,6 @@
 # Verificación técnica de F1 y preparación de CI
 
-Se verificaron criterios técnicos del árbol local y se incorporó la medición de CPU/I/O al workflow. **F1 permanece abierta:** faltan aprobación de producto/finanzas del corpus y evidencia remota del commit de entrega, incluidos sus artefactos de rendimiento.
+Este documento conserva la preparación local y la evidencia histórica de CI. El [cierre técnico de F1](#cierre-técnico-de-f1) registra el commit de merge, sus mediciones remotas y el corpus revisado. La aceptación de tarifas comerciales reales es independiente.
 
 ## Evidencia local
 
@@ -34,3 +34,19 @@ La consulta de GitHub Actions confirmó el [run 34059022380](https://github.com/
 El job `test` registra success en formato, módulo, frontera de imports, vet, suite, race y escaneo de vulnerabilidades. **Ese run no contiene los cambios locales posteriores**: no acredita el corpus actual, fuzzing, benchmarks ni las mediciones de sistema añadidas al workflow. Consultar solo los runs de pull request no lo encontraba; se verificaron también los disparados por push.
 
 La evidencia de entrega debe proceder de un nuevo run del commit que incluya los cambios actuales. Registrar su SHA, URL, resultado y artefactos cuando exista; no reutilizar el run antiguo como cierre de F1. Esta revisión no publica ni crea un commit.
+
+## Cierre técnico de F1
+
+El commit de merge [`09ff1e2eb23dc1c04abc7dfc212ffc4288829a1a`](https://github.com/Khr0x/rulefare/commit/09ff1e2eb23dc1c04abc7dfc212ffc4288829a1a) ejecutó el [workflow `CI` #8 en `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) el 2026-09-22. El job `test` terminó **success**: formato, módulo, frontera de imports, vet, suite, race, analizador de syscalls, tres campañas breves de fuzzing, benchmarks, CPU/I/O y `govulncheck` pasaron. La suite incluye el [corpus técnico de 32 casos](../../../../engine/testdata/README.md), revisado por un agente independiente con enfoque financiero; cada caso se ejecuta en orden original e invertido.
+
+| Medición del run #8 | Observación | Objetivo F1 |
+|---|---:|---:|
+| 100 candidatas, p95 | 0,092181 ms (máximo de 3 repeticiones) | ≤ 5 ms |
+| 100 candidatas, p99 | 0,128168 ms (máximo de 3 repeticiones) | ≤ 10 ms |
+| 10.000 condiciones distintas, RSS tras GC | 110.563.328 B (máximo de 3 procesos, ≈105,4 MiB) | ≤ 128 MiB |
+| CPU en reposo, 10.000 condiciones distintas | 0,002408 % (máximo de 3 ventanas de 10 s) | ≈ 0 |
+| I/O durante `Evaluate` | Cero accesos a archivos/red en las ventanas observadas; controles positivos del analizador | 0 observado |
+
+El [artefacto `engine-benchmarks-09ff1e2…`](https://github.com/Khr0x/rulefare/actions/runs/35778045359#artifacts) conserva los resultados `.txt` del contenedor y del sistema, ligado al SHA de `main` (digest `sha256:819b3a88b4f748a7f86c7dc184070f77ddec57f69521a2c3a2c5b5a59074eb3d`). Las mediciones cumplen los objetivos absolutos en ese entorno. El workflow registra la baseline pero no aplica aún una comparación automática de regresión porcentual; las mediciones no garantizan cualquier carga.
+
+Con esta evidencia quedan cubiertos los criterios técnicos de [salida de F1](../../f1_motor_reglas_plan_implementacion.md#14-definition-of-done). La aceptación de contratos, importes y tarifas reales sigue en F0 y en las fases comerciales; los fixtures sintéticos no autorizan su uso comercial.
