@@ -22,14 +22,15 @@ func TestGoldenEvaluations(t *testing.T) {
 		ReviewStatus string `json:"review_status"`
 		Schema       string `json:"schema"`
 		Cases        []struct {
-			Name           string            `json:"name"`
-			Description    string            `json:"description"`
-			Source         string            `json:"source"`
-			RuleSet        string            `json:"ruleset"`
-			Input          Evaluation        `json:"input"`
-			Expected       Result            `json:"expected"`
-			ExpectedError  string            `json:"expected_error"`
-			ExpectedIssues []ValidationIssue `json:"expected_issues"`
+			Name            string            `json:"name"`
+			Description     string            `json:"description"`
+			Source          string            `json:"source"`
+			RuleSet         string            `json:"ruleset"`
+			Input           Evaluation        `json:"input"`
+			Expected        Result            `json:"expected"`
+			ExpectedError   string            `json:"expected_error"`
+			ExpectedIssues  []ValidationIssue `json:"expected_issues"`
+			ExpectedRuleIDs []string          `json:"expected_rule_ids"`
 		} `json:"cases"`
 	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
@@ -71,6 +72,16 @@ func TestGoldenEvaluations(t *testing.T) {
 					case "":
 						if err != nil || len(tc.ExpectedIssues) != 0 {
 							t.Fatalf("unexpected error or expected issues: %v", err)
+						}
+					case "AmbiguousMatchError":
+						var ambiguous *AmbiguousMatchError
+						if !errors.As(err, &ambiguous) || ambiguous.Layer != tc.Input.Layer || !reflect.DeepEqual(ambiguous.RuleIDs, tc.ExpectedRuleIDs) {
+							t.Fatalf("unexpected ambiguity: %+v, want IDs %v", err, tc.ExpectedRuleIDs)
+						}
+					case "EvaluationLimitError":
+						var limit *EvaluationLimitError
+						if !errors.As(err, &limit) || !reflect.DeepEqual([]string{limit.RuleID}, tc.ExpectedRuleIDs) {
+							t.Fatalf("unexpected resource error: %+v, want IDs %v", err, tc.ExpectedRuleIDs)
 						}
 					case "InvalidEvaluationError":
 						var invalid *InvalidEvaluationError

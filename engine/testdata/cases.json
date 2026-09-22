@@ -1,5 +1,5 @@
 {
-  "review_status": "pending_product_finance",
+  "review_status": "ai_technical_review_completed",
   "schema": "schema.json",
   "cases": [
     {
@@ -821,6 +821,1519 @@
                 false,
                 false
               ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "threshold_exact",
+      "description": "amount_minor > 100000 es estricto: la igualdad permite el global.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "operation",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "other",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 100000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "operation",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "HOTELBEDS_FIXED",
+              "status": "SCOPE_MISMATCH",
+              "reason": "supplier"
+            },
+            {
+              "rule_id": "HOTELBEDS_MX",
+              "status": "SCOPE_MISMATCH",
+              "reason": "supplier"
+            },
+            {
+              "rule_id": "MEXICO",
+              "status": "CONDITION_FALSE"
+            },
+            {
+              "rule_id": "BASE_GLOBAL",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "BASE_GLOBAL",
+          "outcome": {
+            "kind": "percentage",
+            "percentage": {
+              "rate": "0.12"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "threshold_above",
+      "description": "Una unidad por encima del umbral activa MEXICO.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "operation",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "other",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 100001,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "operation",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "HOTELBEDS_FIXED",
+              "status": "SCOPE_MISMATCH",
+              "reason": "supplier"
+            },
+            {
+              "rule_id": "HOTELBEDS_MX",
+              "status": "SCOPE_MISMATCH",
+              "reason": "supplier"
+            },
+            {
+              "rule_id": "MEXICO",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "BASE_GLOBAL",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "MEXICO",
+          "outcome": {
+            "kind": "percentage",
+            "percentage": {
+              "rate": "0.15"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "inactive_is_explicit",
+      "description": "active=false solo descarta reglas que lo consultan; no es un veto global.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "operation",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": false
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "operation",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "HOTELBEDS_FIXED",
+              "status": "CONDITION_FALSE"
+            },
+            {
+              "rule_id": "HOTELBEDS_MX",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "MEXICO",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "BASE_GLOBAL",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "HOTELBEDS_MX",
+          "outcome": {
+            "kind": "percentage",
+            "percentage": {
+              "rate": "0.17"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "before_valid_from",
+      "description": "Un nanosegundo antes del inicio no aplica HOTELBEDS_MX.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "operation",
+        "effective_at": "2026-05-31T23:59:59.999999999Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "operation",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "HOTELBEDS_MX",
+              "status": "NOT_EFFECTIVE"
+            },
+            {
+              "rule_id": "HOTELBEDS_FIXED",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "MEXICO",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "BASE_GLOBAL",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "HOTELBEDS_FIXED",
+          "outcome": {
+            "kind": "fixed",
+            "fixed": {
+              "amount": "25",
+              "currency": "MXN"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "timezone_same_instant",
+      "description": "El mismo instante con offset -06:00 produce el mismo resultado.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "operation",
+        "effective_at": "2026-05-31T18:00:00-06:00",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "operation",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "HOTELBEDS_MX",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "HOTELBEDS_FIXED",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "MEXICO",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "BASE_GLOBAL",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "HOTELBEDS_MX",
+          "outcome": {
+            "kind": "percentage",
+            "percentage": {
+              "rate": "0.17"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "travel_date_before_condition",
+      "description": "La fecha de viaje se eval\u00faa en CEL, separada de EffectiveAt.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "split",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2025-12-31T23:59:59.999999999Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "split",
+        "status": "NO_MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "CONTRACT_TIERS",
+              "status": "CONDITION_FALSE"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "tier_metric_99999",
+      "description": "F1 conserva todos los tiers incluso en el borde; no elige tasa ni calcula tramos.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "split",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 99999,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "split",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "CONTRACT_TIERS",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "CONTRACT_TIERS",
+          "outcome": {
+            "kind": "tiered",
+            "tiered": {
+              "metric": "amount_minor",
+              "tiers": [
+                {
+                  "up_to_exclusive": 100000,
+                  "rate": "0.7"
+                },
+                {
+                  "up_to_exclusive": 300000,
+                  "rate": "0.8"
+                },
+                {
+                  "up_to_exclusive": null,
+                  "rate": "0.9"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "tier_metric_100000",
+      "description": "F1 conserva todos los tiers incluso en el borde; no elige tasa ni calcula tramos.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "split",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 100000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "split",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "CONTRACT_TIERS",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "CONTRACT_TIERS",
+          "outcome": {
+            "kind": "tiered",
+            "tiered": {
+              "metric": "amount_minor",
+              "tiers": [
+                {
+                  "up_to_exclusive": 100000,
+                  "rate": "0.7"
+                },
+                {
+                  "up_to_exclusive": 300000,
+                  "rate": "0.8"
+                },
+                {
+                  "up_to_exclusive": null,
+                  "rate": "0.9"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "tier_metric_299999",
+      "description": "F1 conserva todos los tiers incluso en el borde; no elige tasa ni calcula tramos.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "split",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 299999,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "split",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "CONTRACT_TIERS",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "CONTRACT_TIERS",
+          "outcome": {
+            "kind": "tiered",
+            "tiered": {
+              "metric": "amount_minor",
+              "tiers": [
+                {
+                  "up_to_exclusive": 100000,
+                  "rate": "0.7"
+                },
+                {
+                  "up_to_exclusive": 300000,
+                  "rate": "0.8"
+                },
+                {
+                  "up_to_exclusive": null,
+                  "rate": "0.9"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "tier_metric_300000",
+      "description": "F1 conserva todos los tiers incluso en el borde; no elige tasa ni calcula tramos.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "split",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 300000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "split",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "CONTRACT_TIERS",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "CONTRACT_TIERS",
+          "outcome": {
+            "kind": "tiered",
+            "tiered": {
+              "metric": "amount_minor",
+              "tiers": [
+                {
+                  "up_to_exclusive": 100000,
+                  "rate": "0.7"
+                },
+                {
+                  "up_to_exclusive": 300000,
+                  "rate": "0.8"
+                },
+                {
+                  "up_to_exclusive": null,
+                  "rate": "0.9"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "scope_case_sensitive",
+      "description": "country=mx no equivale a MX; no se infiere normalizaci\u00f3n de pa\u00eds.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "operation",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "mx",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "operation",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "HOTELBEDS_MX",
+              "status": "SCOPE_MISMATCH",
+              "reason": "country"
+            },
+            {
+              "rule_id": "MEXICO",
+              "status": "SCOPE_MISMATCH",
+              "reason": "country"
+            },
+            {
+              "rule_id": "HOTELBEDS_FIXED",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "BASE_GLOBAL",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "HOTELBEDS_FIXED",
+          "outcome": {
+            "kind": "fixed",
+            "fixed": {
+              "amount": "25",
+              "currency": "MXN"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "unknown_layer",
+      "description": "Una capa inexistente es error de entrada, no NO_MATCH.",
+      "source": "engine/README.md; contrato F1; revisi\u00f3n t\u00e9cnica asistida 2026-09-22",
+      "ruleset": "ruleset.json",
+      "input": {
+        "layer": "missing",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "travel-commissions",
+        "ruleset_version": "2026-09-14",
+        "layer": "missing",
+        "status": "INVALID_INPUT",
+        "trace": {
+          "candidates": []
+        }
+      },
+      "expected_error": "InvalidEvaluationError",
+      "expected_issues": [
+        {
+          "code": "SCHEMA_MISMATCH",
+          "path": "/layer",
+          "message": "layer is not present in the compiled ruleset",
+          "severity": "error"
+        }
+      ]
+    },
+    {
+      "name": "priority_not_largest_rate",
+      "description": "Mismo perfil: gana prioridad expl\u00edcita, no la tasa m\u00e1s alta.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "priority",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "priority",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "PRIORITY_HIGH",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "PRIORITY_LOW",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ],
+          "tie_breakers": [
+            "PRIORITY_HIGH",
+            "PRIORITY_LOW"
+          ]
+        },
+        "winner": {
+          "rule_id": "PRIORITY_HIGH",
+          "outcome": {
+            "kind": "percentage",
+            "percentage": {
+              "rate": "0.1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "specificity_before_priority_extremes",
+      "description": "Proveedor supera pa\u00eds aun con prioridades int32 extremas; ID no elige ganador.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "specificity",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "specificity",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "Z_SUPPLIER",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "A_COUNTRY",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "Z_SUPPLIER",
+          "outcome": {
+            "kind": "percentage",
+            "percentage": {
+              "rate": "0.1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "tie_ambiguous",
+      "description": "Empate bloqueante: no deduplicar outcomes iguales, convertir monedas ni elegir fallback.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "ambiguous",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "ambiguous",
+        "status": "AMBIGUOUS_MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "AMBIGUOUS_A",
+              "status": "AMBIGUOUS",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "AMBIGUOUS_B",
+              "status": "AMBIGUOUS",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "AMBIGUOUS_FALLBACK",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ],
+          "tie_breakers": [
+            "AMBIGUOUS_A",
+            "AMBIGUOUS_B"
+          ]
+        }
+      },
+      "expected_error": "AmbiguousMatchError",
+      "expected_rule_ids": [
+        "AMBIGUOUS_A",
+        "AMBIGUOUS_B"
+      ]
+    },
+    {
+      "name": "tie_equal",
+      "description": "Empate bloqueante: no deduplicar outcomes iguales, convertir monedas ni elegir fallback.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "equal",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "equal",
+        "status": "AMBIGUOUS_MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "EQUAL_A",
+              "status": "AMBIGUOUS",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "EQUAL_B",
+              "status": "AMBIGUOUS",
+              "specificity": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            },
+            {
+              "rule_id": "EQUAL_FALLBACK",
+              "status": "SHADOWED",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ],
+          "tie_breakers": [
+            "EQUAL_A",
+            "EQUAL_B"
+          ]
+        }
+      },
+      "expected_error": "AmbiguousMatchError",
+      "expected_rule_ids": [
+        "EQUAL_A",
+        "EQUAL_B"
+      ]
+    },
+    {
+      "name": "ordinary_cel_error_allows_fallback",
+      "description": "Conversi\u00f3n CEL fallida descarta esa regla seg\u00fan contrato; reportar CONDITION_ERROR sin texto interno.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "ordinary_error",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "ordinary_error",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "ERROR_RULE",
+              "status": "CONDITION_ERROR"
+            },
+            {
+              "rule_id": "ERROR_FALLBACK",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "ERROR_FALLBACK",
+          "outcome": {
+            "kind": "percentage",
+            "percentage": {
+              "rate": "0.12"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "resource_limit_blocks_fallback",
+      "description": "Patr\u00f3n de 257 bytes aborta toda la resoluci\u00f3n aun con fallback ya evaluado y || true.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "limit",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "limit",
+        "status": "LIMIT_EXCEEDED",
+        "trace": {
+          "candidates": []
+        }
+      },
+      "expected_error": "EvaluationLimitError",
+      "expected_rule_ids": [
+        "Z_LIMIT_RULE"
+      ]
+    },
+    {
+      "name": "zero_is_a_match",
+      "description": "Una tasa cero expl\u00edcita es MATCH; no es ausencia de regla.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "zero",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "zero",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "ZERO",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "ZERO",
+          "outcome": {
+            "kind": "percentage",
+            "percentage": {
+              "rate": "0"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "no_match_is_not_zero",
+      "description": "Si no aplica la regla cero se devuelve NO_MATCH sin outcome inventado.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "zero",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 200000,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": false
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "zero",
+        "status": "NO_MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "ZERO",
+              "status": "CONDITION_FALSE"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "exact_integer_and_decimal",
+      "description": "Con UseNumber se conserva entero >2^53 y el importe decimal textual sin redondear.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "integer",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 9007199254740993,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "integer",
+        "status": "MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "EXACT_INT",
+              "status": "WINNER",
+              "specificity": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        "winner": {
+          "rule_id": "EXACT_INT",
+          "outcome": {
+            "kind": "fixed",
+            "fixed": {
+              "amount": "9007199254740993.000000000000000001",
+              "currency": "MXN"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjacent_large_integer",
+      "description": "El entero adyacente igual a 2^53 no puede activar la regla por redondeo.",
+      "source": "engine/README.md; jerarquia_reglas \u00a73\u20135; LIMITS.md",
+      "ruleset": "financial_safety_ruleset.json",
+      "input": {
+        "layer": "integer",
+        "effective_at": "2026-07-01T00:00:00Z",
+        "context": {
+          "market": "latam",
+          "country": "MX",
+          "channel": "direct",
+          "agency": "agency_demo",
+          "branch": "branch_demo",
+          "agent": "agent_demo",
+          "supplier": "hotelbeds",
+          "product": "hotel_demo",
+          "contract": "ctr_hb_2026",
+          "amount_minor": 9007199254740992,
+          "travel_date": "2026-07-01T00:00:00Z",
+          "active": true
+        }
+      },
+      "expected": {
+        "ruleset_id": "financial-safety",
+        "ruleset_version": "draft-v1",
+        "layer": "integer",
+        "status": "NO_MATCH",
+        "trace": {
+          "candidates": [
+            {
+              "rule_id": "EXACT_INT",
+              "status": "CONDITION_FALSE"
             }
           ]
         }

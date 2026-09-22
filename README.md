@@ -21,7 +21,7 @@ Rules behind every travel transaction.
 | Documentación de API, CLI, errores y límites (T3.8) | [Guía del paquete](./engine/README.md), contratos y ejemplos verificados localmente |
 | CPU en reposo e I/O | [Medición local de sistema](./propuesta/mvp/benchmarks/2026-09-22/system/README.md): mediana 0,0027 % CPU; sin I/O de archivos/red en 4.100 evaluaciones observadas |
 | Límites runtime y payload (T3.9) | Implementados y medidos; agotamiento de recursos bloquea toda la evaluación sin fallback |
-| Corpus inicial (T1.6) | [Diez casos revisables](./engine/testdata/README.md), snapshots y prueba de orden; aprobación de producto/finanzas pendiente |
+| Corpus técnico (T1.6) | [32 casos revisados](./engine/testdata/README.md) por un agente independiente con enfoque financiero; snapshots y orden invertido; aceptación de tarifas reales separada |
 | F2–F10 del MVP | Pendientes |
 | Verificación local con Go 1.27.1 | Build, suite, detector de carreras y vet pasan; CI remota no verificada |
 
