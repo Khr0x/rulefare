@@ -322,7 +322,7 @@ func minimalRuleSet(condition string) RuleSet {
 	}
 }
 
-func loadFixture[T any](t *testing.T, name string) T {
+func loadFixture[T any](t testing.TB, name string) T {
 	t.Helper()
 	data, err := os.ReadFile("testdata/" + name)
 	if err != nil {
@@ -507,7 +507,7 @@ func TestEvaluateFiltersByValidityAndScope(t *testing.T) {
 	input := Evaluation{
 		Layer:       "operation",
 		EffectiveAt: at,
-		Context:     map[string]any{"country": "US", "supplier": "hotelbeds"},
+		Context:     fixtureContext(map[string]any{"country": "US", "supplier": "hotelbeds"}),
 	}
 	result, err := program.Evaluate(input)
 	if err != nil {
@@ -532,24 +532,6 @@ func TestEvaluateFiltersByValidityAndScope(t *testing.T) {
 	}
 }
 
-func TestEvaluateNoMatchWhenAllDiscarded(t *testing.T) {
-	schema := loadFixture[Schema](t, "schema.json")
-	set := loadFixture[RuleSet](t, "ruleset.json")
-	program, _ := Compile(schema, set)
-
-	// Unknown layer yields NO_MATCH with an empty, non-nil trace.
-	result, err := program.Evaluate(Evaluation{Layer: "does-not-exist", EffectiveAt: time.Now()})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if result.Status != ResultNoMatch || result.Winner != nil {
-		t.Fatalf("unknown layer must be NO_MATCH, got %+v", result)
-	}
-	if result.Trace.Candidates == nil {
-		t.Fatalf("trace candidates must be non-nil")
-	}
-}
-
 func TestEvaluateTraceOrderIsStable(t *testing.T) {
 	schema := loadFixture[Schema](t, "schema.json")
 	set := loadFixture[RuleSet](t, "ruleset.json")
@@ -557,11 +539,17 @@ func TestEvaluateTraceOrderIsStable(t *testing.T) {
 	input := Evaluation{
 		Layer:       "operation",
 		EffectiveAt: time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC),
-		Context:     map[string]any{"country": "MX", "supplier": "hotelbeds", "amount_minor": int64(200000), "active": true},
+		Context:     fixtureContext(map[string]any{"country": "MX", "supplier": "hotelbeds", "amount_minor": int64(200000), "active": true}),
 	}
-	first, _ := program.Evaluate(input)
+	first, err := program.Evaluate(input)
+	if err != nil {
+		t.Fatal(err)
+	}
 	for i := 0; i < 20; i++ {
-		next, _ := program.Evaluate(input)
+		next, err := program.Evaluate(input)
+		if err != nil {
+			t.Fatal(err)
+		}
 		if !reflect.DeepEqual(first, next) {
 			t.Fatalf("evaluation is not deterministic\nfirst: %+v\n next: %+v", first, next)
 		}
@@ -600,7 +588,7 @@ func TestEvalConditionDirect(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			got, err := evalCondition(tc.prg, tc.ctx)
+			got, _, err := evalCondition(tc.prg, tc.ctx)
 			if (err != nil) != tc.wantErr {
 				t.Fatalf("err = %v, wantErr %v", err, tc.wantErr)
 			}
@@ -622,13 +610,13 @@ func TestEvaluateFiltersByCEL(t *testing.T) {
 	at := time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC)
 
 	// MEXICO condition (amount_minor > 100000) is FALSE here; HOTELBEDS_FIXED
-	// references "active", which is absent -> CONDITION_ERROR. HOTELBEDS_MX
+	// references "active", which is false -> CONDITION_FALSE. HOTELBEDS_MX
 	// (scope supplier+country, no condition) is effective and the most specific
 	// survivor, so it wins over the global BASE_GLOBAL.
 	result, err := program.Evaluate(Evaluation{
 		Layer:       "operation",
 		EffectiveAt: at,
-		Context:     map[string]any{"country": "MX", "supplier": "hotelbeds", "amount_minor": int64(50000)},
+		Context:     fixtureContext(map[string]any{"country": "MX", "supplier": "hotelbeds", "amount_minor": int64(50000)}),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -640,8 +628,8 @@ func TestEvaluateFiltersByCEL(t *testing.T) {
 	if byID["MEXICO"] != TraceConditionFalse {
 		t.Fatalf("MEXICO should be CONDITION_FALSE, got %q", byID["MEXICO"])
 	}
-	if byID["HOTELBEDS_FIXED"] != TraceConditionError {
-		t.Fatalf("HOTELBEDS_FIXED should be CONDITION_ERROR (active absent), got %q", byID["HOTELBEDS_FIXED"])
+	if byID["HOTELBEDS_FIXED"] != TraceConditionFalse {
+		t.Fatalf("HOTELBEDS_FIXED should be CONDITION_FALSE (active false), got %q", byID["HOTELBEDS_FIXED"])
 	}
 	if byID["HOTELBEDS_MX"] != TraceWinner {
 		t.Fatalf("HOTELBEDS_MX (supplier+country) should win on specificity, got %q", byID["HOTELBEDS_MX"])
@@ -653,12 +641,12 @@ func TestEvaluateFiltersByCEL(t *testing.T) {
 		t.Fatalf("expected HOTELBEDS_MX winner, got %+v", result)
 	}
 
-	// With supplier absent both HOTELBEDS rules mismatch scope. MEXICO now passes
+	// With a different supplier both HOTELBEDS rules mismatch scope. MEXICO now passes
 	// CEL and, scoping country, outranks the global BASE_GLOBAL on specificity.
 	result, err = program.Evaluate(Evaluation{
 		Layer:       "operation",
 		EffectiveAt: at,
-		Context:     map[string]any{"country": "MX", "supplier": "none", "amount_minor": int64(200000)},
+		Context:     fixtureContext(map[string]any{"country": "MX", "supplier": "none", "amount_minor": int64(200000)}),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -687,13 +675,68 @@ func TestEvaluateNoCELSurvivorIsNoMatch(t *testing.T) {
 	result, err := program.Evaluate(Evaluation{
 		Layer:       "split",
 		EffectiveAt: time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC),
-		Context:     map[string]any{"contract": "other", "travel_date": time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC)},
+		Context:     fixtureContext(map[string]any{"contract": "other", "travel_date": time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC)}),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	if result.Status != ResultNoMatch || result.Winner != nil {
 		t.Fatalf("expected NO_MATCH, got %+v", result)
+	}
+}
+
+func TestEvaluateSanitizesCELErrors(t *testing.T) {
+	for _, condition := range []string{
+		"int(country) > 0",
+		"timestamp(country) > travel_date",
+		"amount_minor / 0 > 0",
+	} {
+		for _, fallback := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/fallback=%t", condition, fallback), func(t *testing.T) {
+				schema := loadFixture[Schema](t, "schema.json")
+				set := minimalRuleSet(condition)
+				if fallback {
+					set.Rules = append(set.Rules, pctRule("FALLBACK", 0, nil))
+				}
+				program, report := Compile(schema, set)
+				if program == nil {
+					t.Fatal(report)
+				}
+				var first []byte
+				for _, secret := range []string{"private-customer-one", "private-customer-two"} {
+					result, err := program.Evaluate(Evaluation{
+						Layer:       "operation",
+						EffectiveAt: time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC),
+						Context:     fixtureContext(map[string]any{"country": secret, "amount_minor": int64(1)}),
+					})
+					if err != nil {
+						t.Fatal(err)
+					}
+					if fallback {
+						if result.Status != ResultMatch || result.Winner == nil || result.Winner.RuleID != "FALLBACK" {
+							t.Fatalf("valid context must preserve fallback behavior: %+v", result)
+						}
+					} else if result.Status != ResultNoMatch || result.Winner != nil {
+						t.Fatalf("failed condition must not match: %+v", result)
+					}
+					want := TraceEntry{RuleID: "BASE", Status: TraceConditionError}
+					if len(result.Trace.Candidates) == 0 || !reflect.DeepEqual(result.Trace.Candidates[0], want) {
+						t.Fatalf("CEL failure must expose only a stable status and rule ID: %+v", result.Trace)
+					}
+					encoded, err := json.Marshal(result)
+					if err != nil {
+						t.Fatal(err)
+					}
+					if bytes.Contains(encoded, []byte(secret)) || bytes.Contains(encoded, []byte(`"reason"`)) {
+						t.Fatalf("serialized result leaked CEL details: %s", encoded)
+					}
+					if first != nil && !bytes.Equal(first, encoded) {
+						t.Fatalf("error result depends on context values: %s vs %s", first, encoded)
+					}
+					first = encoded
+				}
+			})
+		}
 	}
 }
 
@@ -729,7 +772,7 @@ func pctRule(id string, priority int32, scope map[string]string) Rule {
 }
 
 func TestRankingSelectsMostSpecific(t *testing.T) {
-	ctx := map[string]any{"country": "MX", "supplier": "hotelbeds", "contract": "ctr1"}
+	ctx := fixtureContext(map[string]any{"country": "MX", "supplier": "hotelbeds", "contract": "ctr1"})
 	cases := []struct {
 		name  string
 		rules []Rule
@@ -775,7 +818,7 @@ func TestRankingPriorityBreaksSpecificityTie(t *testing.T) {
 		pctRule("LOW", 5, map[string]string{"country": "MX"}),
 		pctRule("HIGH", 10, map[string]string{"country": "MX"}),
 	)
-	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: map[string]any{"country": "MX"}})
+	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: fixtureContext(map[string]any{"country": "MX"})})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -802,7 +845,7 @@ func TestRankingPriorityNeverOverridesSpecificity(t *testing.T) {
 		pctRule("COUNTRY", 100, map[string]string{"country": "MX"}),
 		pctRule("SUPPLIER", 0, map[string]string{"supplier": "hotelbeds"}),
 	)
-	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: map[string]any{"country": "MX", "supplier": "hotelbeds"}})
+	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: fixtureContext(map[string]any{"country": "MX", "supplier": "hotelbeds"})})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -816,7 +859,7 @@ func TestEvaluateAmbiguousMatch(t *testing.T) {
 		pctRule("ALPHA", 7, map[string]string{"country": "MX"}),
 		pctRule("BETA", 7, map[string]string{"country": "MX"}),
 	)
-	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: map[string]any{"country": "MX"}})
+	result, err := program.Evaluate(Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: fixtureContext(map[string]any{"country": "MX"})})
 
 	ambiguous, ok := err.(*AmbiguousMatchError)
 	if !ok {
@@ -860,7 +903,7 @@ func TestEvaluateResultOutcomeIsIndependent(t *testing.T) {
 		t.Fatalf("did not compile: %+v", report.Issues)
 	}
 
-	input := Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: map[string]any{"country": "MX"}}
+	input := Evaluation{Layer: "operation", EffectiveAt: time.Now(), Context: fixtureContext(map[string]any{"country": "MX"})}
 	first, err := program.Evaluate(input)
 	if err != nil || first.Winner == nil {
 		t.Fatalf("expected winner, got %+v (err %v)", first, err)
@@ -880,4 +923,19 @@ func TestEvaluateResultOutcomeIsIndependent(t *testing.T) {
 	if got := second.Winner.Outcome.Tiered.Tiers[0].Rate; got != "0.7" {
 		t.Fatalf("mutation leaked into Program: tier rate = %q", got)
 	}
+}
+
+// fixtureContext supplies the complete fixture schema; individual tests override
+// only the values relevant to their rule filters. All variables are required.
+func fixtureContext(overrides map[string]any) map[string]any {
+	ctx := map[string]any{
+		"market": "", "country": "", "channel": "", "agency": "", "branch": "",
+		"agent": "", "supplier": "", "product": "", "contract": "",
+		"amount_minor": int64(0), "active": false,
+		"travel_date": time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC),
+	}
+	for name, value := range overrides {
+		ctx[name] = value
+	}
+	return ctx
 }

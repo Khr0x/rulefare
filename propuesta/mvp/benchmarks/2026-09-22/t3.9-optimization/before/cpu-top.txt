@@ -1,0 +1,29 @@
+File: engine.test
+Build ID: 82095e6761c3e0c32b437503a05388b727e31868
+Type: cpu
+Time: 2026-09-22 10:28:33 CST
+Duration: 8.31s, Total samples = 8.27s (99.57%)
+Showing nodes accounting for 5.45s, 65.90% of 8.27s total
+Dropped 140 nodes (cum <= 0.04s)
+Showing top 20 nodes out of 118
+      flat  flat%   sum%        cum   cum%
+     0.99s 11.97% 11.97%      1.17s 14.15%  runtime.tryDeferToSpanScan
+     0.66s  7.98% 19.95%      0.66s  7.98%  runtime.typePointers.next
+     0.66s  7.98% 27.93%      2.40s 29.02%  runtime.wbBufFlush1
+     0.56s  6.77% 34.70%      0.66s  7.98%  runtime.findObject
+     0.33s  3.99% 38.69%      1.81s 21.89%  github.com/google/cel-go/interpreter.(*costTrackerFactory).Observe
+     0.33s  3.99% 42.68%      3.07s 37.12%  github.com/google/cel-go/interpreter.(*evalWatch).Exec
+     0.31s  3.75% 46.43%      0.37s  4.47%  runtime.gcmarknewobject
+     0.28s  3.39% 49.82%      0.28s  3.39%  runtime.memmove
+     0.17s  2.06% 51.87%      0.17s  2.06%  runtime.spanOf (inline)
+     0.16s  1.93% 53.81%      0.18s  2.18%  runtime.heapArenaOf (inline)
+     0.12s  1.45% 55.26%      8.23s 99.52%  github.com/Khr0x/rulefare/engine.(*Program).Evaluate
+     0.12s  1.45% 56.71%      3.04s 36.76%  runtime.bulkBarrierPreWrite
+     0.12s  1.45% 58.16%      0.12s  1.45%  runtime.memclrNoHeapPointers
+     0.11s  1.33% 59.49%      2.27s 27.45%  runtime.(*wbBuf).get2 (inline)
+     0.10s  1.21% 60.70%      0.47s  5.68%  github.com/google/cel-go/interpreter.(*refValStack).dropArgs
+     0.09s  1.09% 61.79%      0.09s  1.09%  internal/strconv.ParseUint
+     0.09s  1.09% 62.88%      0.30s  3.63%  runtime.mallocgcSmallScanNoHeaderSC4
+     0.09s  1.09% 63.97%      3.28s 39.66%  runtime.typedmemmove
+     0.08s  0.97% 64.93%      0.08s  0.97%  github.com/google/cel-go/interpreter.(*evalBinary).ID
+     0.08s  0.97% 65.90%      0.12s  1.45%  internal/runtime/maps.(*Iter).Next

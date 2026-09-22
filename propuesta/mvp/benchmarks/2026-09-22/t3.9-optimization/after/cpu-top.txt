@@ -1,0 +1,29 @@
+File: engine.test
+Build ID: 9cf63f2b2bac0ca278aaa607b0f7062a0c5cedb5
+Type: cpu
+Time: 2026-09-22 10:42:58 CST
+Duration: 5.98s, Total samples = 5930ms (99.10%)
+Showing nodes accounting for 4060ms, 68.47% of 5930ms total
+Dropped 126 nodes (cum <= 29.65ms)
+Showing top 20 nodes out of 125
+      flat  flat%   sum%        cum   cum%
+     680ms 11.47% 11.47%     1050ms 17.71%  internal/runtime/maps.(*Iter).Next
+     520ms  8.77% 20.24%      620ms 10.46%  runtime.tryDeferToSpanScan
+     370ms  6.24% 26.48%      590ms  9.95%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     270ms  4.55% 31.03%     1130ms 19.06%  runtime.mapaccess2_faststr
+     230ms  3.88% 34.91%     5790ms 97.64%  github.com/Khr0x/rulefare/engine.(*Program).Evaluate
+     210ms  3.54% 38.45%      210ms  3.54%  runtime.memequal
+     200ms  3.37% 41.82%      200ms  3.37%  internal/runtime/maps.memHashAES
+     180ms  3.04% 44.86%      230ms  3.88%  runtime.findObject
+     180ms  3.04% 47.89%      940ms 15.85%  runtime.wbBufFlush1
+     180ms  3.04% 50.93%      360ms  6.07%  slices.insertionSortOrdered[go.shape.string]
+     160ms  2.70% 53.63%     1000ms 16.86%  gcWriteBarrier
+     130ms  2.19% 55.82%      160ms  2.70%  runtime.typePointers.next
+     120ms  2.02% 57.84%     2350ms 39.63%  github.com/Khr0x/rulefare/engine.scopeMatch
+     120ms  2.02% 59.87%     1850ms 31.20%  github.com/Khr0x/rulefare/engine.sortedKeys[go.shape.string] (inline)
+     100ms  1.69% 61.55%      220ms  3.71%  runtime.mallocgcTinySC2
+      90ms  1.52% 63.07%      380ms  6.41%  internal/runtime/maps.(*Iter).Init
+      90ms  1.52% 64.59%      200ms  3.37%  runtime.scanObjectsSmall
+      80ms  1.35% 65.94%       80ms  1.35%  cmpbody
+      80ms  1.35% 67.28%       80ms  1.35%  github.com/Khr0x/rulefare/engine.compareSpecificity (inline)
+      70ms  1.18% 68.47%       70ms  1.18%  internal/chacha8rand.(*State).Next (inline)

@@ -1,0 +1,28 @@
+File: engine.test
+Build ID: e5e06cdbd8284c467d045b96e73ae3c79f10520c
+Type: alloc_space
+Time: 2026-09-22 08:11:17 CST
+Showing nodes accounting for 206.13MB, 65.53% of 314.58MB total
+Dropped 108 nodes (cum <= 1.57MB)
+Showing top 20 nodes out of 138
+      flat  flat%   sum%        cum   cum%
+   58.13MB 18.48% 18.48%    58.13MB 18.48%  github.com/google/cel-go/interpreter.(*defaultDispatcher).Add
+      17MB  5.40% 23.88%       17MB  5.40%  github.com/antlr4-go/antlr/v4.NewCommonToken
+   15.50MB  4.93% 28.81%    15.50MB  4.93%  github.com/google/cel-go/common/types.NewOpaqueType (inline)
+      13MB  4.13% 32.94%       13MB  4.13%  github.com/google/cel-go/parser/gen.NewRelationContext (inline)
+   11.50MB  3.66% 36.60%    11.50MB  3.66%  github.com/google/cel-go/checker.newMapping (inline)
+       9MB  2.86% 39.46%       27MB  8.58%  github.com/antlr4-go/antlr/v4.(*CommonTokenStream).fetch
+       9MB  2.86% 42.32%        9MB  2.86%  github.com/google/cel-go/parser/gen.NewCalcContext (inline)
+       8MB  2.54% 44.87%        8MB  2.54%  github.com/antlr4-go/antlr/v4.(*BaseParserRuleContext).AddChild
+       7MB  2.23% 47.09%        7MB  2.23%  github.com/google/cel-go/parser/gen.NewPrimaryExprContext
+    6.50MB  2.07% 49.16%     6.50MB  2.07%  github.com/google/cel-go/parser/gen.NewPrimaryContext (inline)
+    6.41MB  2.04% 51.20%     6.41MB  2.04%  github.com/Khr0x/rulefare/engine.benchmarkRules
+       6MB  1.91% 53.10%        6MB  1.91%  github.com/google/cel-go/common/ast.idVisitor.VisitExpr
+       6MB  1.91% 55.01%        6MB  1.91%  github.com/google/cel-go/common/ast.(*baseExprFactory).newExpr (inline)
+    5.57MB  1.77% 56.78%   304.26MB 96.72%  github.com/Khr0x/rulefare/engine.Compile
+    5.50MB  1.75% 58.53%     5.50MB  1.75%  github.com/google/cel-go/parser/gen.NewMemberExprContext
+       5MB  1.59% 60.12%        5MB  1.59%  github.com/google/cel-go/parser/gen.NewMemberContext (inline)
+       5MB  1.59% 61.71%        7MB  2.23%  github.com/google/cel-go/common/ast.(*baseExprFactory).NewCall
+    4.50MB  1.43% 63.14%     4.50MB  1.43%  github.com/google/cel-go/parser/gen.NewExprContext (inline)
+       4MB  1.27% 64.41%        4MB  1.27%  github.com/google/cel-go/parser/gen.NewLiteralContext (inline)
+    3.50MB  1.11% 65.53%     3.50MB  1.11%  github.com/google/cel-go/parser/gen.NewConditionalOrContext (inline)

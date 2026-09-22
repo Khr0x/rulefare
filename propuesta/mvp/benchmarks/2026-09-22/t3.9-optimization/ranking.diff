@@ -1,0 +1,11 @@
+--- before/engine/ranking.go
++++ after/engine/ranking.go
+@@ -3,7 +3,7 @@
+ // rankedRule pairs a surviving rule with its specificity profile so resolution
+ // can order candidates without recomputing the vector.
+ type rankedRule struct {
+-	rule        Rule
++	rule        *Rule
+ 	specificity []bool
+ }
+ 

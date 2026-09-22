@@ -3,6 +3,7 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -10,6 +11,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
@@ -27,11 +29,36 @@ jobs:
           git diff --exit-code -- go.mod go.sum
       - name: Check engine dependency boundary
         run: |
-          project_imports="$(go list -f '{{range .Imports}}{{println .}}{{end}}' ./engine | grep '^github.com/Khr0x/rulefare/' || true)"
-          test -z "$project_imports" || { echo "$project_imports"; exit 1; }
+          imports=$(go list -f '{{join .Imports " "}}' ./engine)
+          read -r -a packages <<< "$imports"
+          external=$(go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}' "${packages[@]}")
+          while IFS= read -r dependency; do
+            case "$dependency" in
+              ""|github.com/google/cel-go/*) ;;
+              *) printf 'Forbidden engine import: %s\n' "$dependency" >&2; exit 1 ;;
+            esac
+          done <<< "$external"
       - run: go vet ./...
       - run: go test ./...
       - run: go test -race ./...
+      - name: Fuzz rulesets, CEL and contexts
+        run: |
+          for target in FuzzCompileRuleset FuzzRuleCondition FuzzEvaluateContext; do
+            go test ./engine -run '^$' -fuzz "^${target}$" -fuzztime=10s -parallel=2 -timeout=2m
+          done
+      - name: Benchmark engine
+        run: bash scripts/benchmark.sh bin/benchmarks --container
+      - name: Measure idle CPU and evaluation I/O
+        run: bash scripts/measure-system.sh bin/system
+      - name: Save benchmark results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: engine-benchmarks-${{ github.sha }}
+          path: |
+            bin/benchmarks/*.txt
+            bin/system/*.txt
+          if-no-files-found: warn
       - name: Vulnerability scan
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@v1.7.0

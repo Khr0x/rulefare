@@ -1,0 +1,15 @@
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkProgramResidentUnique10000 	       1	 442259167 ns/op	  24127144 retained-heap-B	  90554368 rss-after-gc-B	  67010560 rss-released-B
+PASS
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkProgramResidentUnique10000 	       1	 471207167 ns/op	  24128104 retained-heap-B	  92639232 rss-after-gc-B	  68595712 rss-released-B
+PASS
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkProgramResidentUnique10000 	       1	 456996792 ns/op	  24127608 retained-heap-B	  90419200 rss-after-gc-B	  67809280 rss-released-B
+PASS

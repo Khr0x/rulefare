@@ -1,0 +1,28 @@
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkEvaluate/10        	  200582	      5986 ns/op	    3512 B/op	      53 allocs/op
+BenchmarkEvaluate/10        	  208246	      5943 ns/op	    3512 B/op	      53 allocs/op
+BenchmarkEvaluate/10        	  209445	      6050 ns/op	    3512 B/op	      53 allocs/op
+BenchmarkEvaluate/100       	   61173	     19911 ns/op	   15882 B/op	     143 allocs/op
+BenchmarkEvaluate/100       	   59670	     19810 ns/op	   15882 B/op	     143 allocs/op
+BenchmarkEvaluate/100       	   61092	     19486 ns/op	   15882 B/op	     143 allocs/op
+BenchmarkEvaluate/10000     	     788	   1485713 ns/op	 1234718 B/op	   10043 allocs/op
+BenchmarkEvaluate/10000     	     784	   1508071 ns/op	 1234720 B/op	   10043 allocs/op
+BenchmarkEvaluate/10000     	     787	   1519470 ns/op	 1234719 B/op	   10043 allocs/op
+BenchmarkEvaluateUnique/10  	   85165	     15367 ns/op	    7617 B/op	     177 allocs/op
+BenchmarkEvaluateUnique/10  	   81708	     14358 ns/op	    7617 B/op	     177 allocs/op
+BenchmarkEvaluateUnique/10  	   81601	     14425 ns/op	    7617 B/op	     177 allocs/op
+BenchmarkEvaluateUnique/100 	    9200	    123351 ns/op	   64461 B/op	    1527 allocs/op
+BenchmarkEvaluateUnique/100 	    9462	    124229 ns/op	   64461 B/op	    1527 allocs/op
+BenchmarkEvaluateUnique/100 	    9500	    124077 ns/op	   64461 B/op	    1527 allocs/op
+BenchmarkEvaluateUnique/10000         	      88	  17147521 ns/op	 6173912 B/op	  150028 allocs/op
+BenchmarkEvaluateUnique/10000         	      79	  16769489 ns/op	 6173911 B/op	  150028 allocs/op
+BenchmarkEvaluateUnique/10000         	      72	  17121322 ns/op	 6173919 B/op	  150028 allocs/op
+BenchmarkCompile10000                 	      60	  18204483 ns/op	17888712 B/op	  300561 allocs/op
+BenchmarkCompile10000                 	      61	  18401929 ns/op	17882337 B/op	  300560 allocs/op
+BenchmarkCompile10000                 	      58	  18204345 ns/op	17883558 B/op	  300560 allocs/op
+BenchmarkCompileUnique10000           	       3	 529714959 ns/op	310152122 B/op	 5739681 allocs/op
+BenchmarkCompileUnique10000           	       2	 502530042 ns/op	310156264 B/op	 5739682 allocs/op
+BenchmarkCompileUnique10000           	       2	 500334584 ns/op	310149232 B/op	 5739680 allocs/op
+PASS

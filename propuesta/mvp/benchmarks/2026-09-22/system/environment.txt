@@ -1,0 +1,74 @@
+2026-09-22T17:36:09Z
+Commit: 6c86f4df4dbcbc023834ddb9ac97440de17e6dda
+Image: sha256:cf1bd149af89435fa43d04075d9b2d4d39b4e837afbd717289c4c2410b18e842
+linux/arm64; 1 CPU; 512 MiB; no swap/network; GOMAXPROCS=1; GOMEMLIMIT=448MiB
+go version go1.27.1 darwin/arm64
+github.com/google/cel-go v0.30.0
+Darwin Mac-mini.local 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:11:03 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8132 arm64
+Docker server: 29.7.2
+Linux 7cf84ba7f496 6.12.76-linuxkit #1 SMP Mon Jul 27 16:56:11 UTC 2026 aarch64 GNU/Linux
+strace -- version 6.1
+Copyright (c) 1991-2022 The strace developers <https://strace.io>.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Optional features enabled: no-m32-mpers
+ M .github/workflows/ci.yml
+ M README.md
+ M engine/compile.go
+ M engine/engine_test.go
+ M engine/errors.go
+ M engine/evaluate.go
+ M engine/ranking.go
+ M engine/types.go
+ M engine/validate.go
+ M propuesta/mvp/f1_motor_reglas_plan_implementacion.md
+ M propuesta/mvp/roadmap.md
+?? cmd/
+?? engine/LIMITS.md
+?? engine/README.md
+?? engine/benchmark_test.go
+?? engine/compile_test.go
+?? engine/concurrency_test.go
+?? engine/context.go
+?? engine/context_test.go
+?? engine/fuzz_test.go
+?? engine/limits.go
+?? engine/limits_test.go
+?? engine/profile_test.go
+?? engine/system_test.go
+?? engine/testdata/context.json
+?? propuesta/mvp/benchmarks/
+?? scripts/
+b00abb4fee8d7539be3e49020d6519d03e7ec33b616aceabcadadc5e6b2f1a32  go.mod
+36aacb60652b2a79116f4d9bd605d17c25838b9aae4e922e7b1fac10681423b5  go.sum
+f07b8fd9dbc10b087a86dc2b74f1130d3aee3f212cf65a144f5ba42cc0013901  engine/benchmark_test.go
+2689a0a1c69560f6a1575ca367c45ac4d0e98c2c4ca877395d67559dc594d7ce  engine/compile.go
+e3576d65001e2e5a757eee25aa0a822f117a3056508958003d0c665663437b6e  engine/compile_test.go
+1539fe88cdd13900177ee90dad823ed033035ec1de137be4543e96728e18cfdc  engine/concurrency_test.go
+a6c4f295759dfbcf37393e012e132c4752b5e1b9680ece87db59c1cb0a4a7988  engine/context.go
+9f4f0afdf0f5eeaa3eb4633ecd63de77e32c0b8ccd77676522dd041ab3c13b56  engine/context_test.go
+5e016868c06f828dc59c2c4e4dd16a4ac6a1183d915f05add09ce9630810fc9a  engine/engine_test.go
+45f69881a4455e5f25241bf19c24128211cd963f9909f6a124ac9493aff1be20  engine/errors.go
+2a7f426b8c3839d64381cadbca52d479c486560263790d04af1e9356d126135c  engine/evaluate.go
+3462f3db379f9dea8bd8318a65452085c19ee4bf17ef7021b5aea3aabc9d9e4e  engine/fuzz_test.go
+8f47ad2264f567b9b9fbb1f43c27234b5537da488af2aa04260eefc84e378f30  engine/limits.go
+51df5c97295798de0dd5ec79bf089917669fc03028fb33a9f38347e0ee95d66c  engine/limits_test.go
+27873f796ecb8087b43b322f0106f8d579e8ec661df13fdf5202a2286bb70969  engine/profile_test.go
+6b168bc21734c5aaf336456b5bd4bbcd80df2c11e254c41687ea5103d69f0fb1  engine/ranking.go
+a3052216725f490db985472cb52c65ec1cb4b5ca0857b00f0c346ff99ca2f5f8  engine/system_test.go
+ce8af3a47aecf35a17bed29dcd9db1f8cfefd7ee4840638c267b1d94e678d7a4  engine/types.go
+756b3deb2b6d2f53015c991f140e07016cde62a747d7e63399f500f04a524f0b  engine/validate.go
+1353c5e524d5d1e9a173ceac41c9751360bbd8ae88b623f0730165aa45ee7f57  engine/testdata/context.json
+90c2396dd9d41ca87238eef52a07fa3ac5bf28a5f9a529db5c44fae769610cc7  engine/testdata/invalid_cel.json
+cf118d411bbbf68ec788756e04ed4ab62b7983ea5e16773c75d6ce4852e1012f  engine/testdata/invalid_dates.json
+49d2a51201147e9fa4ab3b7b41be5684d9482b74f9e9ddd75cc4f92a40d444c7  engine/testdata/invalid_non_bool.json
+6f7f30d81f3ed509c6b2fffae703092acfb3c3fd37588c893068c3fdd6a2ad04  engine/testdata/invalid_outcome.json
+bcb69e270ab98619c7f8eec52b070588fb21e7e9b7fac1fec4fe3c308f3fdaf1  engine/testdata/invalid_stack.json
+f542e32b824460b29f35b29b6e02a30781a04c74dccd58939ee36d8932cd7030  engine/testdata/invalid_tiers.json
+bd0c4711be83facf7e0f5ccb754accbf95fa34c061c68eb35ecd1f3beec37b71  engine/testdata/invalid_unknown_dimension.json
+a10eb384345fd591da5f306d9d86ab43eb6f04581ed53e6f301834aba9aedb06  engine/testdata/invalid_unknown_variable.json
+a02626bcd0f5031c00dcd7cdb814c5d87bfe960e644c66afdff0351132876cfb  engine/testdata/ruleset.json
+1a9c557d43dbec06300bf6a487c9bc4088e8bf5a4833b7b83fd93d8ecc4307cb  engine/testdata/schema.json
+0bdc2617003628338fc96b661585e7ba6b48693ee886510f24b6155012da7911  scripts/measure-system.sh
+3cb17d6904588ab26278f386b583eb74bf79f1728183d47080919f7afa80d677  /Users/cristianmendez/Documents/github/khr0x/rulefare/bin/system/image/engine.test

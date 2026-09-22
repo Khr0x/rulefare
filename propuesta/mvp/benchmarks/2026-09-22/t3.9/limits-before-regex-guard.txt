@@ -1,0 +1,22 @@
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkResourceLimits/string_boundary         	  507681	      2392 ns/op	    1840 B/op	      32 allocs/op
+BenchmarkResourceLimits/string_boundary         	  511376	      2392 ns/op	    1840 B/op	      32 allocs/op
+BenchmarkResourceLimits/string_boundary         	  491074	      2409 ns/op	    1840 B/op	      32 allocs/op
+BenchmarkResourceLimits/oversized_context       	 5640967	       195.3 ns/op	     176 B/op	       4 allocs/op
+BenchmarkResourceLimits/oversized_context       	 6270823	       196.3 ns/op	     176 B/op	       4 allocs/op
+BenchmarkResourceLimits/oversized_context       	 5925543	       209.6 ns/op	     176 B/op	       4 allocs/op
+BenchmarkResourceLimits/condition_cost          	  254511	      4788 ns/op	    1848 B/op	      36 allocs/op
+BenchmarkResourceLimits/condition_cost          	  247760	      4796 ns/op	    1848 B/op	      36 allocs/op
+BenchmarkResourceLimits/condition_cost          	  247851	      4824 ns/op	    1848 B/op	      36 allocs/op
+BenchmarkResourceLimits/regex_cost              	      31	  41176465 ns/op	  814289 B/op	      89 allocs/op
+BenchmarkResourceLimits/regex_cost              	      30	  40550940 ns/op	  814296 B/op	      89 allocs/op
+BenchmarkResourceLimits/regex_cost              	      30	  37873224 ns/op	  814297 B/op	      89 allocs/op
+BenchmarkResourceLimits/aggregate_cost          	     338	   3506329 ns/op	 1242422 B/op	   26733 allocs/op
+BenchmarkResourceLimits/aggregate_cost          	     344	   3512107 ns/op	 1242426 B/op	   26733 allocs/op
+BenchmarkResourceLimits/aggregate_cost          	     345	   3557672 ns/op	 1242424 B/op	   26733 allocs/op
+BenchmarkResourceLimits/oversized_decimal       	 4813357	       244.2 ns/op	     184 B/op	       4 allocs/op
+BenchmarkResourceLimits/oversized_decimal       	 5005486	       242.1 ns/op	     184 B/op	       4 allocs/op
+BenchmarkResourceLimits/oversized_decimal       	 4927896	       255.0 ns/op	     184 B/op	       4 allocs/op
+PASS

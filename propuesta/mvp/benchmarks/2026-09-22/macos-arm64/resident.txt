@@ -1,0 +1,6 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+cpu: Apple M4
+BenchmarkProgramResident10000 	       1	 514865875 ns/op	  56065296 retained-heap-B	 154124288 rss-after-gc-B	 154288128 rss-released-B
+PASS

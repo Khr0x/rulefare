@@ -1,0 +1,29 @@
+File: engine.test
+Build ID: 1266c5f99edce2eaa99963412d37eb7e4d235d2b
+Type: cpu
+Time: 2026-09-22 10:33:36 CST
+Duration: 7.26s, Total samples = 7240ms (99.78%)
+Showing nodes accounting for 3630ms, 50.14% of 7240ms total
+Dropped 128 nodes (cum <= 36.20ms)
+Showing top 20 nodes out of 132
+      flat  flat%   sum%        cum   cum%
+     450ms  6.22%  6.22%     4900ms 67.68%  github.com/google/cel-go/interpreter.(*evalWatch).Exec
+     430ms  5.94% 12.15%     2700ms 37.29%  github.com/google/cel-go/interpreter.(*costTrackerFactory).Observe
+     360ms  4.97% 17.13%      390ms  5.39%  runtime.tryDeferToSpanScan
+     260ms  3.59% 20.72%      840ms 11.60%  github.com/google/cel-go/interpreter.(*refValStack).dropArgs
+     230ms  3.18% 23.90%      230ms  3.18%  internal/strconv.ParseUint
+     200ms  2.76% 26.66%      290ms  4.01%  internal/runtime/maps.(*Iter).Next
+     180ms  2.49% 29.14%      470ms  6.49%  runtime.mapaccess2_faststr
+     170ms  2.35% 31.49%      540ms  7.46%  runtime.mallocgcSmallScanSlowPath
+     130ms  1.80% 33.29%      600ms  8.29%  gcWriteBarrier
+     130ms  1.80% 35.08%      130ms  1.80%  github.com/google/cel-go/interpreter.(*evalConst).ID
+     120ms  1.66% 36.74%     4570ms 63.12%  github.com/google/cel-go/interpreter.(*evalAnd).Exec
+     120ms  1.66% 38.40%      170ms  2.35%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     120ms  1.66% 40.06%      510ms  7.04%  runtime.wbBufFlush1
+     110ms  1.52% 41.57%      110ms  1.52%  github.com/google/cel-go/interpreter.(*evalBinary).ID
+     110ms  1.52% 43.09%      130ms  1.80%  runtime.findObject
+     110ms  1.52% 44.61%      310ms  4.28%  runtime.mallocgcSmallScanNoHeaderSC3
+     100ms  1.38% 45.99%      130ms  1.80%  github.com/google/cel-go/interpreter.(*evalAttr).ID
+     100ms  1.38% 47.38%     2510ms 34.67%  github.com/google/cel-go/interpreter.(*evalBinary).Exec
+     100ms  1.38% 48.76%     1000ms 13.81%  runtime.mallocgc
+     100ms  1.38% 50.14%      100ms  1.38%  runtime.releasem (inline)

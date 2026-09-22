@@ -63,13 +63,15 @@ func (c *issueCollector) report() ValidationReport {
 
 func validateStructure(schema Schema, set RuleSet) *issueCollector {
 	issues := &issueCollector{}
+	if !compilationWithinLimits(schema, set) {
+		issues.add(IssueLimitExceeded, "", "compilation input exceeds size limits")
+		return issues
+	}
 
 	if strings.TrimSpace(schema.Version) == "" {
 		issues.add(IssueRequired, "/schema/version", "schema version is required")
 	}
-	if len(schema.Variables) > maxVariables {
-		issues.add(IssueLimitExceeded, "/schema/variables", fmt.Sprintf("at most %d variables are allowed", maxVariables))
-	}
+
 	variableNames := sortedKeys(schema.Variables)
 	for _, name := range variableNames {
 		path := "/schema/variables/" + escapeJSONPointer(name)
@@ -96,9 +98,7 @@ func validateStructure(schema Schema, set RuleSet) *issueCollector {
 	} else if schema.Version != "" && set.SchemaVersion != schema.Version {
 		issues.add(IssueSchemaMismatch, "/schema_version", "ruleset schema version does not match schema")
 	}
-	if len(set.Dimensions) > maxDimensions {
-		issues.add(IssueLimitExceeded, "/dimensions", fmt.Sprintf("at most %d dimensions are allowed", maxDimensions))
-	}
+
 	dimensions := make(map[string]struct{}, len(set.Dimensions))
 	for i, dimension := range set.Dimensions {
 		path := fmt.Sprintf("/dimensions/%d", i)
@@ -117,11 +117,11 @@ func validateStructure(schema Schema, set RuleSet) *issueCollector {
 		}
 	}
 
-	if len(set.Rules) > maxRules {
-		issues.add(IssueLimitExceeded, "/rules", fmt.Sprintf("at most %d rules are allowed", maxRules))
-	}
 	ruleIDs := make(map[string]struct{}, len(set.Rules))
 	for i, rule := range set.Rules {
+		if issues.truncated {
+			break
+		}
 		validateRule(issues, schema, dimensions, ruleIDs, rule, i)
 	}
 
@@ -149,9 +149,6 @@ func validateRule(issues *issueCollector, schema Schema, dimensions, ruleIDs map
 	}
 	if rule.ValidFrom != nil && rule.ValidTo != nil && !rule.ValidTo.After(*rule.ValidFrom) {
 		issues.add(IssueInvalidRange, base+"/valid_to", "valid_to must be after valid_from")
-	}
-	if len(rule.Condition) > maxConditionBytes {
-		issues.add(IssueLimitExceeded, base+"/condition", fmt.Sprintf("condition must not exceed %d bytes", maxConditionBytes))
 	}
 
 	for _, dimension := range sortedKeys(rule.Scope) {
@@ -223,9 +220,6 @@ func validateTiered(issues *issueCollector, schema Schema, tiered TieredOutcome,
 		issues.add(IssueRequired, path+"/tiers", "at least one tier is required")
 		return
 	}
-	if len(tiered.Tiers) > maxTiers {
-		issues.add(IssueLimitExceeded, path+"/tiers", fmt.Sprintf("at most %d tiers are allowed", maxTiers))
-	}
 
 	var previous int64
 	havePrevious := false
@@ -262,6 +256,19 @@ func validateRate(issues *issueCollector, rate, path string) {
 }
 
 func canonicalDecimal(value string) bool {
+	if len(value) > maxDecimalDigits+1 {
+		return false
+	}
+	digits := len(value)
+	if dot := strings.IndexByte(value, '.'); dot >= 0 {
+		digits--
+		if len(value)-dot-1 > maxDecimalScale {
+			return false
+		}
+	}
+	if digits > maxDecimalDigits {
+		return false
+	}
 	if !decimalPattern.MatchString(value) {
 		return false
 	}

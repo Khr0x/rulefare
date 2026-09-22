@@ -1,0 +1,1 @@
+ok  	github.com/Khr0x/rulefare/engine	0.289s

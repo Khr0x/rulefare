@@ -1,0 +1,8 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+cpu: Apple M4
+BenchmarkEvaluateLatency100 	   10000	    133166 ns/op	    358583 p95-ns	    390917 p99-ns	     10000 samples
+BenchmarkEvaluateLatency100 	   10000	    131665 ns/op	    354084 p95-ns	    379000 p99-ns	     10000 samples
+BenchmarkEvaluateLatency100 	   10000	    133528 ns/op	    357833 p95-ns	    384083 p99-ns	     10000 samples
+PASS

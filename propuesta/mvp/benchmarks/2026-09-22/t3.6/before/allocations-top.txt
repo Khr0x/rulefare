@@ -1,0 +1,28 @@
+File: engine.test
+Build ID: fc60dde04b8bd386c8c6287d8962ee5ef50bf2d5
+Type: alloc_space
+Time: 2026-09-22 08:01:23 CST
+Showing nodes accounting for 245.20MB, 68.38% of 358.60MB total
+Dropped 115 nodes (cum <= 1.79MB)
+Showing top 20 nodes out of 144
+      flat  flat%   sum%        cum   cum%
+   62.65MB 17.47% 17.47%    62.65MB 17.47%  github.com/google/cel-go/interpreter.(*defaultDispatcher).Add
+      24MB  6.69% 24.16%       24MB  6.69%  github.com/antlr4-go/antlr/v4.NewCommonToken
+      16MB  4.46% 28.62%       16MB  4.46%  github.com/google/cel-go/common/types.NewOpaqueType (inline)
+      14MB  3.90% 32.53%       14MB  3.90%  github.com/google/cel-go/checker.newMapping (inline)
+   13.50MB  3.77% 36.29%    13.50MB  3.77%  github.com/google/cel-go/parser/gen.NewRelationContext (inline)
+      10MB  2.79% 39.08%       10MB  2.79%  github.com/google/cel-go/parser/gen.NewCalcContext (inline)
+    9.50MB  2.65% 41.73%     9.50MB  2.65%  github.com/google/cel-go/parser/gen.NewMemberContext (inline)
+       9MB  2.51% 44.24%        9MB  2.51%  github.com/google/cel-go/common/ast.idVisitor.VisitExpr
+       9MB  2.51% 46.75%        9MB  2.51%  github.com/google/cel-go/parser.(*recursionListener).EnterEveryRule
+       9MB  2.51% 49.26%        9MB  2.51%  github.com/antlr4-go/antlr/v4.(*BaseParserRuleContext).AddChild
+       8MB  2.23% 51.49%    33.51MB  9.34%  github.com/antlr4-go/antlr/v4.(*CommonTokenStream).fetch
+       8MB  2.23% 53.73%        8MB  2.23%  github.com/google/cel-go/parser/gen.NewPrimaryContext (inline)
+       8MB  2.23% 55.96%        8MB  2.23%  github.com/google/cel-go/parser/gen.NewPrimaryExprContext
+       7MB  1.95% 57.91%        7MB  1.95%  github.com/google/cel-go/common/ast.(*SourceInfo).SetOffsetRange (inline)
+    6.50MB  1.81% 59.72%     6.50MB  1.81%  github.com/google/cel-go/interpreter.(*attrFactory).AbsoluteAttribute
+    6.50MB  1.81% 61.53%     6.50MB  1.81%  github.com/google/cel-go/parser/gen.NewMemberExprContext
+    6.50MB  1.81% 63.35%     6.50MB  1.81%  github.com/google/cel-go/parser/gen.NewUnaryContext (inline)
+    6.50MB  1.81% 65.16%    22.50MB  6.27%  github.com/google/cel-go/checker.newFunctionType (inline)
+    6.03MB  1.68% 66.84%   351.21MB 97.94%  github.com/Khr0x/rulefare/engine.Compile
+    5.50MB  1.53% 68.38%     5.50MB  1.53%  github.com/google/cel-go/parser/gen.NewExprContext (inline)

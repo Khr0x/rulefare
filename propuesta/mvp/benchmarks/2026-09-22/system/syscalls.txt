@@ -1,0 +1,536 @@
+8     execve("/engine.test", ["/engine.test", "-test.run", "^TestSystemEvaluationIO$", "-test.v", "-test.timeout=2m"], 0xffffde62d410 /* 6 vars */) = 0
+8     openat(AT_FDCWD, "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size", O_RDONLY) = 3
+8     read(3, "2097152\n", 20)          = 8
+8     close(3)                          = 0
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2ac9000
+8     mmap(NULL, 131072, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2aa9000
+8     mmap(NULL, 1048576, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb29a9000
+8     mmap(NULL, 8388608, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2000000
+8     mmap(NULL, 67108864, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffae000000
+8     mmap(NULL, 536870912, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff8e000000
+8     mmap(NULL, 536870912, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6e000000
+8     mmap(0x157954000000, 67108864, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x157954000000
+8     mmap(NULL, 33554432, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6c000000
+8     mmap(NULL, 69648, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2997000
+8     mmap(0x157955c00000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157955c00000
+8     mmap(0xffffb2aa9000, 131072, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xffffb2aa9000
+8     mmap(0xffffb29be000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xffffb29be000
+8     mmap(0xffffb20ab000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xffffb20ab000
+8     mmap(0xffffae55e000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xffffae55e000
+8     mmap(0xffff90af2000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xffff90af2000
+8     mmap(0xffff70af2000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xffff70af2000
+8     mmap(NULL, 1048576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2897000
+8     mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2887000
+8     mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2877000
+8     fcntl(0, F_GETFD)                 = 0
+8     fcntl(1, F_GETFD)                 = 0
+8     fcntl(2, F_GETFD)                 = 0
+8     mmap(0x157956000000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157956000000
+8     openat(AT_FDCWD, "/proc/self/cgroup", O_RDONLY|O_CLOEXEC) = 3
+8     read(3, "0::/\n", 65536)          = 5
+8     read(3, "", 65536)                = 0
+8     close(3)                          = 0
+8     openat(AT_FDCWD, "/proc/self/mountinfo", O_RDONLY|O_CLOEXEC) = 3
+8     read(3, "104 69 0:47 / / ro,relatime - overlay overlay rw,lowerdir=/var/lib/docker/overlay2/l/W76C6PLPVLMLXX3S6GALRWMIO2:/var/lib/docker/overlay2/l/6SV475KA7SBVLTFT5GTAHXMZ4X:/var/lib/docker/overlay2/l/PXSXXDQ4AXZMIEA3RYRW737RXL:/var/lib/docker/overlay2/l/KQE2D2TZ5"..., 65536) = 2577
+8     close(3)                          = 0
+8     openat(AT_FDCWD, "/sys/fs/cgroup/cpu.max", O_RDONLY|O_CLOEXEC) = 3
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2837000
+8     fcntl(0, F_GETFL)                 = 0x20002 (flags O_RDWR|O_LARGEFILE)
+8     fcntl(1, F_GETFL)                 = 0x1 (flags O_WRONLY)
+8     fcntl(2, F_GETFL)                 = 0x1 (flags O_WRONLY)
+8     readlinkat(AT_FDCWD, "/proc/self/exe", "/engine.test", 128) = 12
+8     openat(AT_FDCWD, "/engine.test", O_RDONLY|O_CLOEXEC) = 4
+8     fcntl(4, F_GETFL)                 = 0x20000 (flags O_RDONLY|O_LARGEFILE)
+8     fcntl(4, F_SETFL, O_RDONLY|O_NONBLOCK|O_LARGEFILE) = 0
+8     epoll_create1(EPOLL_CLOEXEC)      = 5
+8     eventfd2(0, EFD_CLOEXEC|EFD_NONBLOCK) = 6
+8     epoll_ctl(5, EPOLL_CTL_ADD, 6, {events=EPOLLIN, data={u32=11864936, u64=11864936}}) = 0
+8     epoll_ctl(5, EPOLL_CTL_ADD, 4, {events=EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, data={u32=3976200193, u64=9223329439050366977}}) = -1 EPERM (Operation not permitted)
+8     fcntl(4, F_GETFL)                 = 0x20800 (flags O_RDONLY|O_NONBLOCK|O_LARGEFILE)
+8     fcntl(4, F_SETFL, O_RDONLY|O_LARGEFILE) = 0
+8     fstat(4, {st_mode=S_IFREG|0755, st_size=17057948, ...}) = 0
+8     pread64(4, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\2\0\267\0\1\0\0\0\360\16\n\0\0\0\0\0@\0\0\0\0\0\0\0\220\1\0\0\0\0\0\0\0\0\0\0@\08\0\6\0@\0\32\0\31\0", 64, 0) = 64
+8     pread64(4, "\371\246\4\0\321\307\5\200\322'h&8\246\30\0\221\177\0\6\353\302\1\0T\345O\0\371\340\3\1\252\341\3\6\252\342\3\3\252\343\7\177\262dA\0\260\204 \37\221\216\f\372\227\345O@\371\346\3\1", 64, 2132243) = 64
+8     pread64(4, "\0\0\0\0\0\0\0\0\0\220\v@\371\377c0\353I\17\0T\376\17\31\370\375\203\37\370\375#\0\321\341C\0\371\342G\0\371\346W\0\371\351c\0\371\350_\0\371\345S\0\371\344O\0\371\343K\0", 64, 4264487) = 64
+8     pread64(4, "\2\2\2\2\2\3\1\20\1\t\3\5\2\222\3\1\230\f\1\2\10\2\3\273\f\1\312\f\2<\1\205\r\1\274\f\1\2\1\2\3\2\23\4\1\4\1\7\3\241\16\1\2\1\240\r\1\6\3\245\r\1\242\16", 64, 6396730) = 64
+8     pread64(4, "\1\0@\311\0\0\377\377\377\377\260\6\7\0\377\377\377\377G=\f\0003\26\f\0\260`/\0B%\10\0P\0\0\0\0\0\0\0\220\35\16\0\245\35\16\0\251\35\16\0\4\0\0\0\v\23\0\0\324\0", 64, 8528974) = 64
+8     pread64(4, "tlr.PredictionContext) bool)\0**struct { key int; elem []antlr.JP", 64, 10661217) = 64
+8     pread64(4, "yx.(\361\2315\2218\226\255\"\336S\23\t\270T\260>\275\207oq\211m\321\304\305\267\270\315\245\326!\20649Ku;]~4;\35\311\342X\32\301\343XJc\373\35.\303\f\214\375k\211", 64, 12793461) = 64
+8     pread64(4, "O\341\223S\271\243\3244\254\333G\251\353v\311\356wHK%\262do\330}\332ZN\36V3&\26\240\0\246C\315\270\0U?/Uh\320\205\214\4\335\311\\\245.\224\240\36[\221\2759A\333M", 64, 14925704) = 64
+8     close(4)                          = 0
+8     mmap(NULL, 1439992, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bea0000
+8     write(1, "=== RUN   TestSystemEvaluationIO\n", 33) = 33
+8     openat(AT_FDCWD, "testdata/schema.json", O_RDONLY|O_CLOEXEC) = 4
+8     fcntl(4, F_GETFL)                 = 0x20000 (flags O_RDONLY|O_LARGEFILE)
+8     fcntl(4, F_SETFL, O_RDONLY|O_NONBLOCK|O_LARGEFILE) = 0
+8     epoll_ctl(5, EPOLL_CTL_ADD, 4, {events=EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, data={u32=3976200194, u64=9223329439050366978}}) = -1 EPERM (Operation not permitted)
+8     fcntl(4, F_GETFL)                 = 0x20800 (flags O_RDONLY|O_NONBLOCK|O_LARGEFILE)
+8     fcntl(4, F_SETFL, O_RDONLY|O_LARGEFILE) = 0
+8     fstat(4, {st_mode=S_IFREG|0644, st_size=346, ...}) = 0
+8     read(4, "{\n  \"version\": \"v1\",\n  \"variables\": {\n    \"market\": \"string\",\n    \"country\": \"string\",\n    \"channel\": \"string\",\n    \"agency\": \"string\",\n    \"branch\": \"string\",\n    \"agent\": \"string\",\n    \"supplier\": \"string\",\n    \"product\": \"string\",\n    \"contract\": \"strin"..., 512) = 346
+8     read(4, "", 166)                  = 0
+8     close(4)                          = 0
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6be60000
+8     mmap(0x157956400000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157956400000
+8     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+8     mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2827000
+8     mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2825000
+8     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6be20000
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bde0000
+8     write(2, "RULEFARE_IO_BEGIN control\n", 26) = 26
+8     openat(AT_FDCWD, "testdata/schema.json", O_RDONLY|O_CLOEXEC) = 4
+8     fcntl(4, F_GETFL)                 = 0x20000 (flags O_RDONLY|O_LARGEFILE)
+9     epoll_pwait(5,  <unfinished ...>
+8     fcntl(4, F_SETFL, O_RDONLY|O_NONBLOCK|O_LARGEFILE) = 0
+9     <... epoll_pwait resumed>[], 128, 0, NULL, 0) = 0
+8     epoll_ctl(5, EPOLL_CTL_ADD, 4, {events=EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, data={u32=3976200195, u64=9223329439050366979}}) = -1 EPERM (Operation not permitted)
+8     fcntl(4, F_GETFL)                 = 0x20800 (flags O_RDONLY|O_NONBLOCK|O_LARGEFILE)
+8     fcntl(4, F_SETFL, O_RDONLY|O_LARGEFILE) = 0
+8     fstat(4, {st_mode=S_IFREG|0644, st_size=346, ...}) = 0
+8     read(4, "{\n  \"version\": \"v1\",\n  \"variables\": {\n    \"market\": \"string\",\n    \"country\": \"string\",\n    \"channel\": \"string\",\n    \"agency\": \"string\",\n    \"branch\": \"string\",\n    \"agent\": \"string\",\n    \"supplier\": \"string\",\n    \"product\": \"string\",\n    \"contract\": \"strin"..., 512) = 346
+8     read(4, "", 166)                  = 0
+8     close(4)                          = 0
+8     socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 4
+8     close(4)                          = 0
+8     write(2, "RULEFARE_IO_END control\n", 24) = 24
+8     mmap(0x157956800000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157956800000
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bda0000
+8     write(2, "RULEFARE_IO_BEGIN repeated100\n", 30) = 30
+8     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+8     mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2815000
+8     --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+8     mmap(0x157956c00000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157956c00000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+8     --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+8     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bd60000
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bd20000
+8     mmap(0x157957000000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157957000000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+8     mmap(0x157957400000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157957400000
+8     mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bce0000
+8     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+8     write(2, "RULEFARE_IO_END repeated100\n", 28) = 28
+8     write(1, "    system_test.go:94: scenario=repeated100 evaluations=1000 status=MATCH\n", 74) = 74
+10    mmap(0x157957800000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157957800000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    write(2, "RULEFARE_IO_BEGIN unique100\n", 28) = 28
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bca0000
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2805000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bc90000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bc80000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    write(2, "RULEFARE_IO_END unique100\n", 26) = 26
+10    write(1, "    system_test.go:94: scenario=unique100 evaluations=1000 status=MATCH\n", 72) = 72
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(0x157957c00000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157957c00000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bc40000
+10    mmap(0x157958000000, 67108864, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x157958000000
+10    mmap(NULL, 69648, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bc2e000
+10    mmap(0x157958000000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157958000000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x157958400000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157958400000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(0x157958800000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157958800000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bbee000
+10    mmap(0x157958c00000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157958c00000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(0x157959000000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157959000000
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bbde000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(0x157959400000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157959400000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bbce000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 16384, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2801000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x157959800000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157959800000
+10    mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bb8e000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bb7e000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x157959c00000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x157959c00000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x15795a000000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795a000000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bb6e000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 98304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bb56000
+10    mmap(0x15795a400000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795a400000
+10    mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bb16000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x15795a800000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795a800000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x15795ac00000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795ac00000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(0x15795b000000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795b000000
+10    write(2, "RULEFARE_IO_BEGIN unique10000\n", 30) = 30
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffffb2887000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bb06000
+10    mmap(0x15795b400000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795b400000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 32768, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6bafe000
+10    mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6babe000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x15795b800000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795b800000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x15795bc00000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795bc00000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x15795c000000, 67108864, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x15795c000000
+10    mmap(NULL, 69648, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6baac000
+10    mmap(0x15795c000000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795c000000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6ba9c000
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6ba8c000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6ba7c000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6ba6c000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x15795c400000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795c400000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(0x15795c800000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795c800000
+10    mmap(NULL, 262144, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6ba2c000
+10    mmap(0x15795cc00000, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x15795cc00000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6ba1c000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6ba0c000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6b9fc000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6b9ec000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6b9dc000
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6b9cc000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6b9bc000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    mmap(NULL, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff6b9ac000
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    write(2, "RULEFARE_IO_END unique10000\n", 28) = 28
+10    write(1, "    system_test.go:94: scenario=unique10000 evaluations=100 status=MATCH\n", 73) = 73
+10    write(2, "RULEFARE_IO_BEGIN invalid\n", 26) = 26
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    write(2, "RULEFARE_IO_END invalid\n", 24) = 24
+10    write(1, "    system_test.go:94: scenario=invalid evaluations=1000 status=INVALID_INPUT\n", 78) = 78
+10    write(2, "RULEFARE_IO_BEGIN no_match\n", 27) = 27
+10    epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+9     epoll_pwait(5, [], 128, 0, NULL, 0) = 0
+10    --- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8, si_uid=0} ---
+10    write(2, "RULEFARE_IO_END no_match\n", 25) = 25
+10    write(1, "    system_test.go:94: scenario=no_match evaluations=1000 status=NO_MATCH\n", 74) = 74
+10    write(1, "--- PASS: TestSystemEvaluationIO (2.31s)\n", 41) = 41
+10    write(1, "PASS\n", 5)             = 5

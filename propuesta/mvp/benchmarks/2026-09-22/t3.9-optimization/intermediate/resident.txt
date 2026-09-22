@@ -1,0 +1,5 @@
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkProgramResident10000 	       1	  26015375 ns/op	   5558480 retained-heap-B	  30666752 rss-after-gc-B	  20180992 rss-released-B
+PASS
