@@ -166,7 +166,7 @@ Un exceso de tamaño de entrada produce **`INVALID_INPUT` con issue `LIMIT_EXCEE
 
 La [guía de CLI](../README.md#cli) incluye comandos ejecutables, flags, archivos JSON, stdout/stderr y códigos de salida. Existe un único binario `rulefare` con `rules validate` y `rules evaluate`; `serve` aún no existe. Cada comando carga y compila los archivos para esa ejecución; un host Go puede reutilizar el `Program` entre llamadas.
 
-Desde la raíz: `go test ./...`, `go test -race ./...` y `go vet ./...`. Los [benchmarks y perfiles](../propuesta/mvp/benchmarks/2026-09-22/t3.9-optimization/README.md) documentan escenarios, entorno y restricciones; no sustituyen la aprobación del corpus de negocio ni la verificación remota de CI.
+Desde la raíz: `go test ./...`, `go test -race ./...` y `go vet ./...`. Los [benchmarks y perfiles](../propuesta/mvp/benchmarks/2026-09-22/t3.9-optimization/README.md) documentan escenarios, entorno y restricciones. El [CI de `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) pasó con el corpus técnico de 32 casos; las tarifas reales requieren aceptación comercial independiente.
 
 La [medición de sistema](../propuesta/mvp/benchmarks/2026-09-22/system/README.md) registra CPU en reposo con 10.000 condiciones distintas y syscalls de archivos/red en 4.100 evaluaciones. Incluye controles positivos, trazas y las limitaciones de la muestra. Se reproduce con `bash scripts/measure-system.sh bin/system`.
 

@@ -7,7 +7,7 @@ Revisión independiente: agente `financial_corpus_review`, solicitado por el res
 
 No se identificó un defecto reproducible de selección frente al contrato actual. Se amplió el corpus de 10 a 32 casos para conservar explícitamente las decisiones de mayor impacto financiero. El agente contrastó los resultados esperados completos, incluidos outcome, trace, especificidad, desempates y errores tipados. Las expectativas se redactaron desde el contrato, sin generarlas con `Evaluate`.
 
-No fue necesario cambiar el motor. Se extendió el harness para verificar también `AmbiguousMatchError` y `EvaluationLimitError`, incluidos los IDs responsables. Los 32 casos pasan en orden original e invertido (64 evaluaciones). La suite completa, detector de carreras y `go vet` pasan localmente. La CI de esta ampliación queda pendiente de publicación.
+No fue necesario cambiar el motor. Se extendió el harness para verificar también `AmbiguousMatchError` y `EvaluationLimitError`, incluidos los IDs responsables. Los 32 casos pasan en orden original e invertido (64 evaluaciones). La suite completa, detector de carreras y `go vet` pasan localmente. La [CI del commit de merge `09ff1e2`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) pasó con los 32 casos.
 
 Fuentes: [API implementada](../README.md), [plan F1](../../propuesta/mvp/f1_motor_reglas_plan_implementacion.md), [jerarquía](../../propuesta/mvp/travel_commission_engine_jerarquia_reglas.md), `evaluate.go`, `ranking.go`, `validate.go` y los fixtures de este directorio. Las capacidades de fases posteriores de la propuesta no se atribuyen a F1.
 

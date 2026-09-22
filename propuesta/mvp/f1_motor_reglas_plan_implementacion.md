@@ -4,9 +4,9 @@
 
 | Campo | Valor |
 |---|---|
-| Versión | 0.18 |
+| Versión | 0.19 |
 | Última actualización | 2026-09-22 |
-| Estado | 🟡 En curso · Corpus técnico revisado por IA; CI de la ampliación pendiente |
+| Estado | ✅ F1 completada técnicamente · [CI del merge en `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) verde |
 | Inicio objetivo | 2026-09-14 |
 | Fin objetivo | 2026-10-02 |
 | Duración | 3 semanas |
@@ -249,7 +249,7 @@ El trace registra IDs, versión, perfil de especificidad y desempates. No copia 
 
 **Periodo:** 2026-09-14 → 2026-09-18  
 **Hito:** un ruleset válido compila a un `Program` inmutable.  
-**Estado:** 🟡 Inmutabilidad y corpus técnico verificados; revisión independiente asistida por IA completada, CI de la ampliación pendiente.
+**Estado:** ✅ Inmutabilidad y corpus técnico verificados; revisión independiente asistida por IA y CI del merge completadas.
 
 | ID | Trabajo | Entregable | Estado |
 |---|---|---|---|
@@ -285,14 +285,14 @@ El trace registra IDs, versión, perfil de especificidad y desempates. No copia 
 |---|---|---|---|
 | T3.1 | Crear `rulefare rules validate` | reporte legible y JSON | ✅ Implementada y probada localmente |
 | T3.2 | Crear `rulefare rules evaluate` | resultado + trace JSON | ✅ Implementada y probada localmente |
-| T3.3 | Ejecutar race detector y pruebas concurrentes | `concurrency_test.go` + evidencia `go test -race` | ✅ Pruebas dedicadas y suite local en verde; ejecución remota de CI no verificada |
+| T3.3 | Ejecutar race detector y pruebas concurrentes | `concurrency_test.go` + evidencia `go test -race` | ✅ Pruebas dedicadas y suite local/remota en verde; [CI del merge](https://github.com/Khr0x/rulefare/actions/runs/35778045359) |
 | T3.4 | Añadir fuzzing de ruleset/contexto | `fuzz_test.go`, semillas y tres targets | ✅ Campañas locales sin fallos; campañas breves configuradas en CI |
-| T3.5 | Medir latencia, memoria y asignaciones | `benchmark_test.go`, runner y baseline | ✅ Medida localmente y en contenedor 1 CPU/512 MiB; ejecución remota pendiente |
+| T3.5 | Medir latencia, memoria y asignaciones | `benchmark_test.go`, runner y baseline | ✅ Medida localmente y en [CI del merge](https://github.com/Khr0x/rulefare/actions/runs/35778045359), con artefacto por SHA |
 | T3.6 | Perfilar y optimizar solo incumplimientos medidos | perfiles antes/después | ✅ Perfiles y optimizaciones medidas: RSS 31,4 MiB repetidas / 86,4 MiB únicas; evidencia local |
 | T3.7 | Bloquear imports internos e infraestructura en CI | prueba de arquitectura | ✅ Adelantada |
 | T3.8 | Documentar API, CLI, errores y límites | README del paquete | ✅ [Guía del paquete](../../engine/README.md), CLI y límites documentados; ejemplos Go/CLI ejecutados localmente |
 | T3.9 | Limitar coste runtime CEL y tamaños de valores/payload | límites medidos + pruebas adversariales | ✅ Límites implementados, pruebas adversariales y mediciones locales; sobrecoste documentado |
-| T3.10 | Endurecer supply chain de CI | `govulncheck`, Actions por SHA y Go con parche vigente | 🟦 Workflow configurado; falta verificar ejecución remota y vigencia del parche |
+| T3.10 | Endurecer supply chain de CI | `govulncheck`, Actions por SHA y Go con parche vigente | ✅ Workflow con `govulncheck` y Actions por SHA; [CI del merge](https://github.com/Khr0x/rulefare/actions/runs/35778045359) verde. La vigencia del parche debe reevaluarse periódicamente |
 
 ## Estado verificado al 2026-09-22
 
@@ -446,7 +446,7 @@ El [reporte de sistema](./benchmarks/2026-09-22/system/README.md) completa la ev
 
 ## 13. Criterios de aceptación
 
-- [x] `go test ./...` y `go test -race ./...` pasan localmente; CI de la base `df48c04` verde, ejecución remota del corpus ampliado pendiente.
+- [x] `go test ./...` y `go test -race ./...` pasan localmente y en [CI de `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) con el corpus de 32 casos.
 - [x] CLI valida y evalúa los archivos de `testdata` sin servicios externos (pruebas locales y binario ejecutado).
 - [x] La única dependencia externa directa de `engine` es CEL; sus dependencias transitivas permanecen en go.mod/go.sum (verificación local).
 - [x] `engine` no importa paquetes `internal` ni otros paquetes del proyecto; control de CI reforzado y verificado localmente.
@@ -458,12 +458,12 @@ El [reporte de sistema](./benchmarks/2026-09-22/system/README.md) completa la ev
 - [x] Percentage, fixed y tiered hacen round-trip sin `float` y se preservan en los snapshots de evaluación (pruebas locales).
 - [x] La CLI rechaza campos desconocidos, archivos de más de 8 MiB y tipos no normalizables (pruebas locales).
 - [x] CEL y los valores de entrada tienen límites runtime medidos y probados localmente (T3.9).
-- [x] Los escenarios medidos localmente cumplen latencia, memoria, CPU e I/O; [evidencia de sistema](./benchmarks/2026-09-22/system/README.md). Corpus técnico revisado por IA; pendiente CI del corpus ampliado. No es una garantía para cualquier carga.
+- [x] Los escenarios medidos cumplen latencia, memoria, CPU e I/O localmente y en [CI de `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359); [evidencia de cierre](./verificacion/2026-09-22/README.md#cierre-técnico-de-f1). No es una garantía para cualquier carga.
 - [x] CI ejecuta detector de carreras y `govulncheck`, y referencia Actions de terceros por SHA completo; [run exitoso de la base `df48c04`](https://github.com/Khr0x/rulefare/actions/runs/35773582167).
 - [x] La API pública y los reason codes están documentados en [la guía del paquete](../../engine/README.md), con ejemplo Go y comandos CLI verificados localmente.
 - [x] La revisión local de fuentes de producción mantiene el alcance de F1: engine y CLI, sin funcionalidades de fases posteriores.
 
-La [verificación técnica y de CI](./verificacion/2026-09-22/README.md) conserva resultados y hashes. `govulncheck` no detecta vulnerabilidades localmente. La CI de main en `df48c04` pasó con CPU/I/O y artefactos ([run](https://github.com/Khr0x/rulefare/actions/runs/35773582167)). Ese run cubre el corpus anterior de diez casos; la ampliación a 32 casos tiene evidencia local y requiere CI al publicarse.
+La [verificación técnica y de CI](./verificacion/2026-09-22/README.md) conserva resultados y hashes. `govulncheck` no detecta vulnerabilidades localmente. La CI de main en `df48c04` pasó con CPU/I/O y artefactos ([run](https://github.com/Khr0x/rulefare/actions/runs/35773582167)). La [ejecución del merge `09ff1e2`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) cubre el corpus de 32 casos, fuzzing, benchmarks, CPU/I/O y `govulncheck`; su artefacto conserva las mediciones.
 
 ## 14. Definition of Done
 
@@ -483,6 +483,8 @@ go build -o bin/rulefare ./cmd/rulefare
 ```
 
 La salida identifica `HOTELBEDS_MX` como ganadora, devuelve el outcome `percentage` con rate `0.17` y explica los descartes en el trace. El [README](../../README.md#cli) documenta flags, formatos, códigos de salida y límite de archivos.
+
+**Cierre técnico:** los cinco criterios anteriores tienen evidencia en el [run `35778045359`](https://github.com/Khr0x/rulefare/actions/runs/35778045359), su [artefacto](https://github.com/Khr0x/rulefare/actions/runs/35778045359#artifacts), el [corpus revisado](../../engine/testdata/FINANCIAL_REVIEW.md) y la [demostración reproducible](../../README.md#cli). La aceptación de contratos y tarifas reales continúa en F0 y en las fases comerciales; los valores sintéticos de F1 no son tarifas aprobadas.
 
 ## 15. Registro de seguimiento
 
@@ -515,3 +517,4 @@ La salida identifica `HOTELBEDS_MX` como ganadora, devuelve el outcome `percenta
 | 2026-09-22 | Documentación de ranking | Guía indicaba primera dimensión | ✅ Corregida a última dimensión | Dimensions es menor → mayor rango; código y especificación ya coincidían, sin cambio de resolución | Backend |
 | 2026-09-22 | Criterios técnicos / CI | Evidencia parcial | ✅ Verificación local; CI actual pendiente | Imports stdlib/CEL, round-trip/ranking, govulncheck y actionlint pasan; run antiguo verificado, medición de sistema añadida a CI | Backend |
 | 2026-09-22 | T1.6 / revisión de dominio | 🟡 Diez casos sin revisión de dominio | ✅ Corpus técnico revisado por IA | 32 casos, 64 evaluaciones con orden invertido; revisión independiente financiera, suite/race/vet locales pasan; sin cambios al motor ni aprobación de tarifas reales | Backend / agente de revisión solicitado |
+| 2026-09-22 | Cierre técnico F1 | 🟡 CI del corpus ampliado pendiente | ✅ Completa técnicamente | Merge `09ff1e2`, [CI de main](https://github.com/Khr0x/rulefare/actions/runs/35778045359) en verde, artefacto de benchmarks, 32 casos revisados; aceptación comercial futura separada | Backend / Tech Lead |
