@@ -4,9 +4,9 @@
 
 | Campo | Valor |
 |---|---|
-| Versión | 0.17 |
+| Versión | 0.18 |
 | Última actualización | 2026-09-22 |
-| Estado | 🟡 En curso · Mediciones locales de sistema completadas; corpus y evidencia remota pendientes |
+| Estado | 🟡 En curso · Corpus técnico revisado por IA; CI de la ampliación pendiente |
 | Inicio objetivo | 2026-09-14 |
 | Fin objetivo | 2026-10-02 |
 | Duración | 3 semanas |
@@ -249,7 +249,7 @@ El trace registra IDs, versión, perfil de especificidad y desempates. No copia 
 
 **Periodo:** 2026-09-14 → 2026-09-18  
 **Hito:** un ruleset válido compila a un `Program` inmutable.  
-**Estado:** 🟡 Inmutabilidad corregida y verificada localmente; falta corpus aprobado y evidencia remota de CI.
+**Estado:** 🟡 Inmutabilidad y corpus técnico verificados; revisión independiente asistida por IA completada, CI de la ampliación pendiente.
 
 | ID | Trabajo | Entregable | Estado |
 |---|---|---|---|
@@ -258,7 +258,7 @@ El trace registra IDs, versión, perfil de especificidad y desempates. No copia 
 | T1.3 | Implementar validación estructural acumulativa | `ValidationReport` | ✅ |
 | T1.4 | Integrar CEL con schema estricto y retorno booleano | `compile.go` | ✅ |
 | T1.5 | Garantizar inmutabilidad y agrupación por capa | `Program` compilado | ✅ Compilar clona la entrada y Evaluate clona el outcome; prueba local |
-| T1.6 | Crear corpus dorado inicial desde los ejemplos de la propuesta | `engine/testdata` | 🟡 [Corpus inicial](../../engine/testdata/README.md) de diez casos y snapshots probado localmente; falta revisión/aprobación de producto y finanzas |
+| T1.6 | Crear corpus dorado inicial desde los ejemplos de la propuesta | `engine/testdata` | ✅ [32 casos técnicos revisados](../../engine/testdata/FINANCIAL_REVIEW.md) por un agente independiente con enfoque financiero; suite/race/vet locales pasan; tarifas reales requieren aceptación separada |
 
 ### Semana 2 · Evaluación, ranking y trace
 
@@ -446,31 +446,31 @@ El [reporte de sistema](./benchmarks/2026-09-22/system/README.md) completa la ev
 
 ## 13. Criterios de aceptación
 
-- [x] `go test ./...` y `go test -race ./...` pasan localmente; evidencia remota pendiente.
+- [x] `go test ./...` y `go test -race ./...` pasan localmente; CI de la base `df48c04` verde, ejecución remota del corpus ampliado pendiente.
 - [x] CLI valida y evalúa los archivos de `testdata` sin servicios externos (pruebas locales y binario ejecutado).
 - [x] La única dependencia externa directa de `engine` es CEL; sus dependencias transitivas permanecen en go.mod/go.sum (verificación local).
 - [x] `engine` no importa paquetes `internal` ni otros paquetes del proyecto; control de CI reforzado y verificado localmente.
 - [x] `Program` es inmutable y seguro para concurrencia con contextos de solo lectura (T3.3, pruebas locales con `-race`).
 - [x] Mutar un `Result` no cambia el `Program` ni otra evaluación (prueba local).
 - [x] Layer, fecha o contexto inválidos fallan antes de resolver reglas; nunca activan un fallback (T2.7, prueba local).
-- [x] Ranking, prioridad, empate, vigencia y `NO_MATCH` cumplen la especificación en las pruebas técnicas locales; aprobación del corpus de negocio pendiente.
+- [x] Ranking, prioridad, empate, vigencia y `NO_MATCH` cumplen la especificación en las pruebas técnicas locales; corpus técnico de 32 casos revisado por IA; aceptación de tarifas reales separada.
 - [x] El trace es estable, explicable y no contiene el contexto completo ni mensajes internos de CEL (pruebas locales).
 - [x] Percentage, fixed y tiered hacen round-trip sin `float` y se preservan en los snapshots de evaluación (pruebas locales).
 - [x] La CLI rechaza campos desconocidos, archivos de más de 8 MiB y tipos no normalizables (pruebas locales).
 - [x] CEL y los valores de entrada tienen límites runtime medidos y probados localmente (T3.9).
-- [x] Los escenarios medidos localmente cumplen latencia, memoria, CPU e I/O; [evidencia de sistema](./benchmarks/2026-09-22/system/README.md). Pendientes corpus aprobado y verificación remota; no es una garantía para cualquier carga.
-- [ ] CI ejecuta detector de carreras y `govulncheck`, y referencia Actions de terceros por SHA completo.
+- [x] Los escenarios medidos localmente cumplen latencia, memoria, CPU e I/O; [evidencia de sistema](./benchmarks/2026-09-22/system/README.md). Corpus técnico revisado por IA; pendiente CI del corpus ampliado. No es una garantía para cualquier carga.
+- [x] CI ejecuta detector de carreras y `govulncheck`, y referencia Actions de terceros por SHA completo; [run exitoso de la base `df48c04`](https://github.com/Khr0x/rulefare/actions/runs/35773582167).
 - [x] La API pública y los reason codes están documentados en [la guía del paquete](../../engine/README.md), con ejemplo Go y comandos CLI verificados localmente.
 - [x] La revisión local de fuentes de producción mantiene el alcance de F1: engine y CLI, sin funcionalidades de fases posteriores.
 
-La [verificación técnica y de CI](./verificacion/2026-09-22/README.md) conserva resultados y hashes. `govulncheck` no detecta vulnerabilidades localmente. Se encontró un run remoto exitoso del commit base del 6 de septiembre; no cubre los cambios actuales. El workflow ya incorpora CPU/I/O y sus artefactos, pendiente de ejecución remota del commit de entrega.
+La [verificación técnica y de CI](./verificacion/2026-09-22/README.md) conserva resultados y hashes. `govulncheck` no detecta vulnerabilidades localmente. La CI de main en `df48c04` pasó con CPU/I/O y artefactos ([run](https://github.com/Khr0x/rulefare/actions/runs/35773582167)). Ese run cubre el corpus anterior de diez casos; la ampliación a 32 casos tiene evidencia local y requiere CI al publicarse.
 
 ## 14. Definition of Done
 
 F1 se marca `✅ Completa` cuando:
 
 1. Todos los criterios de aceptación tienen evidencia en CI.
-2. El corpus dorado fue revisado por producto/finanzas.
+2. El corpus dorado tiene revisión de dominio documentada. Para el corpus técnico sintético, el responsable solicitó un agente independiente con enfoque financiero ante la ausencia de equipo de producto/finanzas: [revisión completada](../../engine/testdata/FINANCIAL_REVIEW.md). La aceptación de contratos y tarifas reales sigue siendo una decisión del responsable antes de su uso comercial.
 3. Los benchmarks y perfiles base quedaron asociados al commit de entrega.
 4. F2 puede importar `engine`, pero `engine` compila y funciona sin F2.
 5. Existe una demostración reproducible:
@@ -514,3 +514,4 @@ La salida identifica `HOTELBEDS_MX` como ganadora, devuelve el outcome `percenta
 | 2026-09-22 | T1.6 | 🟡 Sin cases.json | 🟡 Corpus inicial listo para revisión | Diez casos explícitos, jerarquía canónica, snapshots y orden invertido; suite/race/vet locales pasan; aprobación de negocio pendiente | Backend / Producto / Finanzas |
 | 2026-09-22 | Documentación de ranking | Guía indicaba primera dimensión | ✅ Corregida a última dimensión | Dimensions es menor → mayor rango; código y especificación ya coincidían, sin cambio de resolución | Backend |
 | 2026-09-22 | Criterios técnicos / CI | Evidencia parcial | ✅ Verificación local; CI actual pendiente | Imports stdlib/CEL, round-trip/ranking, govulncheck y actionlint pasan; run antiguo verificado, medición de sistema añadida a CI | Backend |
+| 2026-09-22 | T1.6 / revisión de dominio | 🟡 Diez casos sin revisión de dominio | ✅ Corpus técnico revisado por IA | 32 casos, 64 evaluaciones con orden invertido; revisión independiente financiera, suite/race/vet locales pasan; sin cambios al motor ni aprobación de tarifas reales | Backend / agente de revisión solicitado |

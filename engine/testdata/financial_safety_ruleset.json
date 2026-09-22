@@ -1,0 +1,222 @@
+{
+  "id": "financial-safety",
+  "version": "draft-v1",
+  "schema_version": "v1",
+  "dimensions": [
+    "market",
+    "country",
+    "channel",
+    "agency",
+    "branch",
+    "agent",
+    "supplier",
+    "product",
+    "contract"
+  ],
+  "rules": [
+    {
+      "id": "PRIORITY_HIGH",
+      "layer": "priority",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.1"
+        }
+      },
+      "scope": {
+        "country": "MX"
+      },
+      "priority": 10
+    },
+    {
+      "id": "PRIORITY_LOW",
+      "layer": "priority",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.9"
+        }
+      },
+      "scope": {
+        "country": "MX"
+      },
+      "priority": 1
+    },
+    {
+      "id": "A_COUNTRY",
+      "layer": "specificity",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.9"
+        }
+      },
+      "scope": {
+        "country": "MX"
+      },
+      "priority": 2147483647
+    },
+    {
+      "id": "Z_SUPPLIER",
+      "layer": "specificity",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.1"
+        }
+      },
+      "scope": {
+        "supplier": "hotelbeds"
+      },
+      "priority": -2147483648
+    },
+    {
+      "id": "AMBIGUOUS_A",
+      "layer": "ambiguous",
+      "outcome": {
+        "kind": "fixed",
+        "fixed": {
+          "amount": "25",
+          "currency": "MXN"
+        }
+      },
+      "scope": {
+        "country": "MX"
+      },
+      "priority": 10
+    },
+    {
+      "id": "AMBIGUOUS_B",
+      "layer": "ambiguous",
+      "outcome": {
+        "kind": "fixed",
+        "fixed": {
+          "amount": "25",
+          "currency": "USD"
+        }
+      },
+      "scope": {
+        "country": "MX"
+      },
+      "priority": 10
+    },
+    {
+      "id": "AMBIGUOUS_FALLBACK",
+      "layer": "ambiguous",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "EQUAL_A",
+      "layer": "equal",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.1"
+        }
+      },
+      "scope": {
+        "country": "MX"
+      },
+      "priority": 10
+    },
+    {
+      "id": "EQUAL_B",
+      "layer": "equal",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.1"
+        }
+      },
+      "scope": {
+        "country": "MX"
+      },
+      "priority": 10
+    },
+    {
+      "id": "EQUAL_FALLBACK",
+      "layer": "equal",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "ERROR_FALLBACK",
+      "layer": "ordinary_error",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "ERROR_RULE",
+      "layer": "ordinary_error",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.9"
+        }
+      },
+      "scope": {
+        "country": "MX"
+      },
+      "priority": 1,
+      "condition": "int(supplier) > 0"
+    },
+    {
+      "id": "A_LIMIT_FALLBACK",
+      "layer": "limit",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "Z_LIMIT_RULE",
+      "layer": "limit",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.9"
+        }
+      },
+      "priority": 1,
+      "condition": "country.matches(supplier) || true"
+    },
+    {
+      "id": "ZERO",
+      "layer": "zero",
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0"
+        }
+      },
+      "condition": "active"
+    },
+    {
+      "id": "EXACT_INT",
+      "layer": "integer",
+      "outcome": {
+        "kind": "fixed",
+        "fixed": {
+          "amount": "9007199254740993.000000000000000001",
+          "currency": "MXN"
+        }
+      },
+      "condition": "amount_minor == 9007199254740993"
+    }
+  ]
+}

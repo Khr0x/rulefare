@@ -170,4 +170,4 @@ Desde la raíz: `go test ./...`, `go test -race ./...` y `go vet ./...`. Los [be
 
 La [medición de sistema](../propuesta/mvp/benchmarks/2026-09-22/system/README.md) registra CPU en reposo con 10.000 condiciones distintas y syscalls de archivos/red en 4.100 evaluaciones. Incluye controles positivos, trazas y las limitaciones de la muestra. Se reproduce con `bash scripts/measure-system.sh bin/system`.
 
-El [corpus inicial de resolución](testdata/README.md) contiene diez casos y snapshots explícitos de resultado/trace. `TestGoldenEvaluations` los verifica en orden original e invertido. Su aprobación de producto/finanzas sigue pendiente.
+El [corpus de resolución](testdata/README.md) contiene 32 casos y snapshots explícitos de resultado/trace. `TestGoldenEvaluations` los verifica en orden original e invertido (64 evaluaciones). La [revisión independiente asistida por IA](testdata/FINANCIAL_REVIEW.md) cubre selección, ambigüedad, fallback, vigencias y precisión; las tarifas sintéticas no constituyen reglas comerciales aprobadas.
