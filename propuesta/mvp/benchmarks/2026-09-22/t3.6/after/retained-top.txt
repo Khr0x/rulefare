@@ -1,0 +1,27 @@
+File: engine.test
+Build ID: 9fa8c2ea5487a93596cec16aeb81e63bab979195
+Type: inuse_space
+Time: 2026-09-22 08:03:36 CST
+Showing nodes accounting for 4097.64kB, 100% of 4097.64kB total
+Showing top 20 nodes out of 57
+      flat  flat%   sum%        cum   cum%
+ 1536.42kB 37.50% 37.50%  1536.42kB 37.50%  github.com/Khr0x/rulefare/engine.cloneRule
+ 1024.02kB 24.99% 62.49%  1024.02kB 24.99%  fmt.Sprintf
+  512.56kB 12.51% 74.99%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*ATNDeserializer).readDecisions
+  512.56kB 12.51% 87.50%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*JStore[go.shape.*uint8,go.shape.interface { Equals2(*github.com/antlr4-go/antlr/v4.ATNConfig, *github.com/antlr4-go/antlr/v4.ATNConfig) bool; Hash1(*github.com/antlr4-go/antlr/v4.ATNConfig) int }]).Put
+  512.08kB 12.50%   100%   512.08kB 12.50%  internal/sync.newIndirectNode[go.shape.interface {},go.shape.interface {}]
+         0     0%   100%  2561.55kB 62.51%  github.com/Khr0x/rulefare/engine.Compile
+         0     0%   100%  3585.56kB 87.50%  github.com/Khr0x/rulefare/engine.TestCompileMemoryProfile
+         0     0%   100%  1024.02kB 24.99%  github.com/Khr0x/rulefare/engine.benchmarkRules
+         0     0%   100%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*ATNConfigSet).Add
+         0     0%   100%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*ATNDeserializer).Deserialize
+         0     0%   100%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).AdaptivePredict
+         0     0%   100%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).closure (inline)
+         0     0%   100%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).closureCheckingStopState
+         0     0%   100%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).closureWork
+         0     0%   100%   512.56kB 12.51%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).computeStartState
+         0     0%   100%  1025.12kB 25.02%  github.com/google/cel-go/cel.(*Env).Compile
+         0     0%   100%  1025.12kB 25.02%  github.com/google/cel-go/cel.(*Env).CompileSource
+         0     0%   100%  1025.12kB 25.02%  github.com/google/cel-go/cel.(*Env).ParseSource
+         0     0%   100%  1025.12kB 25.02%  github.com/google/cel-go/parser.(*Parser).Parse
+         0     0%   100%  1025.12kB 25.02%  github.com/google/cel-go/parser.(*parser).parse

@@ -3,7 +3,7 @@ package engine
 // rankedRule pairs a surviving rule with its specificity profile so resolution
 // can order candidates without recomputing the vector.
 type rankedRule struct {
-	rule        Rule
+	rule        *Rule
 	specificity []bool
 }
 

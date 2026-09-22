@@ -1,0 +1,14 @@
+{
+  "market": "latam",
+  "country": "MX",
+  "channel": "direct",
+  "agency": "agency_demo",
+  "branch": "branch_demo",
+  "agent": "agent_demo",
+  "supplier": "hotelbeds",
+  "product": "hotel_demo",
+  "contract": "ctr_hb_2026",
+  "amount_minor": 200000,
+  "travel_date": "2026-07-01T00:00:00Z",
+  "active": true
+}

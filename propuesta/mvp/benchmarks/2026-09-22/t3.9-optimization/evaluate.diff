@@ -1,0 +1,109 @@
+--- before/engine/evaluate.go
++++ after/engine/evaluate.go
+@@ -1,9 +1,10 @@
+ package engine
+ 
+ import (
++	"cmp"
+ 	"errors"
+ 	"fmt"
+-	"sort"
++	"slices"
+ 	"time"
+ 
+ 	"github.com/google/cel-go/cel"
+@@ -46,9 +47,18 @@
+ 	input = normalized
+ 
+ 	rules := p.layers[input.Layer]
++	result.Trace.Candidates = make([]TraceEntry, 0, len(rules))
+ 	survivors := make([]rankedRule, 0, len(rules))
+ 	var cost uint64
+-	for _, candidate := range rules {
++	// CEL uses only immutable scalar inputs and pure bindings. Reuse successful
++	// condition results within this call, but charge their cost for every rule.
++	type conditionResult struct {
++		matched bool
++		cost    uint64
++	}
++	var conditions map[string]conditionResult
++	for i := range rules {
++		candidate := &rules[i]
+ 		if !effective(candidate.rule, input.EffectiveAt) {
+ 			result.Trace.Candidates = append(result.Trace.Candidates, TraceEntry{
+ 				RuleID: candidate.rule.ID,
+@@ -64,9 +74,22 @@
+ 			})
+ 			continue
+ 		}
+-		matched, used, condErr := evalCondition(candidate.program, input.Context)
+-		var cancelled interpreter.EvalCancelledError
+-		if (errors.As(condErr, &cancelled) && cancelled.Cause == interpreter.CostLimitExceeded) || used > maxEvaluationCost-cost {
++		var matched bool
++		var used uint64
++		var condErr error
++		cached, found := conditions[candidate.rule.Condition]
++		if candidate.reuseCondition && found {
++			matched, used = cached.matched, cached.cost
++		} else {
++			matched, used, condErr = evalCondition(candidate.program, input.Context)
++			if candidate.reuseCondition && condErr == nil {
++				if conditions == nil {
++					conditions = make(map[string]conditionResult)
++				}
++				conditions[candidate.rule.Condition] = conditionResult{matched, used}
++			}
++		}
++		if isCostLimit(condErr) || used > maxEvaluationCost-cost {
+ 			result.Status = ResultLimitExceeded
+ 			result.Trace = EvaluationTrace{Candidates: []TraceEntry{}}
+ 			return result, &EvaluationLimitError{RuleID: candidate.rule.ID}
+@@ -89,7 +112,7 @@
+ 			continue
+ 		}
+ 		survivors = append(survivors, rankedRule{
+-			rule:        candidate.rule,
++			rule:        &candidate.rule,
+ 			specificity: dimensionSpecificity(candidate.rule.Scope, p.dimensions),
+ 		})
+ 	}
+@@ -101,14 +124,14 @@
+ 	// Order by specificity (descending), then Priority (descending). Id only
+ 	// stabilises the presentation of otherwise-equal candidates; it never
+ 	// decides the winner.
+-	sort.SliceStable(survivors, func(i, j int) bool {
+-		if c := compareSpecificity(survivors[i].specificity, survivors[j].specificity); c != 0 {
+-			return c > 0
+-		}
+-		if survivors[i].rule.Priority != survivors[j].rule.Priority {
+-			return survivors[i].rule.Priority > survivors[j].rule.Priority
+-		}
+-		return survivors[i].rule.ID < survivors[j].rule.ID
++	slices.SortFunc(survivors, func(a, b rankedRule) int {
++		if c := compareSpecificity(a.specificity, b.specificity); c != 0 {
++			return -c
++		}
++		if c := cmp.Compare(b.rule.Priority, a.rule.Priority); c != 0 {
++			return c
++		}
++		return cmp.Compare(a.rule.ID, b.rule.ID)
+ 	})
+ 
+ 	top := survivors[0]
+@@ -173,6 +196,16 @@
+ 	return result, nil
+ }
+ 
++// Keep error inspection off the successful path: errors.As needs an address
++// which otherwise escapes once for every evaluated condition.
++func isCostLimit(err error) bool {
++	if err == nil {
++		return false
++	}
++	var cancelled interpreter.EvalCancelledError
++	return errors.As(err, &cancelled) && cancelled.Cause == interpreter.CostLimitExceeded
++}
++
+ // effective reports whether a rule is in force at the given instant. valid_from
+ // is inclusive and valid_to is exclusive; a nil bound is unbounded on that side.
+ func effective(rule Rule, at time.Time) bool {

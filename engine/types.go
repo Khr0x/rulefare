@@ -18,7 +18,8 @@ const (
 	ValueTimestamp ValueType = "timestamp"
 )
 
-// Schema defines the variables available to CEL conditions.
+// Schema defines the variables available to CEL conditions. Every declared
+// variable is required at evaluation; undeclared variables are rejected.
 type Schema struct {
 	Version   string               `json:"version"`
 	Variables map[string]ValueType `json:"variables"`
@@ -91,7 +92,11 @@ type Tier struct {
 	Rate          string `json:"rate"`
 }
 
-// Evaluation is the runtime input whose behavior is implemented in Week 2.
+// Evaluation is validated before any rule is evaluated. Layer must exist and
+// EffectiveAt must be nonzero and within years 1–9999 in UTC. Context must
+// contain exactly the schema variables. Integer and timestamp values are
+// normalized in a fresh map; the caller's input is never mutated.
+// Fixed resource limits are documented in engine/LIMITS.md.
 type Evaluation struct {
 	Layer       string         `json:"layer"`
 	EffectiveAt time.Time      `json:"effective_at"`
@@ -102,9 +107,11 @@ type Evaluation struct {
 type ResultStatus string
 
 const (
-	ResultMatch     ResultStatus = "MATCH"
-	ResultNoMatch   ResultStatus = "NO_MATCH"
-	ResultAmbiguous ResultStatus = "AMBIGUOUS_MATCH"
+	ResultMatch         ResultStatus = "MATCH"
+	ResultNoMatch       ResultStatus = "NO_MATCH"
+	ResultAmbiguous     ResultStatus = "AMBIGUOUS_MATCH"
+	ResultInvalidInput  ResultStatus = "INVALID_INPUT"
+	ResultLimitExceeded ResultStatus = "LIMIT_EXCEEDED"
 )
 
 // TraceStatus explains how a candidate participated in resolution.
@@ -121,6 +128,8 @@ const (
 )
 
 // TraceEntry records one candidate without copying the evaluation context.
+// CONDITION_ERROR exposes only the rule ID and status; Reason is omitted to
+// avoid leaking context values or CEL implementation details.
 type TraceEntry struct {
 	RuleID      string      `json:"rule_id"`
 	Status      TraceStatus `json:"status"`
@@ -198,7 +207,9 @@ func (r ValidationReport) Valid() bool {
 	return true
 }
 
-// Program is immutable after Compile returns it.
+// Program is immutable after Compile returns it and supports concurrent
+// Evaluate calls. Callers must not mutate a Context map during evaluation;
+// returned results and errors belong to the caller and may be modified.
 type Program struct {
 	schema        Schema
 	ruleSetID     string
@@ -209,6 +220,7 @@ type Program struct {
 }
 
 type compiledRule struct {
-	rule    Rule
-	program cel.Program
+	rule           Rule
+	program        cel.Program
+	reuseCondition bool
 }

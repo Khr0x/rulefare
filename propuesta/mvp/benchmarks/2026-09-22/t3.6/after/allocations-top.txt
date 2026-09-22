@@ -1,0 +1,27 @@
+File: engine.test
+Build ID: 9fa8c2ea5487a93596cec16aeb81e63bab979195
+Type: alloc_space
+Time: 2026-09-22 08:03:36 CST
+Showing nodes accounting for 21094.06kB, 100% of 21094.06kB total
+Showing top 20 nodes out of 80
+      flat  flat%   sum%        cum   cum%
+ 6310.79kB 29.92% 29.92% 15043.40kB 71.32%  github.com/Khr0x/rulefare/engine.Compile
+ 4514.57kB 21.40% 51.32%  5538.59kB 26.26%  github.com/Khr0x/rulefare/engine.benchmarkRules
+ 2560.09kB 12.14% 63.46%  2560.09kB 12.14%  math/big.nat.make (inline)
+ 1536.42kB  7.28% 70.74%  1536.42kB  7.28%  github.com/Khr0x/rulefare/engine.cloneRule
+ 1536.05kB  7.28% 78.02%  1536.05kB  7.28%  strings.NewReader (inline)
+ 1050.86kB  4.98% 83.00%  5659.01kB 26.83%  github.com/Khr0x/rulefare/engine.validateStructure
+ 1024.02kB  4.85% 87.86%  1024.02kB  4.85%  fmt.Sprintf
+  512.56kB  2.43% 90.29%   512.56kB  2.43%  github.com/antlr4-go/antlr/v4.(*ATNDeserializer).readDecisions
+  512.56kB  2.43% 92.72%   512.56kB  2.43%  github.com/antlr4-go/antlr/v4.(*JStore[go.shape.*uint8,go.shape.interface { Equals2(*github.com/antlr4-go/antlr/v4.ATNConfig, *github.com/antlr4-go/antlr/v4.ATNConfig) bool; Hash1(*github.com/antlr4-go/antlr/v4.ATNConfig) int }]).Put
+  512.08kB  2.43% 95.15%   512.08kB  2.43%  internal/sync.newIndirectNode[go.shape.interface {},go.shape.interface {}]
+  512.05kB  2.43% 97.57%   512.05kB  2.43%  github.com/antlr4-go/antlr/v4.NewATNConfig (inline)
+  512.02kB  2.43%   100%  4608.16kB 21.85%  github.com/Khr0x/rulefare/engine.validateOutcome
+         0     0%   100% 20581.98kB 97.57%  github.com/Khr0x/rulefare/engine.TestCompileMemoryProfile
+         0     0%   100%  2048.05kB  9.71%  github.com/Khr0x/rulefare/engine.canonicalDecimal
+         0     0%   100%  4096.13kB 19.42%  github.com/Khr0x/rulefare/engine.validateRate
+         0     0%   100%  4608.16kB 21.85%  github.com/Khr0x/rulefare/engine.validateRule
+         0     0%   100%   512.56kB  2.43%  github.com/antlr4-go/antlr/v4.(*ATNConfigSet).Add
+         0     0%   100%   512.56kB  2.43%  github.com/antlr4-go/antlr/v4.(*ATNDeserializer).Deserialize
+         0     0%   100%  1024.61kB  4.86%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).AdaptivePredict
+         0     0%   100%  1024.61kB  4.86%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).closure (inline)

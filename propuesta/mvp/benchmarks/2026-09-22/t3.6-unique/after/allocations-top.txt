@@ -1,0 +1,28 @@
+File: engine.test
+Build ID: 81f4aff41371d7e0ef3e46f5ee3713afd98fd728
+Type: alloc_space
+Time: 2026-09-22 08:16:12 CST
+Showing nodes accounting for 181.92MB, 58.37% of 311.68MB total
+Dropped 128 nodes (cum <= 1.56MB)
+Showing top 20 nodes out of 141
+      flat  flat%   sum%        cum   cum%
+   22.50MB  7.22%  7.22%    22.50MB  7.22%  github.com/antlr4-go/antlr/v4.NewCommonToken
+   16.50MB  5.29% 12.51%    16.50MB  5.29%  github.com/google/cel-go/checker.newMapping (inline)
+   15.50MB  4.97% 17.49%    15.50MB  4.97%  github.com/google/cel-go/parser/gen.NewRelationContext (inline)
+   14.50MB  4.65% 22.14%    14.50MB  4.65%  github.com/google/cel-go/common/types.NewOpaqueType (inline)
+   10.50MB  3.37% 25.51%    10.50MB  3.37%  github.com/google/cel-go/common/ast.idVisitor.VisitExpr
+      10MB  3.21% 28.72%       10MB  3.21%  github.com/google/cel-go/parser/gen.NewCalcContext (inline)
+       9MB  2.89% 31.61%        9MB  2.89%  github.com/antlr4-go/antlr/v4.(*BaseParserRuleContext).AddChild
+    7.50MB  2.41% 34.01%    31.50MB 10.11%  github.com/antlr4-go/antlr/v4.(*CommonTokenStream).fetch
+    7.50MB  2.41% 36.42%     7.50MB  2.41%  github.com/google/cel-go/common/ast.(*baseExprFactory).newExpr (inline)
+       7MB  2.25% 38.67%        7MB  2.25%  github.com/google/cel-go/parser/gen.NewPrimaryContext (inline)
+       7MB  2.25% 40.91%        7MB  2.25%  github.com/google/cel-go/parser/gen.NewUnaryContext (inline)
+    6.90MB  2.21% 43.13%   303.46MB 97.36%  github.com/Khr0x/rulefare/engine.Compile
+    6.50MB  2.09% 45.21%     6.50MB  2.09%  github.com/google/cel-go/common/ast.(*AST).SetType (inline)
+    6.50MB  2.09% 47.30%     6.50MB  2.09%  github.com/google/cel-go/parser/gen.NewMemberExprContext
+       6MB  1.93% 49.22%        6MB  1.93%  github.com/google/cel-go/parser/gen.NewExprContext (inline)
+       6MB  1.93% 51.15%    11.50MB  3.69%  github.com/google/cel-go/common/ast.(*baseExprFactory).NewCall
+       6MB  1.93% 53.07%        6MB  1.93%  github.com/antlr4-go/antlr/v4.NewTerminalNodeImpl (inline)
+    5.50MB  1.77% 54.84%     5.50MB  1.77%  github.com/google/cel-go/common/ast.(*SourceInfo).SetOffsetRange (inline)
+    5.50MB  1.76% 56.60%     5.50MB  1.76%  github.com/google/cel-go/parser/gen.NewIdentContext
+    5.50MB  1.76% 58.37%     5.50MB  1.76%  github.com/google/cel-go/parser/gen.NewMemberContext (inline)

@@ -1,0 +1,27 @@
+File: engine.test
+Build ID: e5e06cdbd8284c467d045b96e73ae3c79f10520c
+Type: inuse_space
+Time: 2026-09-22 08:11:17 CST
+Showing nodes accounting for 50889.86kB, 100% of 50889.86kB total
+Showing top 20 nodes out of 73
+      flat  flat%   sum%        cum   cum%
+30818.01kB 60.56% 60.56% 30818.01kB 60.56%  github.com/google/cel-go/interpreter.(*defaultDispatcher).Add
+ 3072.73kB  6.04% 66.60%  3072.73kB  6.04%  github.com/Khr0x/rulefare/engine.cloneRule
+ 2560.12kB  5.03% 71.63%  4608.37kB  9.06%  github.com/google/cel-go/interpreter.(*planBuilder).planCheckedIdent
+ 2048.25kB  4.02% 75.65%  2048.25kB  4.02%  github.com/google/cel-go/interpreter.(*attrFactory).AbsoluteAttribute
+ 2048.19kB  4.02% 79.68%  2048.19kB  4.02%  github.com/google/cel-go/interpreter.(*planBuilder).planCallBinary
+ 1637.81kB  3.22% 82.89% 49353.75kB 96.98%  github.com/Khr0x/rulefare/engine.Compile
+ 1536.38kB  3.02% 85.91% 43619.16kB 85.71%  github.com/google/cel-go/cel.newProgram
+ 1024.09kB  2.01% 87.93%  1024.09kB  2.01%  fmt.Sprintf
+ 1024.05kB  2.01% 89.94%  1024.05kB  2.01%  github.com/google/cel-go/interpreter.NewAttributeFactory
+ 1024.05kB  2.01% 91.95%  1024.05kB  2.01%  github.com/google/cel-go/interpreter.NewDispatcher (inline)
+ 1024.03kB  2.01% 93.96%  1024.03kB  2.01%  github.com/google/cel-go/interpreter.(*planBuilder).planCallLogicalAnd (inline)
+  512.05kB  1.01% 94.97%   512.05kB  1.01%  github.com/antlr4-go/antlr/v4.NewATNConfig (inline)
+  512.04kB  1.01% 95.98%   512.04kB  1.01%  github.com/google/cel-go/interpreter.(*planBuilder).planCallUnary
+  512.04kB  1.01% 96.98%   512.04kB  1.01%  github.com/google/cel-go/interpreter.NewInterpreter (inline)
+  512.02kB  1.01% 97.99%  8704.64kB 17.10%  github.com/google/cel-go/interpreter.(*planBuilder).planCall
+  512.01kB  1.01% 98.99%   512.01kB  1.01%  strings.(*genericReplacer).Replace
+  512.01kB  1.01%   100%   512.01kB  1.01%  google.golang.org/protobuf/internal/impl.(*MessageInfo).makeCoderMethods
+         0     0%   100% 50377.85kB 98.99%  github.com/Khr0x/rulefare/engine.TestCompileMemoryProfile
+         0     0%   100%   512.05kB  1.01%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).AdaptivePredict
+         0     0%   100%   512.05kB  1.01%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).computeReachSet

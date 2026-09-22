@@ -1,0 +1,95 @@
+{
+  "id": "hierarchy-example",
+  "version": "draft-v1",
+  "schema_version": "v1",
+  "dimensions": [
+    "market",
+    "country",
+    "channel",
+    "agency",
+    "branch",
+    "agent",
+    "supplier",
+    "product",
+    "contract"
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "layer": "operation",
+      "scope": {},
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "R2",
+      "layer": "operation",
+      "scope": {
+        "market": "latam"
+      },
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "R3",
+      "layer": "operation",
+      "scope": {
+        "country": "MX"
+      },
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "R4",
+      "layer": "operation",
+      "scope": {
+        "supplier": "hotelbeds"
+      },
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "R5",
+      "layer": "operation",
+      "scope": {
+        "supplier": "hotelbeds",
+        "country": "MX"
+      },
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    },
+    {
+      "id": "R6",
+      "layer": "operation",
+      "scope": {
+        "contract": "ctr_hb_2026"
+      },
+      "outcome": {
+        "kind": "percentage",
+        "percentage": {
+          "rate": "0.12"
+        }
+      }
+    }
+  ]
+}

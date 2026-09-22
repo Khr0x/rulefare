@@ -1,0 +1,74 @@
+--- before/engine/compile.go
++++ after/engine/compile.go
+@@ -6,6 +6,8 @@
+ 	"strings"
+ 
+ 	"github.com/google/cel-go/cel"
++	celast "github.com/google/cel-go/common/ast"
++	"github.com/google/cel-go/common/decls"
+ )
+ 
+ // Compile validates schema and rules, precompiles CEL, and returns an
+@@ -26,6 +28,7 @@
+ 	// Programs depend only on the expression and this compilation's schema.
+ 	// Share identical conditions without retaining a global cache.
+ 	programs := make(map[string]cel.Program)
++	programEnvs := make(map[string]*cel.Env)
+ 	layers := make(map[string][]compiledRule)
+ 	for i, sourceRule := range rules.Rules {
+ 		expression := sourceRule.Condition
+@@ -44,7 +47,12 @@
+ 				issues.add(IssueCELNotBool, path, "condition must return bool")
+ 				continue
+ 			}
+-			compiled, programErr := env.Program(ast)
++			planningEnv, planningErr := conditionEnvironment(env, ast, programEnvs)
++			if planningErr != nil {
++				issues.add(IssueInvalidCEL, path, "condition could not be compiled")
++				continue
++			}
++			compiled, programErr := planningEnv.Program(ast)
+ 			if programErr != nil {
+ 				issues.add(IssueInvalidCEL, path, "condition could not be compiled")
+ 				continue
+@@ -80,6 +88,40 @@
+ 		dimensions:    append([]string(nil), rules.Dimensions...),
+ 		layers:        layers,
+ 	}, report
++}
++
++// Type checking uses the full environment. Planning needs only the functions
++// called by this checked AST, keeping unused bindings out of every dispatcher.
++// Keep every overload of a used function so dynamic dispatch is unchanged.
++func conditionEnvironment(env *cel.Env, checked *cel.Ast, cache map[string]*cel.Env) (*cel.Env, error) {
++	names := make(map[string]bool)
++	celast.PostOrderVisit(checked.NativeRep().Expr(), celast.NewExprVisitor(func(expr celast.Expr) {
++		if expr.Kind() == celast.CallKind {
++			names[expr.AsCall().FunctionName()] = true
++		}
++	}))
++	ordered := sortedKeys(names)
++	key := strings.Join(ordered, "\n")
++	if cached, ok := cache[key]; ok {
++		return cached, nil
++	}
++	available := env.Functions()
++	functions := make([]*decls.FunctionDecl, 0, len(ordered))
++	for _, name := range ordered {
++		if function, ok := available[name]; ok {
++			functions = append(functions, function)
++		}
++	}
++	planning, err := cel.NewCustomEnv(
++		cel.FunctionDecls(functions...),
++		cel.VariableDecls(env.Variables()...),
++		cel.CustomTypeAdapter(env.CELTypeAdapter()),
++		cel.CustomTypeProvider(env.CELTypeProvider()),
++	)
++	if err == nil {
++		cache[key] = planning
++	}
++	return planning, err
+ }
+ 
+ func newCELEnvironment(schema Schema) (*cel.Env, error) {

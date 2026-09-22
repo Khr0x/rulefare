@@ -1,0 +1,7 @@
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkEvaluateLatency100 	   10000	    226702 ns/op	    541167 p95-ns	    606458 p99-ns	     10000 samples
+BenchmarkEvaluateLatency100 	   10000	    211638 ns/op	    481541 p95-ns	    610625 p99-ns	     10000 samples
+BenchmarkEvaluateLatency100 	   10000	    205944 ns/op	    469250 p95-ns	    548584 p99-ns	     10000 samples
+PASS

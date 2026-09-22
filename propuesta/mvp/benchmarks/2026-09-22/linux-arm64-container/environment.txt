@@ -1,0 +1,57 @@
+UTC: 2026-09-22T07:27:15Z
+Commit: 6c86f4df4dbcbc023834ddb9ac97440de17e6dda
+GOMAXPROCS=1
+GOMEMLIMIT=448MiB
+Mode: --container
+Target: linux/arm64; CPU quota 1; memory 512 MiB; swap disabled; network disabled
+Image: sha256:e17f137284222b6664eb6d17fde2ca499cfe4d9547ef912a6c8f8e617a0db3ca
+Docker server: 29.7.2
+go version go1.27.1 darwin/arm64
+darwin
+arm64
+github.com/google/cel-go v0.30.0
+Darwin Mac-mini.local 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:11:03 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8132 arm64
+Working tree (empty means clean):
+ M .github/workflows/ci.yml
+ M README.md
+ M engine/engine_test.go
+ M engine/errors.go
+ M engine/evaluate.go
+ M engine/types.go
+ M propuesta/mvp/f1_motor_reglas_plan_implementacion.md
+ M propuesta/mvp/roadmap.md
+?? cmd/
+?? engine/benchmark_test.go
+?? engine/concurrency_test.go
+?? engine/context.go
+?? engine/context_test.go
+?? engine/fuzz_test.go
+?? engine/testdata/context.json
+?? scripts/
+Source and fixture SHA256:
+b00abb4fee8d7539be3e49020d6519d03e7ec33b616aceabcadadc5e6b2f1a32  go.mod
+36aacb60652b2a79116f4d9bd605d17c25838b9aae4e922e7b1fac10681423b5  go.sum
+b1edabd978c0d69469d76f7cb3c552eb12cda15d525088fcf6aa947bb5c386e6  engine/benchmark_test.go
+7e3492aa9f7fd1ff2e00e3fa49809db124825149b2286ab4046c44c428eda8de  engine/compile.go
+ec4bd60fc1a5045c0493f10ba7b963d9fb185b3962d396cfcbc019a7532c5c24  engine/concurrency_test.go
+a1f9b9c478288c4c9cc2c84154768c20929ac90e64336b72f6228c41334c0221  engine/context.go
+9f4f0afdf0f5eeaa3eb4633ecd63de77e32c0b8ccd77676522dd041ab3c13b56  engine/context_test.go
+1486b076f9b5fe15c9503fb98971b4b3d8392e83746307314aff1aa39f9f6800  engine/engine_test.go
+3766c94742289859341702d816c0d54d8cc90f4ca5d10064b2a67831d58b5953  engine/errors.go
+b6a017eec5fc47d8071d7c838c18b2c20f2caedee56845f26e49705b1998ec4e  engine/evaluate.go
+06289b248f7118e9800523b570fa737710b40681cbc44382d6506dea48aefb0a  engine/fuzz_test.go
+147b4aee215ee53775d600118d666a4b440fbf4ec3d952cada15fd85ac311e23  engine/ranking.go
+109c708e79d7ad0241e7cf7cf9e85336283e466b74c15adc1aa6f63af12e4c0b  engine/types.go
+ee08e0c5119d06e8e00dd3140a6afb9fd50dd4428a3d2623ccd08b93740d280e  engine/validate.go
+1353c5e524d5d1e9a173ceac41c9751360bbd8ae88b623f0730165aa45ee7f57  engine/testdata/context.json
+90c2396dd9d41ca87238eef52a07fa3ac5bf28a5f9a529db5c44fae769610cc7  engine/testdata/invalid_cel.json
+cf118d411bbbf68ec788756e04ed4ab62b7983ea5e16773c75d6ce4852e1012f  engine/testdata/invalid_dates.json
+49d2a51201147e9fa4ab3b7b41be5684d9482b74f9e9ddd75cc4f92a40d444c7  engine/testdata/invalid_non_bool.json
+6f7f30d81f3ed509c6b2fffae703092acfb3c3fd37588c893068c3fdd6a2ad04  engine/testdata/invalid_outcome.json
+bcb69e270ab98619c7f8eec52b070588fb21e7e9b7fac1fec4fe3c308f3fdaf1  engine/testdata/invalid_stack.json
+f542e32b824460b29f35b29b6e02a30781a04c74dccd58939ee36d8932cd7030  engine/testdata/invalid_tiers.json
+bd0c4711be83facf7e0f5ccb754accbf95fa34c061c68eb35ecd1f3beec37b71  engine/testdata/invalid_unknown_dimension.json
+a10eb384345fd591da5f306d9d86ab43eb6f04581ed53e6f301834aba9aedb06  engine/testdata/invalid_unknown_variable.json
+a02626bcd0f5031c00dcd7cdb814c5d87bfe960e644c66afdff0351132876cfb  engine/testdata/ruleset.json
+1a9c557d43dbec06300bf6a487c9bc4088e8bf5a4833b7b83fd93d8ecc4307cb  engine/testdata/schema.json
+f515d24bad068dfe4d8c3c59e4012b40a5e76343e2cd64de7c8976ab99d193bc  scripts/benchmark.sh

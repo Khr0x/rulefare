@@ -1,0 +1,28 @@
+File: engine.test
+Build ID: 1266c5f99edce2eaa99963412d37eb7e4d235d2b
+Type: alloc_space
+Time: 2026-09-22 10:33:43 CST
+Showing nodes accounting for 4593.85MB, 99.20% of 4631.02MB total
+Dropped 90 nodes (cum <= 23.16MB)
+Showing top 20 nodes out of 30
+      flat  flat%   sum%        cum   cum%
+ 1211.08MB 26.15% 26.15%  1211.08MB 26.15%  github.com/google/cel-go/interpreter.(*refValStack).push (inline)
+  843.93MB 18.22% 44.37%  4625.35MB 99.88%  github.com/Khr0x/rulefare/engine.(*Program).Evaluate
+  594.55MB 12.84% 57.21%   594.55MB 12.84%  github.com/google/cel-go/interpreter.(*CostTracker).Clone (inline)
+  570.02MB 12.31% 69.52%   570.02MB 12.31%  github.com/google/cel-go/interpreter.(*refValStack).dropArgs
+  438.51MB  9.47% 78.99%   438.51MB  9.47%  github.com/google/cel-go/interpreter.(*evalBinary).Args
+  174.50MB  3.77% 82.76%   174.50MB  3.77%  github.com/google/cel-go/common/types.nativeToValue
+  164.50MB  3.55% 86.31%  3442.67MB 74.34%  github.com/google/cel-go/cel.(*prog).Eval
+  164.50MB  3.55% 89.86%   164.50MB  3.55%  github.com/google/cel-go/common/types.String.ConvertToType
+  130.22MB  2.81% 92.68%   130.22MB  2.81%  github.com/Khr0x/rulefare/engine.ruleIDs (inline)
+  124.50MB  2.69% 95.36%   124.50MB  2.69%  github.com/google/cel-go/interpreter.(*evalUnary).Args
+  113.50MB  2.45% 97.81%   113.50MB  2.45%  github.com/Khr0x/rulefare/engine.dimensionSpecificity (inline)
+   64.02MB  1.38% 99.20%    94.03MB  2.03%  github.com/Khr0x/rulefare/engine.(*Program).normalizeEvaluation
+         0     0% 99.20%  4621.35MB 99.79%  github.com/Khr0x/rulefare/engine.BenchmarkEvaluate.func1
+         0     0% 99.20%  3442.67MB 74.34%  github.com/Khr0x/rulefare/engine.evalCondition
+         0     0% 99.20%   594.55MB 12.84%  github.com/google/cel-go/cel.newProgram.func2
+         0     0% 99.20%   164.50MB  3.55%  github.com/google/cel-go/common/decls.(*OverloadDecl).guardedUnaryOp.func1
+         0     0% 99.20%   164.50MB  3.55%  github.com/google/cel-go/common/stdlib.convertToType.func1
+         0     0% 99.20%   174.50MB  3.77%  github.com/google/cel-go/common/types.(*Registry).NativeToValue
+         0     0% 99.20%  3277.67MB 70.78%  github.com/google/cel-go/interpreter.(*ObservableInterpretable).ObserveExec
+         0     0% 99.20%   594.55MB 12.84%  github.com/google/cel-go/interpreter.(*costTrackerFactory).InitState

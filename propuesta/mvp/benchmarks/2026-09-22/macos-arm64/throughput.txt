@@ -1,0 +1,17 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+cpu: Apple M4
+BenchmarkEvaluate/10  	  110185	      9455 ns/op	    6664 B/op	      74 allocs/op
+BenchmarkEvaluate/10  	  127532	      9454 ns/op	    6664 B/op	      74 allocs/op
+BenchmarkEvaluate/10  	  111978	      9371 ns/op	    6664 B/op	      74 allocs/op
+BenchmarkEvaluate/100 	   10000	    130314 ns/op	   47598 B/op	     437 allocs/op
+BenchmarkEvaluate/100 	    8004	    129970 ns/op	   47598 B/op	     437 allocs/op
+BenchmarkEvaluate/100 	    8185	    132660 ns/op	   47598 B/op	     437 allocs/op
+BenchmarkEvaluate/10000         	      75	  15152902 ns/op	 5804809 B/op	   40048 allocs/op
+BenchmarkEvaluate/10000         	      80	  15028770 ns/op	 5804810 B/op	   40048 allocs/op
+BenchmarkEvaluate/10000         	      72	  17980578 ns/op	 5804814 B/op	   40048 allocs/op
+BenchmarkCompile10000           	       3	 450165514 ns/op	363470421 B/op	 5500030 allocs/op
+BenchmarkCompile10000           	       3	 458208486 ns/op	363472266 B/op	 5500030 allocs/op
+BenchmarkCompile10000           	       3	 459931167 ns/op	363470186 B/op	 5500029 allocs/op
+PASS

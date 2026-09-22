@@ -1,0 +1,25 @@
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkResourceLimits/string_boundary         	  483811	      2567 ns/op	    1632 B/op	      29 allocs/op
+BenchmarkResourceLimits/string_boundary         	  449509	      2579 ns/op	    1632 B/op	      29 allocs/op
+BenchmarkResourceLimits/string_boundary         	  467150	      2556 ns/op	    1632 B/op	      29 allocs/op
+BenchmarkResourceLimits/oversized_context       	 4830105	       264.9 ns/op	     176 B/op	       4 allocs/op
+BenchmarkResourceLimits/oversized_context       	 4536614	       250.9 ns/op	     176 B/op	       4 allocs/op
+BenchmarkResourceLimits/oversized_context       	 4363024	       237.2 ns/op	     176 B/op	       4 allocs/op
+BenchmarkResourceLimits/condition_cost          	  230613	      5186 ns/op	    1768 B/op	      36 allocs/op
+BenchmarkResourceLimits/condition_cost          	  230068	      5216 ns/op	    1768 B/op	      36 allocs/op
+BenchmarkResourceLimits/condition_cost          	  218313	      5247 ns/op	    1768 B/op	      36 allocs/op
+BenchmarkResourceLimits/regex_cost              	  393654	      3056 ns/op	    1688 B/op	      32 allocs/op
+BenchmarkResourceLimits/regex_cost              	  401557	      2995 ns/op	    1688 B/op	      32 allocs/op
+BenchmarkResourceLimits/regex_cost              	  395728	      2936 ns/op	    1688 B/op	      32 allocs/op
+BenchmarkResourceLimits/regex_boundary          	   51142	     23218 ns/op	   29519 B/op	      68 allocs/op
+BenchmarkResourceLimits/regex_boundary          	   50955	     23490 ns/op	   29519 B/op	      68 allocs/op
+BenchmarkResourceLimits/regex_boundary          	   55153	     23105 ns/op	   29519 B/op	      68 allocs/op
+BenchmarkResourceLimits/aggregate_cost          	    8412	    136308 ns/op	  326368 B/op	    2463 allocs/op
+BenchmarkResourceLimits/aggregate_cost          	    8709	    138013 ns/op	  326369 B/op	    2463 allocs/op
+BenchmarkResourceLimits/aggregate_cost          	    8667	    140794 ns/op	  326370 B/op	    2463 allocs/op
+BenchmarkResourceLimits/oversized_decimal       	 3991584	       298.3 ns/op	     184 B/op	       4 allocs/op
+BenchmarkResourceLimits/oversized_decimal       	 4032177	       305.4 ns/op	     184 B/op	       4 allocs/op
+BenchmarkResourceLimits/oversized_decimal       	 4206528	       308.8 ns/op	     184 B/op	       4 allocs/op
+PASS

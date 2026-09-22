@@ -1,0 +1,20 @@
+=== RUN   TestSystemEvaluationIO
+RULEFARE_IO_BEGIN control
+RULEFARE_IO_END control
+RULEFARE_IO_BEGIN repeated100
+RULEFARE_IO_END repeated100
+    system_test.go:94: scenario=repeated100 evaluations=1000 status=MATCH
+RULEFARE_IO_BEGIN unique100
+RULEFARE_IO_END unique100
+    system_test.go:94: scenario=unique100 evaluations=1000 status=MATCH
+RULEFARE_IO_BEGIN unique10000
+RULEFARE_IO_END unique10000
+    system_test.go:94: scenario=unique10000 evaluations=100 status=MATCH
+RULEFARE_IO_BEGIN invalid
+RULEFARE_IO_END invalid
+    system_test.go:94: scenario=invalid evaluations=1000 status=INVALID_INPUT
+RULEFARE_IO_BEGIN no_match
+RULEFARE_IO_END no_match
+    system_test.go:94: scenario=no_match evaluations=1000 status=NO_MATCH
+--- PASS: TestSystemEvaluationIO (2.31s)
+PASS

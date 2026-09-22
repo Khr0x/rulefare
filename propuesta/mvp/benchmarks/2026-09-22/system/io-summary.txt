@@ -1,0 +1,7 @@
+Positive control: file open and network socket observed.
+repeated100: observed={'epoll_pwait': 5, 'mmap_anonymous': 7}
+unique100: observed={'mmap_anonymous': 4, 'epoll_pwait': 23}
+unique10000: observed={'epoll_pwait': 159, 'mmap_anonymous': 26}
+invalid: observed={'epoll_pwait': 2}
+no_match: observed={'epoll_pwait': 2}
+PASS: no file access, descriptor reads/writes or network calls in Evaluate windows; marker writes excluded.

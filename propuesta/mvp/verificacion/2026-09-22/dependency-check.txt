@@ -1,0 +1,3 @@
+Real engine imports: PASS (stdlib + direct CEL imports).
+forbidden_import: rejected as expected (exit 1).
+list_failure: rejected as expected (exit 17).

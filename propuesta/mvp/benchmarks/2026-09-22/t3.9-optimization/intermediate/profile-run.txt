@@ -1,0 +1,5 @@
+goos: linux
+goarch: arm64
+pkg: github.com/Khr0x/rulefare/engine
+BenchmarkEvaluate/100       	   64987	     97039 ns/op	   64457 B/op	    1527 allocs/op
+PASS

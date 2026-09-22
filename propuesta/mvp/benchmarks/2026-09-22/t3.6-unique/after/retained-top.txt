@@ -1,0 +1,27 @@
+File: engine.test
+Build ID: 81f4aff41371d7e0ef3e46f5ee3713afd98fd728
+Type: inuse_space
+Time: 2026-09-22 08:16:12 CST
+Showing nodes accounting for 31337.38kB, 100% of 31337.38kB total
+Showing top 20 nodes out of 61
+      flat  flat%   sum%        cum   cum%
+ 5120.62kB 16.34% 16.34%  5120.62kB 16.34%  github.com/google/cel-go/interpreter.(*attrFactory).AbsoluteAttribute
+ 4097.01kB 13.07% 29.41%  4097.01kB 13.07%  github.com/Khr0x/rulefare/engine.cloneRule
+ 3072.61kB  9.80% 39.22%  3072.61kB  9.80%  github.com/google/cel-go/interpreter.(*defaultDispatcher).Add
+ 2149.81kB  6.86% 46.08% 28777.19kB 91.83%  github.com/Khr0x/rulefare/engine.Compile
+ 2048.50kB  6.54% 52.62% 22018.36kB 70.26%  github.com/google/cel-go/cel.newProgram
+ 2048.19kB  6.54% 59.15%  2048.19kB  6.54%  github.com/google/cel-go/interpreter.(*planBuilder).planCallBinary
+ 2048.16kB  6.54% 65.69%  2048.16kB  6.54%  github.com/google/cel-go/interpreter.NewInterpreter (inline)
+ 1536.14kB  4.90% 70.59%  1536.14kB  4.90%  fmt.Sprintf
+ 1536.05kB  4.90% 75.49%  6656.68kB 21.24%  github.com/google/cel-go/interpreter.(*planBuilder).planCheckedIdent
+ 1536.05kB  4.90% 80.39% 12801.03kB 40.85%  github.com/google/cel-go/interpreter.(*planBuilder).planCall
+ 1536.05kB  4.90% 85.29%  1536.05kB  4.90%  github.com/google/cel-go/interpreter.NewDispatcher (inline)
+ 1536.04kB  4.90% 90.20%  1536.04kB  4.90%  github.com/google/cel-go/interpreter.NewConstValue (inline)
+ 1024.08kB  3.27% 93.46%  1024.08kB  3.27%  github.com/google/cel-go/interpreter.(*planBuilder).planCallUnary
+  512.04kB  1.63% 95.10%   512.04kB  1.63%  github.com/google/cel-go/common/types.NewListType
+  512.02kB  1.63% 96.73%   512.02kB  1.63%  github.com/google/cel-go/interpreter.NewAttributeFactory
+  512.01kB  1.63% 98.37%   512.01kB  1.63%  github.com/google/cel-go/parser.(*parserHelper).newLiteralString (inline)
+  512.01kB  1.63%   100%   512.01kB  1.63%  google.golang.org/protobuf/internal/impl.(*MessageInfo).makeCoderMethods
+         0     0%   100% 30313.33kB 96.73%  github.com/Khr0x/rulefare/engine.TestCompileMemoryProfile
+         0     0%   100%  1536.14kB  4.90%  github.com/Khr0x/rulefare/engine.benchmarkUniqueRules
+         0     0%   100%   512.01kB  1.63%  github.com/google/cel-go/cel.(*Env).Compile

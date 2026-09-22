@@ -1,0 +1,27 @@
+File: engine.test
+Build ID: fc60dde04b8bd386c8c6287d8962ee5ef50bf2d5
+Type: inuse_space
+Time: 2026-09-22 08:01:23 CST
+Showing nodes accounting for 56.71MB, 100% of 56.71MB total
+Showing top 20 nodes out of 51
+      flat  flat%   sum%        cum   cum%
+   34.61MB 61.03% 61.03%    34.61MB 61.03%  github.com/google/cel-go/interpreter.(*defaultDispatcher).Add
+    6.50MB 11.46% 72.49%     6.50MB 11.46%  github.com/google/cel-go/interpreter.(*attrFactory).AbsoluteAttribute
+    3.50MB  6.17% 78.66%     3.50MB  6.17%  github.com/Khr0x/rulefare/engine.cloneRule
+    3.50MB  6.17% 84.84%       10MB 17.63%  github.com/google/cel-go/interpreter.(*planBuilder).planCheckedIdent
+       2MB  3.53% 88.36%        2MB  3.53%  github.com/google/cel-go/interpreter.(*planBuilder).planCallBinary
+    1.60MB  2.82% 91.18%    56.71MB   100%  github.com/Khr0x/rulefare/engine.Compile
+       1MB  1.76% 92.95%    50.61MB 89.24%  github.com/google/cel-go/cel.newProgram
+    0.50MB  0.88% 93.83%     0.50MB  0.88%  github.com/antlr4-go/antlr/v4.NewATNConfig (inline)
+    0.50MB  0.88% 94.71%     0.50MB  0.88%  github.com/google/cel-go/interpreter.(*planBuilder).planCallUnary
+    0.50MB  0.88% 95.59%     0.50MB  0.88%  github.com/google/cel-go/interpreter.NewInterpreter (inline)
+    0.50MB  0.88% 96.47%     0.50MB  0.88%  github.com/antlr4-go/antlr/v4.NewEpsilonTransition (inline)
+    0.50MB  0.88% 97.36%     0.50MB  0.88%  github.com/google/cel-go/interpreter.NewDispatcher (inline)
+    0.50MB  0.88% 98.24%       14MB 24.69%  github.com/google/cel-go/interpreter.(*planBuilder).planCall
+    0.50MB  0.88% 99.12%     0.50MB  0.88%  github.com/google/cel-go/interpreter.(*planBuilder).planCallLogicalAnd (inline)
+    0.50MB  0.88%   100%     0.50MB  0.88%  github.com/google/cel-go/interpreter.NewConstValue (inline)
+         0     0%   100%    56.71MB   100%  github.com/Khr0x/rulefare/engine.TestCompileMemoryProfile
+         0     0%   100%     0.50MB  0.88%  github.com/antlr4-go/antlr/v4.(*ATNDeserializer).Deserialize
+         0     0%   100%     0.50MB  0.88%  github.com/antlr4-go/antlr/v4.(*ATNDeserializer).edgeFactory
+         0     0%   100%     0.50MB  0.88%  github.com/antlr4-go/antlr/v4.(*ATNDeserializer).readEdges
+         0     0%   100%     0.50MB  0.88%  github.com/antlr4-go/antlr/v4.(*ParserATNSimulator).AdaptivePredict

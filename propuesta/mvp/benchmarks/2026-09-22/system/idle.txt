@@ -1,0 +1,12 @@
+=== RUN   TestSystemIdle
+    system_test.go:40: rules=10000 unique=true wall_ns=10013103838 user_ns=331000 system_ns=0 cpu_percent=0.003306
+--- PASS: TestSystemIdle (11.49s)
+PASS
+=== RUN   TestSystemIdle
+    system_test.go:40: rules=10000 unique=true wall_ns=10014963170 user_ns=255000 system_ns=5000 cpu_percent=0.002596
+--- PASS: TestSystemIdle (11.49s)
+PASS
+=== RUN   TestSystemIdle
+    system_test.go:40: rules=10000 unique=true wall_ns=10014919422 user_ns=264000 system_ns=4000 cpu_percent=0.002676
+--- PASS: TestSystemIdle (11.49s)
+PASS

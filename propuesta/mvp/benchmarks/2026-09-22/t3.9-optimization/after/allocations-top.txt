@@ -1,0 +1,28 @@
+File: engine.test
+Build ID: 9cf63f2b2bac0ca278aaa607b0f7062a0c5cedb5
+Type: alloc_space
+Time: 2026-09-22 10:43:04 CST
+Showing nodes accounting for 5051.05MB, 98.13% of 5147.44MB total
+Dropped 93 nodes (cum <= 25.74MB)
+Showing top 20 nodes out of 23
+      flat  flat%   sum%        cum   cum%
+ 3902.90MB 75.82% 75.82%  5141.05MB 99.88%  github.com/Khr0x/rulefare/engine.(*Program).Evaluate
+  599.02MB 11.64% 87.46%   599.02MB 11.64%  github.com/Khr0x/rulefare/engine.ruleIDs (inline)
+  258.10MB  5.01% 92.47%   408.12MB  7.93%  github.com/Khr0x/rulefare/engine.(*Program).normalizeEvaluation
+   66.01MB  1.28% 93.76%    66.01MB  1.28%  github.com/Khr0x/rulefare/engine.sortedKeys[go.shape.interface {}] (inline)
+   64.50MB  1.25% 95.01%    64.50MB  1.25%  github.com/Khr0x/rulefare/engine.dimensionSpecificity (inline)
+   62.51MB  1.21% 96.22%    62.51MB  1.21%  github.com/Khr0x/rulefare/engine.sortedKeys[go.shape.string] (inline)
+      57MB  1.11% 97.33%       57MB  1.11%  github.com/google/cel-go/interpreter.(*refValStack).push (inline)
+      32MB  0.62% 97.95%       32MB  0.62%  github.com/google/cel-go/interpreter.(*CostTracker).Clone (inline)
+       9MB  0.17% 98.13%   161.51MB  3.14%  github.com/google/cel-go/cel.(*prog).Eval
+         0     0% 98.13%  5142.55MB 99.91%  github.com/Khr0x/rulefare/engine.BenchmarkEvaluate.func1
+         0     0% 98.13%  5142.05MB 99.90%  github.com/Khr0x/rulefare/engine.benchmarkEvaluate
+         0     0% 98.13%   161.51MB  3.14%  github.com/Khr0x/rulefare/engine.evalCondition
+         0     0% 98.13%       32MB  0.62%  github.com/google/cel-go/cel.newProgram.func2
+         0     0% 98.13%   151.51MB  2.94%  github.com/google/cel-go/interpreter.(*ObservableInterpretable).ObserveExec
+         0     0% 98.13%    32.50MB  0.63%  github.com/google/cel-go/interpreter.(*costTrackerFactory).InitState
+         0     0% 98.13%   101.01MB  1.96%  github.com/google/cel-go/interpreter.(*costTrackerFactory).Observe
+         0     0% 98.13%   119.01MB  2.31%  github.com/google/cel-go/interpreter.(*evalAnd).Exec
+         0     0% 98.13%       73MB  1.42%  github.com/google/cel-go/interpreter.(*evalBinary).Exec
+         0     0% 98.13%   119.01MB  2.31%  github.com/google/cel-go/interpreter.(*evalWatch).Exec
+         0     0% 98.13%       34MB  0.66%  github.com/google/cel-go/interpreter.(*evalWatchAttr).Exec
