@@ -4,8 +4,8 @@
 
 | Campo | Valor |
 |---|---|
-| Versión del roadmap | 0.22 |
-| Última actualización | 2026-09-22 |
+| Versión del roadmap | 0.23 |
+| Última actualización | 2026-09-23 |
 | Ventana objetivo | 2026-08-30 → 2027-02-26 |
 | Estado general | 🟡 F0 en curso; ✅ F1 completada técnicamente con CI de `main` verde |
 | Release objetivo | MVP v1 para pilotos controlados |
@@ -305,6 +305,8 @@ T2.5 ya omite el mensaje interno de CEL: el trace expone únicamente `rule_id` y
 - Acordar una sola divisa operativa por organización para v1.
 - Congelar la lista de capacidades v1 y registrar cualquier solicitud adicional fuera del MVP.
 - Definir las métricas iniciales: tiempo de alta, diferencias detectadas, cálculos explicados y tiempo de back-office.
+
+Los [ejemplos sintéticos de dos agencias](./f0_mocks/README.md) preparan contratos, reservas, cancelación y conciliación para revisión. Son material de trabajo; no sustituyen agencias piloto ni importes aprobados.
 
 ### Criterios de salida
 
@@ -690,3 +692,4 @@ Actualizar esta tabla en cada revisión semanal. Las decisiones de alcance deben
 | 2026-09-22 | Preparación de CI | Medición de sistema manual | ✅ Configurada y validada localmente | CPU/I/O y artefactos incorporados, frontera de dependencias reforzada, govulncheck sin hallazgos; run del commit actual pendiente | Backend |
 | 2026-09-22 | T1.6 | 🟡 Diez casos sin revisión de dominio | ✅ Corpus técnico de 32 casos revisado por IA | Revisor independiente con enfoque financiero solicitado por el responsable; 64 evaluaciones, suite/race/vet locales pasan; CI de ampliación pendiente | Backend / agente de revisión solicitado |
 | 2026-09-22 | F1 | 🟡 Corpus ampliado sin CI remota | ✅ Completa técnicamente | [Run `35778045359`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) de `main` para `09ff1e2` pasa; artefacto con benchmarks, CPU/I/O y corpus de 32 casos; aceptación comercial separada | Backend / Tech Lead |
+| 2026-09-23 | F0 | Sin ejemplos de flujo completo | 🟡 Mock sintético disponible | [Dos agencias ficticias](./f0_mocks/README.md), contratos, reservas, split, tiers, cancelación y conciliación; clientes y aprobación de importes reales pendientes | Responsable del proyecto |
