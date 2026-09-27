@@ -18,6 +18,10 @@ const (
 	headerTraceparent = "traceparent"
 )
 
+// probePaths are polled every few seconds by orchestrators; their
+// successful requests are logged at debug level to keep logs readable.
+var probePaths = map[string]bool{"/healthz": true, "/readyz": true}
+
 // A caller-supplied request ID is kept only if it is short and plain, so it
 // cannot inject content into logs or headers.
 var validRequestID = regexp.MustCompile(`^[A-Za-z0-9._-]{1,128}$`)
@@ -93,7 +97,12 @@ func observe(logger *slog.Logger, next http.Handler) http.Handler {
 				rec.status = http.StatusOK // net/http's implicit status.
 			}
 			level := slog.LevelInfo
-			if rec.status >= 500 {
+			switch {
+			case probePaths[r.URL.Path] && rec.status < 400:
+				level = slog.LevelDebug
+			case probePaths[r.URL.Path]:
+				level = slog.LevelWarn // Not ready is expected during outages; the check logs why.
+			case rec.status >= 500:
 				level = slog.LevelError
 			}
 			info.logger.Log(r.Context(), level, "request",

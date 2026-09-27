@@ -212,3 +212,23 @@ func TestOpenPingsServer(t *testing.T) {
 	}
 	pool.Close()
 }
+
+func TestPending(t *testing.T) {
+	pool := pgtest.Schema(t)
+	ctx := context.Background()
+	if _, err := postgres.Pending(ctx, pool, files(twoTables)); err == nil || !strings.Contains(err.Error(), "never migrated") {
+		t.Fatalf("err = %v, want never-migrated error", err)
+	}
+	if _, err := postgres.Migrate(ctx, pool, files(map[string]string{"0001_first.sql": twoTables["0001_first.sql"]})); err != nil {
+		t.Fatal(err)
+	}
+	if n, err := postgres.Pending(ctx, pool, files(twoTables)); err != nil || n != 1 {
+		t.Fatalf("pending = %d, err %v; want 1", n, err)
+	}
+	if _, err := postgres.Migrate(ctx, pool, files(twoTables)); err != nil {
+		t.Fatal(err)
+	}
+	if n, err := postgres.Pending(ctx, pool, files(twoTables)); err != nil || n != 0 {
+		t.Fatalf("pending = %d, err %v; want 0", n, err)
+	}
+}

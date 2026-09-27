@@ -52,7 +52,17 @@ func serve(ctx context.Context, args []string, getenv func(string) string, stder
 	logger.Info("migrations applied", "versions", applied)
 
 	logger.Info("listening", "addr", ln.Addr().String())
-	if err := httpapi.Serve(ctx, ln, httpapi.NewHandler(logger), cfg.ShutdownTimeout); err != nil {
+	handler := httpapi.NewHandler(logger,
+		httpapi.Check{Name: "database", Check: pool.Ping},
+		httpapi.Check{Name: "migrations", Check: func(ctx context.Context) error {
+			pending, err := postgres.Pending(ctx, pool, migrations.FS)
+			if err == nil && pending > 0 {
+				err = fmt.Errorf("%d migrations pending", pending)
+			}
+			return err
+		}},
+	)
+	if err := httpapi.Serve(ctx, ln, handler, cfg.ShutdownTimeout); err != nil {
 		logger.Error("server stopped with error", "error", err)
 		return 1
 	}

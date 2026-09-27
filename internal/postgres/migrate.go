@@ -175,3 +175,43 @@ func apply(ctx context.Context, conn *pgxpool.Conn, m Migration) error {
 	}
 	return nil
 }
+
+// Pending reports how many migrations in fsys are not yet applied. It fails
+// if schema_migrations does not exist, i.e. the database was never migrated.
+func Pending(ctx context.Context, pool *pgxpool.Pool, fsys fs.FS) (int, error) {
+	migrations, err := LoadMigrations(fsys)
+	if err != nil {
+		return 0, err
+	}
+	var exists bool
+	if err := pool.QueryRow(ctx, "SELECT to_regclass('schema_migrations') IS NOT NULL").Scan(&exists); err != nil {
+		return 0, fmt.Errorf("check schema_migrations: %w", err)
+	}
+	if !exists {
+		return 0, errors.New("schema_migrations does not exist; the database was never migrated")
+	}
+	rows, err := pool.Query(ctx, "SELECT version FROM schema_migrations")
+	if err != nil {
+		return 0, fmt.Errorf("read schema_migrations: %w", err)
+	}
+	applied := map[int64]bool{}
+	for rows.Next() {
+		var v int64
+		if err := rows.Scan(&v); err != nil {
+			rows.Close()
+			return 0, fmt.Errorf("read schema_migrations: %w", err)
+		}
+		applied[v] = true
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return 0, fmt.Errorf("read schema_migrations: %w", err)
+	}
+	pending := 0
+	for _, m := range migrations {
+		if !applied[m.Version] {
+			pending++
+		}
+	}
+	return pending, nil
+}
