@@ -5,15 +5,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"time"
 )
 
-// NewHandler returns the root handler. Routes are added by later F2 tasks
+// NewHandler returns the root handler with request IDs, trace context,
+// access logs and panic recovery. Routes are added by later F2 tasks
 // (health in T1.5, tenancy endpoints in T2.4).
-func NewHandler() http.Handler {
-	return http.NewServeMux()
+func NewHandler(logger *slog.Logger) http.Handler {
+	return observe(logger, http.NewServeMux())
 }
 
 // Serve runs h on ln until ctx is cancelled, then stops accepting

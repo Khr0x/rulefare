@@ -22,7 +22,7 @@ Rules behind every travel transaction.
 | CPU en reposo e I/O | [Medición local de sistema](./propuesta/mvp/benchmarks/2026-09-22/system/README.md): mediana 0,0027 % CPU; sin I/O de archivos/red en 4.100 evaluaciones observadas |
 | Límites runtime y payload (T3.9) | Implementados y medidos; agotamiento de recursos bloquea toda la evaluación sin fallback |
 | Corpus técnico (T1.6) | [32 casos revisados](./engine/testdata/README.md) por un agente independiente con enfoque financiero; snapshots y orden invertido; aceptación de tarifas reales separada |
-| F2 · plataforma | 🟡 En curso: `rulefare serve` con config por entorno y apagado ordenado (T1.1); frontera de dependencias como prueba Go (T1.2); PostgreSQL con migraciones embebidas y advisory lock (T1.3). Sin rutas ni UI todavía |
+| F2 · plataforma | 🟡 En curso: `rulefare serve` con config por entorno y apagado ordenado (T1.1); frontera de dependencias como prueba Go (T1.2); PostgreSQL con migraciones embebidas y advisory lock (T1.3); logs de acceso, `X-Request-ID`, `traceparent` y recuperación de pánicos (T1.4). Sin rutas ni UI todavía |
 | F3–F10 del MVP | Pendientes |
 | Verificación F1 | Build, suite, carrera, fuzzing, benchmark, CPU/I/O y `govulncheck` pasan en [CI de `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359); [artefacto de mediciones](https://github.com/Khr0x/rulefare/actions/runs/35778045359#artifacts) |
 
@@ -126,7 +126,7 @@ Inicia la plataforma (F2): abre el puerto, se conecta a PostgreSQL, aplica las [
 | `RULEFARE_DATABASE_URL` | — (obligatoria) | Cadena de conexión PostgreSQL; nunca se escribe en logs |
 | `RULEFARE_SHUTDOWN_TIMEOUT` | `15s` | Tiempo máximo para terminar peticiones en curso tras SIGINT/SIGTERM |
 
-Los logs son JSON en stderr. Tras SIGINT o SIGTERM deja de aceptar conexiones, espera las peticiones en curso y sale con `0`; si vence el plazo, cierra las conexiones y sale con `1`.
+Los logs son JSON en stderr. Cada petición produce una línea `request` con `request_id`, `trace_id`, método, ruta sin query string, estado, bytes y duración; nunca cabeceras ni cuerpos. `X-Request-ID` se conserva si el cliente envía uno simple (hasta 128 caracteres `[A-Za-z0-9._-]`) y se devuelve siempre en la respuesta. Un `traceparent` W3C válido hace que el `trace_id` sea el del llamador. Un pánico en un handler se registra con su stack y responde `500` `application/problem+json` con código `INTERNAL_ERROR`, sin exponer el detalle. Tras SIGINT o SIGTERM deja de aceptar conexiones, espera las peticiones en curso y sale con `0`; si vence el plazo, cierra las conexiones y sale con `1`.
 
 Con un PostgreSQL local de prueba (Docker Compose llega en T1.6):
 
