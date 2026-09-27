@@ -273,7 +273,7 @@ El error de import y formato del 2026-09-04 ya está corregido. El ganador se re
 | F0 | En curso; al 2026-09-26 no hay casos reales: ninguna agencia ha entregado contratos, reservas ni statements, y no hay entrevistas, clientes de diseño ni aprobación financiera. Solo existen [mocks sintéticos](./f0_mocks/README.md) |
 | F1 | Contrato, validación, CEL, filtros, ranking, empates, `NO_MATCH`, copia del outcome, T2.7, trace sanitizado, CLI, pruebas concurrentes, fuzzing y benchmarks implementados con evidencia local |
 | F1 cierre técnico | ✅ CI de `main` para `09ff1e2` en verde con corpus de 32 casos y artefacto de benchmarks; tarifas reales fuera de F1 |
-| F2 | En curso: `rulefare serve`, prueba de frontera del motor y PostgreSQL con migraciones (T1.1–T1.3) |
+| F2 | En curso: `rulefare serve`, prueba de frontera del motor PostgreSQL con migraciones y observabilidad HTTP (T1.1–T1.4) |
 | F3–F10 | Sin implementación en el árbol actual |
 
 T2.7 valida toda la entrada antes de resolver reglas: capa conocida, fecha explícita y contexto completo conforme al schema. Los errores devuelven `INVALID_INPUT` sin candidatos ni fallback. El contrato de tipos y normalización está documentado en el [README](../../README.md#contrato-de-evaluación-t27).
@@ -709,3 +709,4 @@ Actualizar esta tabla en cada revisión semanal. Las decisiones de alcance deben
 | 2026-09-26 | F2 | ⬜ Pendiente | ⬜ Planificada | [Plan de implementación](./f2_plataforma_plan_implementacion.md): net/http, pgx, migrador propio, `Money` en unidades menores con `HALF_UP`, API keys con hash, OpenAPI y React embebido; núcleo de cálculo se mantiene en F5 | Tech Lead |
 | 2026-09-26 | F2 | ⬜ Planificada | 🟡 En curso | T1.1 (`rulefare serve`, config y apagado ordenado) y T1.2 (frontera de dependencias como prueba Go) implementadas con pruebas locales | Backend |
 | 2026-09-27 | F2 · T1.3 | ⬜ Pendiente | ✅ Implementada con pruebas locales | Pool `pgx`, migrador embebido con advisory lock y checksums; `serve` migra al arrancar; PostgreSQL en CI | Backend |
+| 2026-09-27 | F2 · T1.4 | ⬜ Pendiente | ✅ Implementada con pruebas locales | Logs de acceso JSON, `X-Request-ID`, `traceparent` W3C y recuperación de pánicos en `internal/httpapi` | Backend |

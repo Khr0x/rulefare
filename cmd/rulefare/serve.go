@@ -25,6 +25,7 @@ func serve(ctx context.Context, args []string, getenv func(string) string, stder
 		return 2
 	}
 	logger := slog.New(slog.NewJSONHandler(stderr, nil))
+	slog.SetDefault(logger) // Code outside a request logs in the same JSON format.
 	cfg, err := platform.LoadConfig(getenv)
 	if err != nil {
 		logger.Error("invalid configuration", "error", err)
@@ -51,7 +52,7 @@ func serve(ctx context.Context, args []string, getenv func(string) string, stder
 	logger.Info("migrations applied", "versions", applied)
 
 	logger.Info("listening", "addr", ln.Addr().String())
-	if err := httpapi.Serve(ctx, ln, httpapi.NewHandler(), cfg.ShutdownTimeout); err != nil {
+	if err := httpapi.Serve(ctx, ln, httpapi.NewHandler(logger), cfg.ShutdownTimeout); err != nil {
 		logger.Error("server stopped with error", "error", err)
 		return 1
 	}

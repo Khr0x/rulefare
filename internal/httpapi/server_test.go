@@ -3,6 +3,7 @@ package httpapi
 import (
 	"context"
 	"io"
+	"log/slog"
 	"net"
 	"net/http"
 	"testing"
@@ -78,7 +79,7 @@ func TestServeReportsShutdownTimeout(t *testing.T) {
 func TestServeStopsWhenContextAlreadyCancelled(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	if err := Serve(ctx, listen(t), NewHandler(), time.Second); err != nil {
+	if err := Serve(ctx, listen(t), NewHandler(slog.New(slog.DiscardHandler)), time.Second); err != nil {
 		t.Fatalf("Serve = %v, want nil", err)
 	}
 }
@@ -86,7 +87,7 @@ func TestServeStopsWhenContextAlreadyCancelled(t *testing.T) {
 func TestServeReturnsListenerErrors(t *testing.T) {
 	ln := listen(t)
 	ln.Close()
-	if err := Serve(context.Background(), ln, NewHandler(), time.Second); err == nil {
+	if err := Serve(context.Background(), ln, NewHandler(slog.New(slog.DiscardHandler)), time.Second); err == nil {
 		t.Fatal("Serve = nil, want error from closed listener")
 	}
 }
