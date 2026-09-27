@@ -22,7 +22,8 @@ Rules behind every travel transaction.
 | CPU en reposo e I/O | [Medición local de sistema](./propuesta/mvp/benchmarks/2026-09-22/system/README.md): mediana 0,0027 % CPU; sin I/O de archivos/red en 4.100 evaluaciones observadas |
 | Límites runtime y payload (T3.9) | Implementados y medidos; agotamiento de recursos bloquea toda la evaluación sin fallback |
 | Corpus técnico (T1.6) | [32 casos revisados](./engine/testdata/README.md) por un agente independiente con enfoque financiero; snapshots y orden invertido; aceptación de tarifas reales separada |
-| F2–F10 del MVP | Pendientes |
+| F2 · plataforma | 🟡 En curso: `rulefare serve` con config por entorno y apagado ordenado (T1.1); frontera de dependencias como prueba Go (T1.2). Sin rutas, BD ni UI todavía |
+| F3–F10 del MVP | Pendientes |
 | Verificación F1 | Build, suite, carrera, fuzzing, benchmark, CPU/I/O y `govulncheck` pasan en [CI de `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359); [artefacto de mediciones](https://github.com/Khr0x/rulefare/actions/runs/35778045359#artifacts) |
 
 El motor, la documentación y el workflow ya están versionados. El [cierre técnico de F1](./propuesta/mvp/verificacion/2026-09-22/README.md#cierre-técnico-de-f1) se apoya en el CI del commit de merge `09ff1e2`; los cortes anteriores quedan como historial.
@@ -74,7 +75,8 @@ El [CI del merge `09ff1e2`](https://github.com/Khr0x/rulefare/actions/runs/35778
 ## Estructura
 
 ```text
-cmd/rulefare/ CLI con subcomandos rules
+cmd/rulefare/ CLI con subcomandos rules y serve
+internal/     plataforma F2: config (platform) y servidor HTTP (httpapi)
 scripts/      runner de benchmarks local/contenedor
 engine/       motor neutral en Go + CEL, sin I/O
 propuesta/    alcance, roadmap y arquitectura objetivo
@@ -111,7 +113,22 @@ Los fallos previos a `Evaluate` no escriben un resultado en stdout. Los códigos
 
 Cada archivo admite hasta **8 MiB**, incluidos espacios. Se exige un único objeto JSON no nulo; el decoder usa `DisallowUnknownFields` para campos de estructuras y `UseNumber` para preservar enteros. Las variables del contexto se validan contra el schema en el motor. Se rechazan documentos adicionales y texto residual. Los errores de decodificación no reproducen valores del archivo.
 
-Los comandos `rules` no requieren servicios externos ni inicializan infraestructura. `rulefare serve` se añadirá en F2 y todavía no está implementado.
+Los comandos `rules` no requieren servicios externos ni inicializan infraestructura, ni leen variables `RULEFARE_*`.
+
+### `rulefare serve`
+
+Inicia el servidor HTTP de la plataforma (F2). Por ahora no registra rutas: responde `404` hasta que se añadan salud (T1.5) y endpoints (T2.4). Se configura solo por variables de entorno; valores inválidos detienen el arranque con código `1` y un log que nombra cada variable.
+
+| Variable | Defecto | Uso |
+|---|---|---|
+| `RULEFARE_HTTP_ADDR` | `127.0.0.1:8080` | Dirección `host:puerto`; en contenedores, `:8080` |
+| `RULEFARE_SHUTDOWN_TIMEOUT` | `15s` | Tiempo máximo para terminar peticiones en curso tras SIGINT/SIGTERM |
+
+Los logs son JSON en stderr. Tras SIGINT o SIGTERM deja de aceptar conexiones, espera las peticiones en curso y sale con `0`; si vence el plazo, cierra las conexiones y sale con `1`.
+
+```sh
+RULEFARE_HTTP_ADDR=127.0.0.1:8080 ./bin/rulefare serve
+```
 
 ## Garantías y límites actuales
 

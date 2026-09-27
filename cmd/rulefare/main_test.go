@@ -155,7 +155,7 @@ func TestEvaluateBlockingRuleErrors(t *testing.T) {
 
 func TestCLIUsage(t *testing.T) {
 	for _, args := range [][]string{
-		{}, {"serve"}, {"rules"}, {"rules", "missing"}, {"rules", "validate"},
+		{}, {"serve", "extra"}, {"rules"}, {"rules", "missing"}, {"rules", "validate"},
 		{"rules", "validate", "--unknown"},
 		{"rules", "validate", "--schema", "s", "--ruleset", "r", "extra"},
 		{"rules", "evaluate", "--schema", "s", "--ruleset", "r"},

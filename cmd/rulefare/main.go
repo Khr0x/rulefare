@@ -2,12 +2,15 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
 	"io"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/Khr0x/rulefare/engine"
@@ -18,6 +21,10 @@ const maxJSONBytes = 8 << 20 // Per file; bound allocation before decoding.
 const usage = `Usage:
   rulefare rules validate --schema FILE --ruleset FILE [--json]
   rulefare rules evaluate --schema FILE --ruleset FILE --context FILE --layer NAME --at RFC3339
+  rulefare serve
+
+serve reads RULEFARE_HTTP_ADDR (default 127.0.0.1:8080) and
+RULEFARE_SHUTDOWN_TIMEOUT (default 15s), and stops on SIGINT/SIGTERM.
 
 Exit codes: 0 success (including NO_MATCH), 1 input/evaluation/I/O failure, 2 usage error.
 `
@@ -33,6 +40,11 @@ func run(args []string, stdout, stderr io.Writer) int {
 			return fail(stderr, err)
 		}
 		return 0
+	}
+	if len(args) >= 1 && args[0] == "serve" {
+		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+		defer stop()
+		return serve(ctx, args[1:], os.Getenv, stderr)
 	}
 	if len(args) < 2 || args[0] != "rules" || (args[1] != "validate" && args[1] != "evaluate") {
 		fmt.Fprint(stderr, usage)

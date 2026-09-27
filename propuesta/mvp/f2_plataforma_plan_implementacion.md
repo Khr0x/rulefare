@@ -4,9 +4,9 @@
 
 | Campo | Valor |
 |---|---|
-| Versión | 0.1 |
+| Versión | 0.2 |
 | Última actualización | 2026-09-26 |
-| Estado | ⬜ Planificada |
+| Estado | 🟡 En curso · T1.1 y T1.2 implementadas con pruebas locales |
 | Inicio objetivo | 2026-09-28 |
 | Fin objetivo | 2026-10-16 |
 | Duración | 3 semanas |
@@ -166,12 +166,12 @@ type Money struct {
 
 **Periodo:** 2026-09-28 → 2026-10-02  
 **Hito:** `docker compose up` levanta app + PostgreSQL y `/readyz` responde `200`.  
-**Estado:** ⬜ Pendiente
+**Estado:** 🟡 En curso
 
 | ID | Trabajo | Entregable | Estado |
 |---|---|---|---|
-| T1.1 | Añadir `serve`, config por entorno y apagado ordenado (SIGTERM, timeout) | `cmd/rulefare`, `internal/platform/config.go` | ⬜ |
-| T1.2 | Mover el control de dependencias del motor a una prueba Go y ampliarla a la regla de dependencias de F2 | `architecture_test.go`; paso de CI sustituido | ⬜ |
+| T1.1 | Añadir `serve`, config por entorno y apagado ordenado (SIGTERM, timeout) | `cmd/rulefare`, `internal/platform/config.go` | ✅ `serve` con `RULEFARE_HTTP_ADDR` y `RULEFARE_SHUTDOWN_TIMEOUT`, drenado de peticiones y error si vence el plazo; `rules` no lee la config de plataforma; pruebas locales con `-race` |
+| T1.2 | Mover el control de dependencias del motor a una prueba Go y ampliarla a la regla de dependencias de F2 | `architecture_test.go`; paso de CI sustituido | ✅ `go list -deps` con reglas para `engine` (stdlib + CEL) e `internal/money` (stdlib); prueba de que detecta violaciones; paso de shell eliminado de CI |
 | T1.3 | Pool pgx y migrador con advisory lock | `internal/postgres`, `schema_migrations` | ⬜ |
 | T1.4 | Logs JSON, `request_id`, `traceparent`, recuperación de pánicos | middleware en `internal/httpapi` | ⬜ |
 | T1.5 | `/healthz` y `/readyz` | handlers + pruebas | ⬜ |
@@ -279,3 +279,4 @@ open http://localhost:8080/
 | Fecha | ID | Estado anterior | Estado nuevo | Evidencia / bloqueo | Responsable |
 |---|---|---|---|---|---|
 | 2026-09-26 | F2 | — | ⬜ Planificada | Plan inicial con decisiones técnicas, tres semanas de trabajo y criterios de salida; núcleo de cálculo se mantiene en F5 | Tech Lead |
+| 2026-09-26 | T1.1 / T1.2 | ⬜ Pendientes | ✅ Implementadas con pruebas locales | `rulefare serve`, `internal/platform` e `internal/httpapi`; `architecture_test.go` sustituye el control de shell en CI; suite, race y vet locales en verde; sin dependencias nuevas | Backend |
