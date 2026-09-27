@@ -7,7 +7,7 @@
 | Versión del roadmap | 0.24 |
 | Última actualización | 2026-09-26 |
 | Ventana objetivo | 2026-08-30 → 2027-02-26 |
-| Estado general | 🟡 F0 en curso, sin casos reales de agencias; ✅ F1 completada técnicamente con CI de `main` verde |
+| Estado general | 🟡 F0 abierta y diferida, sin casos reales de agencias; ✅ F1 completada técnicamente con CI de `main` verde; ⬜ F2 inicia el 2026-09-28 |
 | Release objetivo | MVP v1 para pilotos controlados |
 | Equipo asumido | 2 backend, 1 frontend/full-stack y apoyo parcial de producto/diseño |
 
@@ -34,6 +34,12 @@ La fuente de verdad para el alcance es [Alcance v1](./travel_commission_engine_a
 ## Decisión arquitectónica: construir primero el motor de reglas
 
 El motor de reglas es el primer componente de software que se construirá. La validación de negocio de F0 puede avanzar antes o en paralelo, pero no es una dependencia técnica del motor.
+
+### Decisión del 2026-09-26: F2 avanza con F0 abierta
+
+Los casos reales de agencias todavía no se contemplan. F0 queda abierta y diferida, y deja de bloquear F2–F9: la plataforma, el catálogo, la importación y el cálculo se construyen y prueban con los [mocks sintéticos](./f0_mocks/README.md) y el corpus técnico de F1. Los criterios de salida de F0 pasan a ser dependencia de F10, porque los pilotos necesitan clientes de diseño e importes aprobados por finanzas.
+
+Riesgo aceptado: cuando lleguen los casos reales, pueden obligar a ajustar supuestos ya implementados (base sin impuestos, redondeo `HALF_UP`, tiers sobre toda la base, reversión total de cancelaciones y una sola moneda por organización). Esos supuestos deben quedar aislados y cubiertos por pruebas para que el cambio sea acotado. Cuanto más tarde lleguen los casos reales, mayor será el retrabajo en F3–F5.
 
 ### Contraste con lo prometido
 
@@ -271,15 +277,15 @@ El error de import y formato del 2026-09-04 ya está corregido. El ganador se re
 
 T2.7 valida toda la entrada antes de resolver reglas: capa conocida, fecha explícita y contexto completo conforme al schema. Los errores devuelven `INVALID_INPUT` sin candidatos ni fallback. El contrato de tipos y normalización está documentado en el [README](../../README.md#contrato-de-evaluación-t27).
 
-T2.5 ya omite el mensaje interno de CEL: el trace expone únicamente `rule_id` y `CONDITION_ERROR` para esos errores, con pruebas de privacidad y estabilidad del JSON. T3.1 y T3.2 ya implementan `rulefare rules validate/evaluate`, con límite de 8 MiB por archivo JSON, reportes y códigos de salida probados. T3.3 añade pruebas concurrentes dedicadas con `-race`, tanto de lectura como de mutación de valores devueltos, con resultados locales en verde. T3.4 incorpora tres targets de fuzzing para rulesets, CEL/scopes y contextos, con semillas versionadas, campañas locales sin fallos y campañas breves configuradas en CI. T3.5 ya tiene una [baseline reproducible](./benchmarks/2026-09-22/README.md): en Linux arm64 con 1 CPU/512 MiB, p95/p99 de 0,497/0,643 ms para 100 candidatas; RSS tras GC de 136,7 MiB con 10.000 reglas. El [perfilado T3.6](./benchmarks/2026-09-22/t3.6/README.md) identifica programas CEL duplicados: reutilizar condiciones idénticas dentro de cada compilación reduce el RSS a 29,5 MiB y mantiene la latencia en objetivo (p95/p99 0,409/0,435 ms). La [segunda optimización T3.6](./benchmarks/2026-09-22/t3.6-unique/README.md) reduce el control de condiciones únicas a 86,4 MiB de RSS mediano al cargar únicamente las funciones CEL usadas; el caso repetido registra 31,4 MiB y la latencia final p95/p99 es 0,417/0,434 ms. T3.6 queda completada localmente. [T3.9](./benchmarks/2026-09-22/t3.9/README.md) añade cotas de payload, decimales, coste individual/acumulado y regex previas al matcher, con errores bloqueantes y pruebas adversariales. La primera medición aumentó el tiempo y las asignaciones. La [optimización posterior](./benchmarks/2026-09-22/t3.9-optimization/README.md) mantiene los límites y corrige la regresión de la baseline: 100 candidatas repetidas en 19,8 µs, únicas en 124,1 µs; p95/p99 de repetidas 0,042/0,057 ms y RSS único mediano 94,6 MiB. T3.8 completa la [guía de API](../../engine/README.md), contratos, trace, errores y límites, con ejemplos Go/CLI verificados localmente. La [medición de sistema](./benchmarks/2026-09-22/system/README.md) completa la evidencia local de CPU en reposo (mediana 0,002676 %) y ausencia de I/O de archivos/red en 4.100 evaluaciones observadas. El [corpus técnico](../../engine/testdata/README.md) contiene 32 casos con snapshots explícitos y prueba de orden invertido (64 evaluaciones). Un agente independiente con enfoque financiero completó la [revisión de dominio](../../engine/testdata/FINANCIAL_REVIEW.md) solicitada por el responsable ante la ausencia de equipo de producto/finanzas. La [CI del merge `09ff1e2`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) pasó con esta ampliación y publicó el artefacto de benchmarks. Los criterios de salida técnicos de F1 están cumplidos; las tarifas reales requieren aceptación comercial separada. F2 depende también de F0.
+T2.5 ya omite el mensaje interno de CEL: el trace expone únicamente `rule_id` y `CONDITION_ERROR` para esos errores, con pruebas de privacidad y estabilidad del JSON. T3.1 y T3.2 ya implementan `rulefare rules validate/evaluate`, con límite de 8 MiB por archivo JSON, reportes y códigos de salida probados. T3.3 añade pruebas concurrentes dedicadas con `-race`, tanto de lectura como de mutación de valores devueltos, con resultados locales en verde. T3.4 incorpora tres targets de fuzzing para rulesets, CEL/scopes y contextos, con semillas versionadas, campañas locales sin fallos y campañas breves configuradas en CI. T3.5 ya tiene una [baseline reproducible](./benchmarks/2026-09-22/README.md): en Linux arm64 con 1 CPU/512 MiB, p95/p99 de 0,497/0,643 ms para 100 candidatas; RSS tras GC de 136,7 MiB con 10.000 reglas. El [perfilado T3.6](./benchmarks/2026-09-22/t3.6/README.md) identifica programas CEL duplicados: reutilizar condiciones idénticas dentro de cada compilación reduce el RSS a 29,5 MiB y mantiene la latencia en objetivo (p95/p99 0,409/0,435 ms). La [segunda optimización T3.6](./benchmarks/2026-09-22/t3.6-unique/README.md) reduce el control de condiciones únicas a 86,4 MiB de RSS mediano al cargar únicamente las funciones CEL usadas; el caso repetido registra 31,4 MiB y la latencia final p95/p99 es 0,417/0,434 ms. T3.6 queda completada localmente. [T3.9](./benchmarks/2026-09-22/t3.9/README.md) añade cotas de payload, decimales, coste individual/acumulado y regex previas al matcher, con errores bloqueantes y pruebas adversariales. La primera medición aumentó el tiempo y las asignaciones. La [optimización posterior](./benchmarks/2026-09-22/t3.9-optimization/README.md) mantiene los límites y corrige la regresión de la baseline: 100 candidatas repetidas en 19,8 µs, únicas en 124,1 µs; p95/p99 de repetidas 0,042/0,057 ms y RSS único mediano 94,6 MiB. T3.8 completa la [guía de API](../../engine/README.md), contratos, trace, errores y límites, con ejemplos Go/CLI verificados localmente. La [medición de sistema](./benchmarks/2026-09-22/system/README.md) completa la evidencia local de CPU en reposo (mediana 0,002676 %) y ausencia de I/O de archivos/red en 4.100 evaluaciones observadas. El [corpus técnico](../../engine/testdata/README.md) contiene 32 casos con snapshots explícitos y prueba de orden invertido (64 evaluaciones). Un agente independiente con enfoque financiero completó la [revisión de dominio](../../engine/testdata/FINANCIAL_REVIEW.md) solicitada por el responsable ante la ausencia de equipo de producto/finanzas. La [CI del merge `09ff1e2`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) pasó con esta ampliación y publicó el artefacto de benchmarks. Los criterios de salida técnicos de F1 están cumplidos; las tarifas reales requieren aceptación comercial separada. Desde el 2026-09-26, F2 ya no depende de F0 (ver la [decisión](#decisión-del-2026-09-26-f2-avanza-con-f0-abierta)).
 
 ## Calendario maestro
 
 | ID | Fase | Inicio objetivo | Fin objetivo | Duración | Estado | Inicio real | Fin real | Depende de |
 |---|---|---:|---:|---:|---|---:|---:|---|
-| F0 | Validación y congelamiento del alcance | 2026-08-30 | 2026-09-11 | 2 semanas | 🟡 En curso | 2026-08-30 | — | — |
+| F0 | Validación y congelamiento del alcance | 2026-08-30 | Antes de F10 (diferida; objetivo original 2026-09-11) | — | 🟡 Abierta · diferida | 2026-08-30 | — | — |
 | F1 | Motor de reglas nativo e independiente | 2026-09-14 | 2026-10-02 | 3 semanas | ✅ Completa técnicamente | 2026-08-30 | 2026-09-22 | Ninguna |
-| F2 | Fundación de plataforma y multi-tenant | 2026-10-05 | 2026-10-16 | 2 semanas | ⬜ Pendiente | — | — | F0, F1 |
+| F2 | Fundación de plataforma y multi-tenant | 2026-09-28 | 2026-10-16 | 3 semanas | ⬜ Pendiente | — | — | F1 |
 | F3 | Modelo travel, catálogo y contratos | 2026-10-19 | 2026-10-30 | 2 semanas | ⬜ Pendiente | — | — | F2 |
 | F4 | Importación de reglas desde Excel | 2026-11-02 | 2026-11-13 | 2 semanas | ⬜ Pendiente | — | — | F1, F3 |
 | F5 | Motor de cálculo, SIMULATE y COMMIT | 2026-11-16 | 2026-12-04 | 3 semanas | ⬜ Pendiente | — | — | F1, F3 |
@@ -288,12 +294,12 @@ T2.5 ya omite el mensaje interno de CEL: el trace expone únicamente `rule_id` y
 | F7 | Commission Cloud y experiencia del agente | 2027-01-04 | 2027-01-15 | 2 semanas | ⬜ Pendiente | — | — | F2, F4, F6 |
 | F8 | Conciliación básica por CSV | 2027-01-18 | 2027-01-29 | 2 semanas | ⬜ Pendiente | — | — | F6, F7 |
 | F9 | Endurecimiento y release candidate | 2027-02-01 | 2027-02-12 | 2 semanas | ⬜ Pendiente | — | — | F8 |
-| F10 | Pilotos y liberación del MVP | 2027-02-15 | 2027-02-26 | 2 semanas | ⬜ Pendiente | — | — | F9 |
+| F10 | Pilotos y liberación del MVP | 2027-02-15 | 2027-02-26 | 2 semanas | ⬜ Pendiente | — | — | F0, F9 |
 
 ## F0 · Validación y congelamiento del alcance
 
-**Periodo:** 2026-08-30 → 2026-09-11  
-**Estado:** 🟡 En curso  
+**Periodo:** 2026-08-30 → antes de F10 (objetivo original 2026-09-11)  
+**Estado:** 🟡 Abierta · diferida desde el 2026-09-26; no bloquea F2–F9  
 **Responsables:** Producto + Tech Lead  
 **Dependencias:** Ninguna
 
@@ -375,10 +381,10 @@ Un módulo Go importable y un único ejecutable `rulefare`, con entrada en `cmd/
 
 ## F2 · Fundación de plataforma y multi-tenant
 
-**Periodo:** 2026-10-05 → 2026-10-16  
+**Periodo:** 2026-09-28 → 2026-10-16  
 **Estado:** ⬜ Pendiente  
 **Responsables:** Backend + Frontend/Full-stack  
-**Dependencias:** F0, F1
+**Dependencias:** F1 (F0 diferida, ver la [decisión](#decisión-del-2026-09-26-f2-avanza-con-f0-abierta))
 
 ### Trabajo
 
@@ -620,7 +626,7 @@ Un módulo Go importable y un único ejecutable `rulefare`, con entrada en `cmd/
 **Periodo:** 2027-02-15 → 2027-02-26  
 **Estado:** ⬜ Pendiente  
 **Responsables:** Producto + Equipo completo  
-**Dependencias:** F9
+**Dependencias:** F0, F9
 
 ### Trabajo
 
@@ -696,3 +702,5 @@ Actualizar esta tabla en cada revisión semanal. Las decisiones de alcance deben
 | 2026-09-22 | F1 | 🟡 Corpus ampliado sin CI remota | ✅ Completa técnicamente | [Run `35778045359`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) de `main` para `09ff1e2` pasa; artefacto con benchmarks, CPU/I/O y corpus de 32 casos; aceptación comercial separada | Backend / Tech Lead |
 | 2026-09-23 | F0 | Sin ejemplos de flujo completo | 🟡 Mock sintético disponible | [Dos agencias ficticias](./f0_mocks/README.md), contratos, reservas, split, tiers, cancelación y conciliación; clientes y aprobación de importes reales pendientes | Responsable del proyecto |
 | 2026-09-26 | F0 | 🟡 Mock sintético disponible | 🟡 Sin casos reales | Ninguna agencia ha entregado contratos, reservas ni statements; sin clientes de diseño ni aprobación financiera. Mocks mergeados en PR #5 | Responsable del proyecto |
+| 2026-09-26 | F0 | 🟡 En curso, bloqueaba F2 | 🟡 Abierta · diferida | Los casos reales todavía no se contemplan; F0 deja de bloquear F2–F9 y pasa a ser dependencia de F10 | Responsable del proyecto |
+| 2026-09-26 | Calendario | F2 2026-10-05 → 10-16, depende de F0 y F1 | F2 2026-09-28 → 10-16, depende de F1 | Adelanta el inicio con la semana ganada al cerrar F1 el 2026-09-22 y la usa como margen; F3–F10 sin cambios | Responsable del proyecto |
