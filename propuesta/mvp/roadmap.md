@@ -4,10 +4,10 @@
 
 | Campo | Valor |
 |---|---|
-| Versión del roadmap | 0.23 |
-| Última actualización | 2026-09-23 |
+| Versión del roadmap | 0.24 |
+| Última actualización | 2026-09-26 |
 | Ventana objetivo | 2026-08-30 → 2027-02-26 |
-| Estado general | 🟡 F0 en curso; ✅ F1 completada técnicamente con CI de `main` verde |
+| Estado general | 🟡 F0 en curso, sin casos reales de agencias; ✅ F1 completada técnicamente con CI de `main` verde |
 | Release objetivo | MVP v1 para pilotos controlados |
 | Equipo asumido | 2 backend, 1 frontend/full-stack y apoyo parcial de producto/diseño |
 
@@ -264,7 +264,7 @@ El error de import y formato del 2026-09-04 ya está corregido. El ganador se re
 
 | Alcance | Estado comprobado |
 |---|---|
-| F0 | En curso; sus entrevistas, clientes de diseño y aprobación financiera no tienen evidencia en este repositorio |
+| F0 | En curso; al 2026-09-26 no hay casos reales: ninguna agencia ha entregado contratos, reservas ni statements, y no hay entrevistas, clientes de diseño ni aprobación financiera. Solo existen [mocks sintéticos](./f0_mocks/README.md) |
 | F1 | Contrato, validación, CEL, filtros, ranking, empates, `NO_MATCH`, copia del outcome, T2.7, trace sanitizado, CLI, pruebas concurrentes, fuzzing y benchmarks implementados con evidencia local |
 | F1 cierre técnico | ✅ CI de `main` para `09ff1e2` en verde con corpus de 32 casos y artefacto de benchmarks; tarifas reales fuera de F1 |
 | F2–F10 | Sin implementación en el árbol actual |
@@ -307,6 +307,8 @@ T2.5 ya omite el mensaje interno de CEL: el trace expone únicamente `rule_id` y
 - Definir las métricas iniciales: tiempo de alta, diferencias detectadas, cálculos explicados y tiempo de back-office.
 
 Los [ejemplos sintéticos de dos agencias](./f0_mocks/README.md) preparan contratos, reservas, cancelación y conciliación para revisión. Son material de trabajo; no sustituyen agencias piloto ni importes aprobados.
+
+> **Al 2026-09-26 aún no se tienen casos reales.** Ninguna agencia ha entregado contratos, reglas, reservas ni statements, y ningún importe ha sido aprobado por finanzas. Todos los escenarios disponibles son sintéticos.
 
 ### Criterios de salida
 
@@ -693,3 +695,4 @@ Actualizar esta tabla en cada revisión semanal. Las decisiones de alcance deben
 | 2026-09-22 | T1.6 | 🟡 Diez casos sin revisión de dominio | ✅ Corpus técnico de 32 casos revisado por IA | Revisor independiente con enfoque financiero solicitado por el responsable; 64 evaluaciones, suite/race/vet locales pasan; CI de ampliación pendiente | Backend / agente de revisión solicitado |
 | 2026-09-22 | F1 | 🟡 Corpus ampliado sin CI remota | ✅ Completa técnicamente | [Run `35778045359`](https://github.com/Khr0x/rulefare/actions/runs/35778045359) de `main` para `09ff1e2` pasa; artefacto con benchmarks, CPU/I/O y corpus de 32 casos; aceptación comercial separada | Backend / Tech Lead |
 | 2026-09-23 | F0 | Sin ejemplos de flujo completo | 🟡 Mock sintético disponible | [Dos agencias ficticias](./f0_mocks/README.md), contratos, reservas, split, tiers, cancelación y conciliación; clientes y aprobación de importes reales pendientes | Responsable del proyecto |
+| 2026-09-26 | F0 | 🟡 Mock sintético disponible | 🟡 Sin casos reales | Ninguna agencia ha entregado contratos, reservas ni statements; sin clientes de diseño ni aprobación financiera. Mocks mergeados en PR #5 | Responsable del proyecto |
