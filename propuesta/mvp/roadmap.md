@@ -324,7 +324,7 @@ Los [ejemplos sintéticos de dos agencias](./f0_mocks/README.md) preparan contra
 ## F1 · Motor de reglas nativo e independiente
 
 **Periodo:** 2026-09-14 → 2026-10-02  
-**Estado:** 🟡 En curso · evaluación provisional; suite actual en rojo  
+**Estado:** ✅ Completa técnicamente · CI de `main` verde; aceptación comercial separada  
 **Responsables:** Backend  
 **Dependencias:** Ninguna
 
