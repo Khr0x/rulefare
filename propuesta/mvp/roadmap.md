@@ -7,7 +7,7 @@
 | Versión del roadmap | 0.25 |
 | Última actualización | 2026-09-26 |
 | Ventana objetivo | 2026-08-30 → 2027-02-26 |
-| Estado general | 🟡 F0 abierta y diferida, sin casos reales de agencias; ✅ F1 completada técnicamente con CI de `main` verde; ⬜ F2 inicia el 2026-09-28 |
+| Estado general | 🟡 F0 abierta y diferida, sin casos reales de agencias; ✅ F1 completada técnicamente con CI de `main` verde; 🟡 F2 en curso desde el 2026-09-26 |
 | Release objetivo | MVP v1 para pilotos controlados |
 | Equipo asumido | 2 backend, 1 frontend/full-stack y apoyo parcial de producto/diseño |
 
@@ -273,7 +273,8 @@ El error de import y formato del 2026-09-04 ya está corregido. El ganador se re
 | F0 | En curso; al 2026-09-26 no hay casos reales: ninguna agencia ha entregado contratos, reservas ni statements, y no hay entrevistas, clientes de diseño ni aprobación financiera. Solo existen [mocks sintéticos](./f0_mocks/README.md) |
 | F1 | Contrato, validación, CEL, filtros, ranking, empates, `NO_MATCH`, copia del outcome, T2.7, trace sanitizado, CLI, pruebas concurrentes, fuzzing y benchmarks implementados con evidencia local |
 | F1 cierre técnico | ✅ CI de `main` para `09ff1e2` en verde con corpus de 32 casos y artefacto de benchmarks; tarifas reales fuera de F1 |
-| F2–F10 | Sin implementación en el árbol actual |
+| F2 | En curso: `rulefare serve` y prueba de frontera del motor (T1.1/T1.2) |
+| F3–F10 | Sin implementación en el árbol actual |
 
 T2.7 valida toda la entrada antes de resolver reglas: capa conocida, fecha explícita y contexto completo conforme al schema. Los errores devuelven `INVALID_INPUT` sin candidatos ni fallback. El contrato de tipos y normalización está documentado en el [README](../../README.md#contrato-de-evaluación-t27).
 
@@ -285,7 +286,7 @@ T2.5 ya omite el mensaje interno de CEL: el trace expone únicamente `rule_id` y
 |---|---|---:|---:|---:|---|---:|---:|---|
 | F0 | Validación y congelamiento del alcance | 2026-08-30 | Antes de F10 (diferida; objetivo original 2026-09-11) | — | 🟡 Abierta · diferida | 2026-08-30 | — | — |
 | F1 | Motor de reglas nativo e independiente | 2026-09-14 | 2026-10-02 | 3 semanas | ✅ Completa técnicamente | 2026-08-30 | 2026-09-22 | Ninguna |
-| F2 | Fundación de plataforma y multi-tenant | 2026-09-28 | 2026-10-16 | 3 semanas | ⬜ Pendiente | — | — | F1 |
+| F2 | Fundación de plataforma y multi-tenant | 2026-09-28 | 2026-10-16 | 3 semanas | 🟡 En curso | 2026-09-26 | — | F1 |
 | F3 | Modelo travel, catálogo y contratos | 2026-10-19 | 2026-10-30 | 2 semanas | ⬜ Pendiente | — | — | F2 |
 | F4 | Importación de reglas desde Excel | 2026-11-02 | 2026-11-13 | 2 semanas | ⬜ Pendiente | — | — | F1, F3 |
 | F5 | Motor de cálculo, SIMULATE y COMMIT | 2026-11-16 | 2026-12-04 | 3 semanas | ⬜ Pendiente | — | — | F1, F3 |
@@ -382,7 +383,7 @@ Un módulo Go importable y un único ejecutable `rulefare`, con entrada en `cmd/
 ## F2 · Fundación de plataforma y multi-tenant
 
 **Periodo:** 2026-09-28 → 2026-10-16  
-**Estado:** ⬜ Pendiente  
+**Estado:** 🟡 En curso · [avance en el plan](./f2_plataforma_plan_implementacion.md#6-plan-de-trabajo)  
 **Responsables:** Backend + Frontend/Full-stack  
 **Dependencias:** F1 (F0 diferida, ver la [decisión](#decisión-del-2026-09-26-f2-avanza-con-f0-abierta))
 
@@ -706,3 +707,4 @@ Actualizar esta tabla en cada revisión semanal. Las decisiones de alcance deben
 | 2026-09-26 | F0 | 🟡 En curso, bloqueaba F2 | 🟡 Abierta · diferida | Los casos reales todavía no se contemplan; F0 deja de bloquear F2–F9 y pasa a ser dependencia de F10 | Responsable del proyecto |
 | 2026-09-26 | Calendario | F2 2026-10-05 → 10-16, depende de F0 y F1 | F2 2026-09-28 → 10-16, depende de F1 | Adelanta el inicio con la semana ganada al cerrar F1 el 2026-09-22 y la usa como margen; F3–F10 sin cambios | Responsable del proyecto |
 | 2026-09-26 | F2 | ⬜ Pendiente | ⬜ Planificada | [Plan de implementación](./f2_plataforma_plan_implementacion.md): net/http, pgx, migrador propio, `Money` en unidades menores con `HALF_UP`, API keys con hash, OpenAPI y React embebido; núcleo de cálculo se mantiene en F5 | Tech Lead |
+| 2026-09-26 | F2 | ⬜ Planificada | 🟡 En curso | T1.1 (`rulefare serve`, config y apagado ordenado) y T1.2 (frontera de dependencias como prueba Go) implementadas con pruebas locales | Backend |

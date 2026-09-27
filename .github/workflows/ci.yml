@@ -29,17 +29,6 @@ jobs:
         run: |
           go mod tidy
           git diff --exit-code -- go.mod go.sum
-      - name: Check engine dependency boundary
-        run: |
-          imports=$(go list -f '{{join .Imports " "}}' ./engine)
-          read -r -a packages <<< "$imports"
-          external=$(go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}' "${packages[@]}")
-          while IFS= read -r dependency; do
-            case "$dependency" in
-              ""|github.com/google/cel-go/*) ;;
-              *) printf 'Forbidden engine import: %s\n' "$dependency" >&2; exit 1 ;;
-            esac
-          done <<< "$external"
       - run: go vet ./...
       - run: go test ./...
       - run: go test -race ./...
