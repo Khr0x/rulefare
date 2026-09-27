@@ -9,7 +9,12 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/Khr0x/rulefare/internal/postgres/pgtest"
 )
+
+// unusedDB is a syntactically valid URL for tests that fail before connecting.
+const unusedDB = "postgres://rulefare@127.0.0.1:1/rulefare?sslmode=disable&connect_timeout=1"
 
 // lockedBuffer lets the test read logs while serve is still writing them.
 type lockedBuffer struct {
@@ -48,19 +53,25 @@ func logLines(t *testing.T, raw string) []map[string]any {
 }
 
 func TestServeStartsAndStopsCleanly(t *testing.T) {
+	dbURL := pgtest.SchemaURL(t)
 	var logs lockedBuffer
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan int, 1)
 	go func() {
-		done <- serve(ctx, nil, envOf(map[string]string{"RULEFARE_HTTP_ADDR": "127.0.0.1:0"}), &logs)
+		done <- serve(ctx, nil, envOf(map[string]string{
+			"RULEFARE_HTTP_ADDR":    "127.0.0.1:0",
+			"RULEFARE_DATABASE_URL": dbURL,
+		}), &logs)
 	}()
 
 	var addr string
-	deadline := time.Now().Add(5 * time.Second)
+	deadline := time.Now().Add(10 * time.Second)
 	for addr == "" && time.Now().Before(deadline) {
 		if raw := logs.String(); raw != "" {
-			if a, ok := logLines(t, raw)[0]["addr"].(string); ok {
-				addr = a
+			for _, line := range logLines(t, raw) {
+				if line["msg"] == "listening" {
+					addr, _ = line["addr"].(string)
+				}
 			}
 		}
 		time.Sleep(10 * time.Millisecond)
@@ -99,9 +110,26 @@ func TestServeReportsListenFailure(t *testing.T) {
 	}
 	defer busy.Close()
 	var logs bytes.Buffer
-	code := serve(context.Background(), nil, envOf(map[string]string{"RULEFARE_HTTP_ADDR": busy.Addr().String()}), &logs)
+	code := serve(context.Background(), nil, envOf(map[string]string{
+		"RULEFARE_HTTP_ADDR":    busy.Addr().String(),
+		"RULEFARE_DATABASE_URL": unusedDB,
+	}), &logs)
 	if code != 1 || !strings.Contains(logs.String(), "listen failed") {
 		t.Fatalf("serve = %d, logs %q", code, logs.String())
+	}
+}
+
+func TestServeFailsWithoutDatabase(t *testing.T) {
+	var logs bytes.Buffer
+	code := serve(context.Background(), nil, envOf(map[string]string{
+		"RULEFARE_HTTP_ADDR":    "127.0.0.1:0",
+		"RULEFARE_DATABASE_URL": "postgres://rulefare:s3cret@127.0.0.1:1/rulefare?sslmode=disable&connect_timeout=1",
+	}), &logs)
+	if code != 1 || !strings.Contains(logs.String(), "database unavailable") {
+		t.Fatalf("serve = %d, logs %q", code, logs.String())
+	}
+	if strings.Contains(logs.String(), "s3cret") {
+		t.Fatalf("logs leak the database password: %q", logs.String())
 	}
 }
 

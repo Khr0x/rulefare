@@ -14,6 +14,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18.6@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+        env:
+          POSTGRES_USER: rulefare
+          POSTGRES_PASSWORD: rulefare
+          POSTGRES_DB: rulefare
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U rulefare"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Integration tests fail instead of skipping when CI is set and this is missing.
+      RULEFARE_TEST_DATABASE_URL: postgres://rulefare:rulefare@localhost:5432/rulefare?sslmode=disable
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7

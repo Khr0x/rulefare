@@ -14,6 +14,9 @@ type Config struct {
 	// HTTPAddr is the listen address. The default binds to loopback only;
 	// containers set RULEFARE_HTTP_ADDR=:8080 explicitly.
 	HTTPAddr string
+	// DatabaseURL is the PostgreSQL connection string (required). It may
+	// hold a password, so it must never be logged.
+	DatabaseURL string
 	// ShutdownTimeout bounds how long in-flight requests may run after
 	// SIGINT/SIGTERM before connections are closed.
 	ShutdownTimeout time.Duration
@@ -36,6 +39,9 @@ func LoadConfig(getenv func(string) string) (Config, error) {
 		} else {
 			cfg.HTTPAddr = v
 		}
+	}
+	if cfg.DatabaseURL = getenv("RULEFARE_DATABASE_URL"); cfg.DatabaseURL == "" {
+		errs = append(errs, errors.New("RULEFARE_DATABASE_URL is required"))
 	}
 	if v := getenv("RULEFARE_SHUTDOWN_TIMEOUT"); v != "" {
 		if d, err := time.ParseDuration(v); err != nil || d <= 0 {
