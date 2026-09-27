@@ -4,9 +4,9 @@
 
 | Campo | Valor |
 |---|---|
-| Versión | 0.2 |
+| Versión | 0.3 |
 | Última actualización | 2026-09-26 |
-| Estado | 🟡 En curso · T1.1 y T1.2 implementadas con pruebas locales |
+| Estado | 🟡 En curso · T1.1–T1.3 implementadas con pruebas locales |
 | Inicio objetivo | 2026-09-28 |
 | Fin objetivo | 2026-10-16 |
 | Duración | 3 semanas |
@@ -172,7 +172,7 @@ type Money struct {
 |---|---|---|---|
 | T1.1 | Añadir `serve`, config por entorno y apagado ordenado (SIGTERM, timeout) | `cmd/rulefare`, `internal/platform/config.go` | ✅ `serve` con `RULEFARE_HTTP_ADDR` y `RULEFARE_SHUTDOWN_TIMEOUT`, drenado de peticiones y error si vence el plazo; `rules` no lee la config de plataforma; pruebas locales con `-race` |
 | T1.2 | Mover el control de dependencias del motor a una prueba Go y ampliarla a la regla de dependencias de F2 | `architecture_test.go`; paso de CI sustituido | ✅ `go list -deps` con reglas para `engine` (stdlib + CEL) e `internal/money` (stdlib); prueba de que detecta violaciones; paso de shell eliminado de CI |
-| T1.3 | Pool pgx y migrador con advisory lock | `internal/postgres`, `schema_migrations` | ⬜ |
+| T1.3 | Pool pgx y migrador con advisory lock | `internal/postgres`, `schema_migrations` | ✅ `Open` sin filtrar la URL; migraciones `NNNN_*.sql` embebidas, SHA-256 por archivo, una transacción por archivo, rechazo de historia inconsistente; `serve` migra antes de servir; `pgtest` con esquema aislado; PostgreSQL 18.6 fijado por digest en CI |
 | T1.4 | Logs JSON, `request_id`, `traceparent`, recuperación de pánicos | middleware en `internal/httpapi` | ⬜ |
 | T1.5 | `/healthz` y `/readyz` | handlers + pruebas | ⬜ |
 | T1.6 | `Dockerfile` multi-etapa y `compose.yaml` con healthchecks | imagen distroless, `docker compose up --wait` en verde | ⬜ |
@@ -280,3 +280,4 @@ open http://localhost:8080/
 |---|---|---|---|---|---|
 | 2026-09-26 | F2 | — | ⬜ Planificada | Plan inicial con decisiones técnicas, tres semanas de trabajo y criterios de salida; núcleo de cálculo se mantiene en F5 | Tech Lead |
 | 2026-09-26 | T1.1 / T1.2 | ⬜ Pendientes | ✅ Implementadas con pruebas locales | `rulefare serve`, `internal/platform` e `internal/httpapi`; `architecture_test.go` sustituye el control de shell en CI; suite, race y vet locales en verde; sin dependencias nuevas | Backend |
+| 2026-09-27 | T1.3 | ⬜ Pendiente | ✅ Implementada con pruebas locales | `pgx/v5` v5.11.0 como única dependencia directa nueva; `golang.org/x/text` subido a v0.42.0 por GO-2026-5970; integración contra PostgreSQL 18.6 local con `-race`; mutación sin advisory lock detectada por la prueba concurrente; `govulncheck` sin hallazgos | Backend |

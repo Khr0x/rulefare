@@ -10,12 +10,14 @@ func env(vars map[string]string) func(string) string {
 	return func(key string) string { return vars[key] }
 }
 
+const dbURL = "postgres://app@db/rulefare"
+
 func TestLoadConfigDefaults(t *testing.T) {
-	cfg, err := LoadConfig(env(nil))
+	cfg, err := LoadConfig(env(map[string]string{"RULEFARE_DATABASE_URL": dbURL}))
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := Config{HTTPAddr: "127.0.0.1:8080", ShutdownTimeout: 15 * time.Second}
+	want := Config{HTTPAddr: "127.0.0.1:8080", DatabaseURL: dbURL, ShutdownTimeout: 15 * time.Second}
 	if cfg != want {
 		t.Fatalf("cfg = %+v, want %+v", cfg, want)
 	}
@@ -24,12 +26,13 @@ func TestLoadConfigDefaults(t *testing.T) {
 func TestLoadConfigOverrides(t *testing.T) {
 	cfg, err := LoadConfig(env(map[string]string{
 		"RULEFARE_HTTP_ADDR":        ":9090",
+		"RULEFARE_DATABASE_URL":     dbURL,
 		"RULEFARE_SHUTDOWN_TIMEOUT": "2s",
 	}))
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := Config{HTTPAddr: ":9090", ShutdownTimeout: 2 * time.Second}
+	want := Config{HTTPAddr: ":9090", DatabaseURL: dbURL, ShutdownTimeout: 2 * time.Second}
 	if cfg != want {
 		t.Fatalf("cfg = %+v, want %+v", cfg, want)
 	}
@@ -43,7 +46,7 @@ func TestLoadConfigReportsAllErrors(t *testing.T) {
 	if err == nil {
 		t.Fatal("want error")
 	}
-	for _, name := range []string{"RULEFARE_HTTP_ADDR", "RULEFARE_SHUTDOWN_TIMEOUT"} {
+	for _, name := range []string{"RULEFARE_HTTP_ADDR", "RULEFARE_DATABASE_URL", "RULEFARE_SHUTDOWN_TIMEOUT"} {
 		if !strings.Contains(err.Error(), name) {
 			t.Errorf("error %q does not mention %s", err, name)
 		}
@@ -55,9 +58,14 @@ func TestLoadConfigRejectsInvalidValues(t *testing.T) {
 		"addr without port":    {"RULEFARE_HTTP_ADDR": "localhost:"},
 		"timeout zero":         {"RULEFARE_SHUTDOWN_TIMEOUT": "0s"},
 		"timeout not duration": {"RULEFARE_SHUTDOWN_TIMEOUT": "15"},
+		"database url missing": {"RULEFARE_DATABASE_URL": ""},
 	} {
 		t.Run(name, func(t *testing.T) {
-			if _, err := LoadConfig(env(vars)); err == nil {
+			valid := map[string]string{"RULEFARE_DATABASE_URL": dbURL}
+			for k, v := range vars {
+				valid[k] = v
+			}
+			if _, err := LoadConfig(env(valid)); err == nil {
 				t.Fatal("want error")
 			}
 		})
