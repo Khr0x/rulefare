@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 	"net"
+	"net/http"
 	"strings"
 	"sync"
 	"testing"
@@ -79,11 +81,20 @@ func TestServeStartsAndStopsCleanly(t *testing.T) {
 	if addr == "" {
 		t.Fatalf("serve never logged its address: %q", logs.String())
 	}
-	conn, err := net.Dial("tcp", addr)
-	if err != nil {
-		t.Fatalf("server not accepting connections on %s: %v", addr, err)
+	for path, want := range map[string]string{
+		"/healthz": `{"status":"ok"}`,
+		"/readyz":  `{"checks":{"database":"ok","migrations":"ok"},"status":"ready"}`,
+	} {
+		resp, err := http.Get("http://" + addr + path)
+		if err != nil {
+			t.Fatalf("GET %s: %v", path, err)
+		}
+		body, _ := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		if resp.StatusCode != 200 || strings.TrimSpace(string(body)) != want {
+			t.Fatalf("GET %s = %d %s; want 200 %s", path, resp.StatusCode, body, want)
+		}
 	}
-	conn.Close()
 
 	cancel()
 	if code := <-done; code != 0 {

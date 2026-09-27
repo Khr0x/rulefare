@@ -12,10 +12,13 @@ import (
 )
 
 // NewHandler returns the root handler with request IDs, trace context,
-// access logs and panic recovery. Routes are added by later F2 tasks
-// (health in T1.5, tenancy endpoints in T2.4).
-func NewHandler(logger *slog.Logger) http.Handler {
-	return observe(logger, http.NewServeMux())
+// access logs and panic recovery. /readyz passes only when every check
+// passes. Tenancy endpoints arrive in T2.4.
+func NewHandler(logger *slog.Logger, checks ...Check) http.Handler {
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /healthz", healthz)
+	mux.HandleFunc("GET /readyz", readyz(checks))
+	return observe(logger, mux)
 }
 
 // Serve runs h on ln until ctx is cancelled, then stops accepting

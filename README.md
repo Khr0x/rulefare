@@ -22,7 +22,7 @@ Rules behind every travel transaction.
 | CPU en reposo e I/O | [Medición local de sistema](./propuesta/mvp/benchmarks/2026-09-22/system/README.md): mediana 0,0027 % CPU; sin I/O de archivos/red en 4.100 evaluaciones observadas |
 | Límites runtime y payload (T3.9) | Implementados y medidos; agotamiento de recursos bloquea toda la evaluación sin fallback |
 | Corpus técnico (T1.6) | [32 casos revisados](./engine/testdata/README.md) por un agente independiente con enfoque financiero; snapshots y orden invertido; aceptación de tarifas reales separada |
-| F2 · plataforma | 🟡 En curso: `rulefare serve` con config por entorno y apagado ordenado (T1.1); frontera de dependencias como prueba Go (T1.2); PostgreSQL con migraciones embebidas y advisory lock (T1.3); logs de acceso, `X-Request-ID`, `traceparent` y recuperación de pánicos (T1.4). Sin rutas ni UI todavía |
+| F2 · plataforma | 🟡 En curso: `rulefare serve` con config por entorno y apagado ordenado (T1.1); frontera de dependencias como prueba Go (T1.2); PostgreSQL con migraciones embebidas y advisory lock (T1.3); logs de acceso, `X-Request-ID`, `traceparent` y recuperación de pánicos (T1.4); `/healthz` y `/readyz` (T1.5). Sin endpoints de negocio ni UI todavía |
 | F3–F10 del MVP | Pendientes |
 | Verificación F1 | Build, suite, carrera, fuzzing, benchmark, CPU/I/O y `govulncheck` pasan en [CI de `main`](https://github.com/Khr0x/rulefare/actions/runs/35778045359); [artefacto de mediciones](https://github.com/Khr0x/rulefare/actions/runs/35778045359#artifacts) |
 
@@ -118,7 +118,14 @@ Los comandos `rules` no requieren servicios externos ni inicializan infraestruct
 
 ### `rulefare serve`
 
-Inicia la plataforma (F2): abre el puerto, se conecta a PostgreSQL, aplica las [migraciones pendientes](./migrations/README.md) y empieza a aceptar peticiones. Si la base no responde o una migración falla, sale con `1` antes de servir. Por ahora no registra rutas: responde `404` hasta que se añadan salud (T1.5) y endpoints (T2.4). Se configura solo por variables de entorno; valores inválidos detienen el arranque con código `1` y un log que nombra cada variable.
+Inicia la plataforma (F2): abre el puerto, se conecta a PostgreSQL, aplica las [migraciones pendientes](./migrations/README.md) y empieza a aceptar peticiones. Si la base no responde o una migración falla, sale con `1` antes de servir. Por ahora solo expone salud; los endpoints de negocio llegan en T2.4.
+
+| Ruta | Uso | Respuesta |
+|---|---|---|
+| `GET /healthz` | Liveness: el proceso responde. No consulta dependencias | `200 {"status":"ok"}` |
+| `GET /readyz` | Readiness: PostgreSQL responde y no hay migraciones pendientes, con límite de 2 s | `200` con `"status":"ready"` o `503` con `"status":"not_ready"`; `checks` indica `ok`/`fail` por dependencia. El motivo del fallo solo va al log |
+
+Las sondas exitosas se registran en nivel `DEBUG` para no saturar los logs; un `/readyz` fallido, en `WARN`. Se configura solo por variables de entorno; valores inválidos detienen el arranque con código `1` y un log que nombra cada variable.
 
 | Variable | Defecto | Uso |
 |---|---|---|
