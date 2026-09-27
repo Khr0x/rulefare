@@ -4,7 +4,7 @@
 
 | Campo | Valor |
 |---|---|
-| Versión del roadmap | 0.24 |
+| Versión del roadmap | 0.25 |
 | Última actualización | 2026-09-26 |
 | Ventana objetivo | 2026-08-30 → 2027-02-26 |
 | Estado general | 🟡 F0 abierta y diferida, sin casos reales de agencias; ✅ F1 completada técnicamente con CI de `main` verde; ⬜ F2 inicia el 2026-09-28 |
@@ -407,6 +407,7 @@ Un módulo Go importable y un único ejecutable `rulefare`, con entrada en `cmd/
 
 ### Referencias
 
+- [Plan de implementación de F2](./f2_plataforma_plan_implementacion.md)
 - [Alcance v1 · Multi-tenant](./travel_commission_engine_alcance_v1.md#bloque-5--multi-tenant)
 - [Alcance v1 · Seguridad y datos](./travel_commission_engine_alcance_v1.md#4-seguridad-y-datos-en-v1)
 - [Alcance v1 · Stack](./travel_commission_engine_alcance_v1.md#5-stack-de-la-v1)
@@ -704,3 +705,4 @@ Actualizar esta tabla en cada revisión semanal. Las decisiones de alcance deben
 | 2026-09-26 | F0 | 🟡 Mock sintético disponible | 🟡 Sin casos reales | Ninguna agencia ha entregado contratos, reservas ni statements; sin clientes de diseño ni aprobación financiera. Mocks mergeados en PR #5 | Responsable del proyecto |
 | 2026-09-26 | F0 | 🟡 En curso, bloqueaba F2 | 🟡 Abierta · diferida | Los casos reales todavía no se contemplan; F0 deja de bloquear F2–F9 y pasa a ser dependencia de F10 | Responsable del proyecto |
 | 2026-09-26 | Calendario | F2 2026-10-05 → 10-16, depende de F0 y F1 | F2 2026-09-28 → 10-16, depende de F1 | Adelanta el inicio con la semana ganada al cerrar F1 el 2026-09-22 y la usa como margen; F3–F10 sin cambios | Responsable del proyecto |
+| 2026-09-26 | F2 | ⬜ Pendiente | ⬜ Planificada | [Plan de implementación](./f2_plataforma_plan_implementacion.md): net/http, pgx, migrador propio, `Money` en unidades menores con `HALF_UP`, API keys con hash, OpenAPI y React embebido; núcleo de cálculo se mantiene en F5 | Tech Lead |
